@@ -1,18 +1,19 @@
 import React from 'react';
 import {
-  View, Text, Image, TouchableOpacity,
-  StyleSheet, Dimensions,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
 } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { glass } from '@/styles/glass';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
 import { HeroMedia } from '@/components/ui/HeroMedia';
 import type { User } from '@/data/mock';
 
-const { height: SCREEN_H } = Dimensions.get('window');
-const HERO_H = Math.round(SCREEN_H * 0.44);
 const MAX_ICONS = 3;
 
 interface ExploreProfileCardProps {
@@ -22,361 +23,576 @@ interface ExploreProfileCardProps {
 }
 
 export function ExploreProfileCard({ user, isActive = true, style }: ExploreProfileCardProps) {
-  const heroMedia = user.heroMedia ?? { type: 'image' as const, source: { uri: user.heroImage } };
+  const heroMedia = user.heroMedia ?? { type: 'image' as const, source: user.heroImage };
   const extraInterests = Math.max(0, user.interests.length - MAX_ICONS);
   const extraSkills = Math.max(0, user.proSkills.length - MAX_ICONS);
+  const mediaPosition = getExploreMediaPosition(user.id);
+  const mediaResizeMode = user.id === 'u4' ? 'contain' : 'cover';
 
   return (
     <View style={[styles.card, style]}>
+      <HeroMedia
+        media={heroMedia}
+        isActive={isActive}
+        posterUri={user.heroImage}
+        contentPosition={mediaPosition}
+        resizeMode={mediaResizeMode}
+      />
 
-      {/* ── Hero image section ───────────────────────────── */}
-      <View style={styles.heroWrap}>
-        <HeroMedia media={heroMedia} isActive={isActive} posterUri={user.heroImage} />
+      <LinearGradient
+        colors={['rgba(0,0,0,0.01)', 'rgba(0,0,0,0.80)']}
+        style={styles.topBlur}
+        pointerEvents="none"
+      />
+      <LinearGradient
+        colors={['rgba(0,0,0,0.01)', 'rgba(0,0,0,0.80)']}
+        style={styles.bottomBlur}
+        pointerEvents="none"
+      />
 
-        {/* Dark scrim — top and bottom */}
-        <LinearGradient
-          colors={['rgba(0,0,0,0.55)', 'transparent']}
-          style={styles.topScrim}
-          pointerEvents="none"
-        />
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.70)']}
-          style={styles.bottomScrim}
-          pointerEvents="none"
-        />
-
-        {/* ── Header overlaid on top of image ──────────── */}
-        <View style={styles.headerOverlay}>
-          <View style={styles.headerLeft}>
-            <Image source={user.avatar} style={styles.avatar} />
-            <View style={styles.nameBlock}>
-              <View style={styles.nameLine}>
-                <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
-                {user.verified && <Ionicons name="checkmark-circle" size={14} color="#4A9EFF" />}
-              </View>
-              <Text style={styles.role} numberOfLines={1}>{user.role}</Text>
+      <View style={styles.topContent}>
+        <View style={styles.identity}>
+          <Image source={user.avatar} style={styles.avatar} resizeMode="cover" />
+          <View style={styles.nameBlock}>
+            <View style={styles.nameLine}>
+              <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
+              {user.verified && <Ionicons name="checkmark-circle" size={12} color="#159BFF" />}
             </View>
+            <Text style={styles.role} numberOfLines={1}>{user.role}</Text>
           </View>
+        </View>
 
-          <View style={styles.connectionsBlock}>
-            <Image
-              source={MediaAssets.images.mirraLogoBigger}
-              style={styles.mirraIcon}
-              resizeMode="contain"
-            />
+        <View style={styles.statsBar}>
+          <Image source={MediaAssets.images.mirraLogoBigger} style={styles.statsLogo} resizeMode="contain" />
+          <View style={styles.statsTextBlock}>
             <Text style={styles.connectionsCount}>{user.connections}</Text>
             <Text style={styles.connectionsLabel}>Connections</Text>
           </View>
         </View>
-
-        {/* ── Pagination dots ───────────────────────────── */}
-        <View style={styles.dotsRow} pointerEvents="none">
-          {[0, 1, 2].map((i) => (
-            <View key={i} style={[styles.dot, i === 0 && styles.dotActive]} />
-          ))}
-        </View>
-
-        {/* ── Bottom of image: location + action buttons ── */}
-        <View style={styles.imageBottom}>
-          <View style={[glass.pill, styles.locationPill]}>
-            <View style={styles.locationGlow} />
-            <Feather name="navigation" size={11} color={Colors.textPrimary} />
-            <Text style={styles.locationText} numberOfLines={1}>{user.location}</Text>
-          </View>
-
-          <View style={styles.imageActions}>
-            <TouchableOpacity style={[glass.pill, styles.connectBtn]} activeOpacity={0.7}>
-              <Ionicons name="person-add-outline" size={13} color={Colors.textPrimary} />
-              <Text style={styles.btnText}>Connect</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[glass.pill, styles.dmBtn]} activeOpacity={0.7}>
-              <Feather name="send" size={13} color={Colors.textPrimary} />
-              <Text style={styles.btnText}>DM</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </View>
 
-      {/* ── Info tray below image ────────────────────────── */}
-      <View style={styles.infoTray}>
-
-        {/* Interests */}
-        <View style={styles.infoCol}>
-          <Text style={styles.infoLabel}>Interests</Text>
-          <View style={styles.iconRow}>
-            {user.interests.slice(0, MAX_ICONS).map((i) => (
-              <View key={i.id} style={styles.emojiBubble}>
-                <Text style={styles.emoji}>{i.emoji}</Text>
-              </View>
-            ))}
-            {extraInterests > 0 && (
-              <View style={[glass.pill, styles.overflow]}>
-                <Text style={styles.overflowText}>+{extraInterests}</Text>
-              </View>
-            )}
+      <View style={styles.bottomContent}>
+        <View style={styles.indicatorBlock}>
+          <View style={styles.indicators}>
+            <View style={styles.indicatorActive} />
+            <View style={[styles.indicatorDot, { width: 6, height: 6, borderRadius: 3 }]} />
+            <View style={[styles.indicatorDot, { width: 5, height: 5, borderRadius: 2.5 }]} />
           </View>
         </View>
 
-        <View style={styles.colDivider} />
-
-        {/* Pro Skills */}
-        <View style={styles.infoCol}>
-          <Text style={styles.infoLabel}>Pro Skills</Text>
-          <View style={styles.iconRow}>
-            {user.proSkills.slice(0, MAX_ICONS).map((s) => (
-              <View key={s.id} style={styles.emojiBubble}>
-                <Text style={styles.emoji}>{s.emoji}</Text>
-              </View>
-            ))}
-            {extraSkills > 0 && (
-              <View style={[glass.pill, styles.overflow]}>
-                <Text style={styles.overflowText}>+{extraSkills}</Text>
-              </View>
-            )}
+        <View style={styles.locationPill}>
+          <View style={styles.pulseDot}>
+            <View style={styles.pulseLarge} />
+            <View style={styles.pulseMedium} />
+            <View style={styles.pulseCenter} />
           </View>
+          <Feather name="navigation" size={14} color="rgba(255,255,255,0.80)" />
+          <Text style={styles.locationText} numberOfLines={1}>{user.location}</Text>
         </View>
 
-        <View style={styles.colDivider} />
-
-        {/* Role */}
-        <View style={styles.infoCol}>
-          <Text style={styles.infoLabel}>Role</Text>
-          <Text style={styles.roleType} numberOfLines={2}>{user.roleType}</Text>
+        <View style={styles.imageActions}>
+          <TouchableOpacity style={styles.connectBtn} activeOpacity={0.7}>
+            <Ionicons name="person-add-outline" size={16} color={Colors.textPrimary} />
+            <Text style={styles.btnText}>Connect</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dmBtn} activeOpacity={0.7}>
+            <Feather name="send" size={16} color={Colors.textPrimary} />
+            <Text style={styles.btnText}>DM</Text>
+          </TouchableOpacity>
         </View>
 
+        <View style={styles.infoTray}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.infoRail}
+          >
+            <EmojiSection
+              title="Interests"
+              items={user.interests.map((interest) => interest.emoji)}
+              extra={extraInterests}
+            />
+            <EmojiSection
+              title="Pro Skills"
+              items={user.proSkills.map((skill) => skill.emoji)}
+              extra={extraSkills}
+            />
+            <MetadataSection title="Role" icon="user" value={user.roleType ?? user.role} />
+            <MetadataSection title="Education" icon="book-open" value={getEducationLabel(user.id)} />
+          </ScrollView>
+        </View>
       </View>
     </View>
   );
 }
 
+function EmojiSection({
+  title,
+  items,
+  extra,
+}: {
+  title: string;
+  items: string[];
+  extra: number;
+}) {
+  const shown = items.slice(0, MAX_ICONS);
+
+  return (
+    <View style={styles.emojiSection}>
+      <Text style={styles.metaTitle}>{title}</Text>
+      <View style={styles.crisscrossRow}>
+        {shown.map((emoji, index) => {
+          const rotate = index % 2 === 0 ? '15deg' : '-14deg';
+          const counterRotate = index % 2 === 0 ? '-15deg' : '14deg';
+
+          return (
+            <View
+              key={`${emoji}-${index}`}
+              style={[
+                styles.crisscrossSquare,
+                index > 0 && styles.crisscrossOverlap,
+                { transform: [{ rotate }] },
+              ]}
+            >
+              <View style={styles.emojiDot} />
+              <Text style={[styles.crisscrossEmoji, { transform: [{ rotate: counterRotate }] }]}>
+                {emoji}
+              </Text>
+            </View>
+          );
+        })}
+
+        {extra > 0 && (
+          <View
+            style={[
+              styles.crisscrossSquare,
+              styles.crisscrossOverlap,
+              { transform: [{ rotate: '-14deg' }] },
+            ]}
+          >
+            <Text style={[styles.extraText, { transform: [{ rotate: '14deg' }] }]}>+{extra}</Text>
+          </View>
+        )}
+      </View>
+    </View>
+  );
+}
+
+function MetadataSection({
+  title,
+  icon,
+  value,
+}: {
+  title: string;
+  icon: keyof typeof Feather.glyphMap;
+  value: string;
+}) {
+  return (
+    <View style={styles.metadataSection}>
+      <Text style={styles.metaTitle}>{title}</Text>
+      <View style={styles.metadataPill}>
+        <Feather name={icon} size={14} color="rgba(255,255,255,0.60)" strokeWidth={1.2} />
+        <Text style={styles.metadataText} numberOfLines={1}>{value}</Text>
+      </View>
+    </View>
+  );
+}
+
+function getExploreMediaPosition(userId: string) {
+  switch (userId) {
+    case 'u1':
+      return 'center 34%';
+    case 'u2':
+      return 'center 30%';
+    case 'u3':
+      return 'center 26%';
+    case 'u4':
+      return 'center 38%';
+    case 'u5':
+      return 'center 28%';
+    case 'u6':
+      return 'center 34%';
+    case 'u7':
+      return 'center 32%';
+    default:
+      return 'center 35%';
+  }
+}
+
+function getEducationLabel(userId: string) {
+  switch (userId) {
+    case 'u1':
+      return 'University of Texas';
+    case 'u2':
+      return 'San Diego State University';
+    case 'u3':
+      return 'Bastyr University';
+    case 'u4':
+      return 'UC San Diego';
+    case 'u5':
+      return 'Stanford University';
+    case 'u6':
+      return 'San Francisco State';
+    case 'u7':
+      return 'Academy of Art University';
+    default:
+      return 'Mirra Network';
+  }
+}
+
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.10)',
-    borderRadius: 22,
+    width: '100%',
+    height: 510,
+    justifyContent: 'space-between',
+    borderRadius: 24,
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.10)',
     overflow: 'hidden',
-  },
-
-  // Hero image area
-  heroWrap: {
-    height: HERO_H,
     backgroundColor: Colors.bgSurface,
   },
-  topScrim: {
+  topBlur: {
     position: 'absolute',
-    top: 0, left: 0, right: 0,
-    height: 100,
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 80,
+    transform: [{ rotate: '180deg' }],
   },
-  bottomScrim: {
+  bottomBlur: {
     position: 'absolute',
-    bottom: 0, left: 0, right: 0,
-    height: 130,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 180,
   },
-
-  // Header overlaid at image top
-  headerOverlay: {
-    position: 'absolute',
-    top: 0, left: 0, right: 0,
+  topContent: {
+    width: '100%',
+    height: 38,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 14,
-    paddingTop: 12,
-    paddingBottom: 8,
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
     gap: 10,
+  },
+  identity: {
     flex: 1,
+    maxWidth: 260,
+    height: 38,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 4,
   },
   avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.2)',
+    width: 32,
+    height: 32,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255,255,255,0.20)',
   },
   nameBlock: {
-    gap: 1,
     flex: 1,
+    minWidth: 0,
+    height: 38,
+    paddingBottom: 4,
   },
   nameLine: {
+    height: 18,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
   },
   name: {
     color: Colors.textPrimary,
-    fontSize: 14,
-    fontWeight: '700',
-    letterSpacing: -0.2,
+    fontSize: 16,
+    lineHeight: 17.6,
+    fontWeight: '600',
     flexShrink: 1,
   },
   role: {
-    color: 'rgba(255,255,255,0.65)',
-    fontSize: 11,
+    color: 'rgba(255,255,255,0.60)',
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: '500',
   },
-  connectionsBlock: {
-    alignItems: 'flex-end',
-    gap: 1,
-    backgroundColor: 'rgba(18,13,12,0.54)',
-    borderRadius: 14,
-    paddingHorizontal: 13,
-    paddingVertical: 8,
+  statsBar: {
+    width: 114,
+    height: 38,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingTop: 4,
+    paddingRight: 12,
+    paddingBottom: 4,
+    paddingLeft: 16,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.05)',
   },
-  mirraIcon: {
-    width: 14,
-    height: 14,
-    marginBottom: 1,
+  statsLogo: {
+    width: 20,
+    height: 20,
+  },
+  statsTextBlock: {
+    width: 58,
+    height: 30,
+    justifyContent: 'center',
   },
   connectionsCount: {
     color: Colors.textPrimary,
     fontSize: 14,
-    fontWeight: '700',
-    letterSpacing: -0.3,
-    textAlign: 'right',
+    lineHeight: 16,
+    fontWeight: '600',
+    letterSpacing: -0.24,
   },
   connectionsLabel: {
-    color: 'rgba(255,255,255,0.55)',
-    fontSize: 9,
-    textAlign: 'right',
+    color: 'rgba(255,255,255,0.80)',
+    fontSize: 10,
+    lineHeight: 14,
+    fontWeight: '500',
   },
-
-  // Pagination dots
-  dotsRow: {
-    position: 'absolute',
-    bottom: 88,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 5,
+  bottomContent: {
+    width: '100%',
+    height: 181,
+    gap: 4,
   },
-  dot: {
-    width: 5,
-    height: 5,
-    borderRadius: 2.5,
-    backgroundColor: 'rgba(255,255,255,0.35)',
-  },
-  dotActive: {
-    width: 14,
-    backgroundColor: Colors.textPrimary,
-  },
-
-  // Bottom of image: location + buttons
-  imageBottom: {
-    position: 'absolute',
-    bottom: 0, left: 0, right: 0,
-    paddingHorizontal: 12,
-    paddingBottom: 12,
-    gap: 8,
-  },
-  locationPill: {
+  indicatorBlock: {
+    width: '100%',
+    height: 22,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    alignSelf: 'flex-start',
-    maxWidth: '90%',
+    justifyContent: 'center',
   },
-  locationGlow: {
+  indicators: {
+    height: 22,
+    minWidth: 74,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+  },
+  indicatorActive: {
+    width: 16,
+    height: 6,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.80)',
+  },
+  indicatorDot: {
+    backgroundColor: 'rgba(255,255,255,0.20)',
+  },
+  locationPill: {
+    width: '100%',
+    height: 34,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 24,
+  },
+  pulseDot: {
+    width: 16,
+    height: 16,
+    position: 'relative',
+  },
+  pulseLarge: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    opacity: 0.2,
+    backgroundColor: Colors.accent,
+  },
+  pulseMedium: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
     width: 6,
     height: 6,
     borderRadius: 3,
+    opacity: 0.5,
+    backgroundColor: Colors.accent,
+  },
+  pulseCenter: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
     backgroundColor: Colors.accent,
     shadowColor: Colors.accent,
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.95,
-    shadowRadius: 7,
+    shadowOpacity: 1,
+    shadowRadius: 8,
   },
   locationText: {
-    color: Colors.textPrimary,
-    fontSize: 11,
-    fontWeight: '500',
+    color: 'rgba(255,255,255,0.80)',
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '600',
+    flexShrink: 1,
   },
   imageActions: {
+    width: '100%',
+    height: 36,
     flexDirection: 'row',
-    gap: 8,
+    gap: 4,
   },
   connectBtn: {
     flex: 1,
+    height: 36,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 10,
+    gap: 8,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.05)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    shadowColor: '#FFFFFF',
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.10,
+    shadowRadius: 0,
   },
   dmBtn: {
+    flex: 1,
+    height: 36,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 10,
-    paddingHorizontal: 22,
+    gap: 8,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.05)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    shadowColor: '#FFFFFF',
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.10,
+    shadowRadius: 0,
   },
   btnText: {
-    color: Colors.textPrimary,
-    fontSize: 13,
-    fontWeight: '500',
+    color: 'rgba(255,255,255,0.80)',
+    fontSize: 12,
+    lineHeight: 12,
+    fontWeight: '400',
+    textAlign: 'center',
   },
-
-  // Info tray
   infoTray: {
-    flexDirection: 'row',
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    gap: 0,
-    backgroundColor: 'rgba(255,255,255,0.045)',
-  },
-  infoCol: {
-    flex: 1,
-    gap: 5,
-  },
-  colDivider: {
-    width: 1,
+    width: '100%',
+    height: 77,
+    gap: 2,
+    borderRadius: 16,
     backgroundColor: 'rgba(255,255,255,0.07)',
-    marginHorizontal: 10,
+    shadowColor: '#FFFFFF',
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.10,
+    shadowRadius: 0,
+    overflow: 'hidden',
   },
-  infoLabel: {
-    color: Colors.textTertiary,
-    fontSize: 9,
-    fontWeight: '600',
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
+  infoRail: {
+    minHeight: 77,
+    flexDirection: 'row',
+    gap: 8,
+    paddingTop: 8,
+    paddingRight: 12,
+    paddingBottom: 4,
+    paddingLeft: 12,
+    backgroundColor: 'rgba(255,255,255,0.05)',
   },
-  iconRow: {
+  emojiSection: {
+    flexShrink: 0,
+    height: 65,
+    gap: 4,
+  },
+  metaTitle: {
+    color: 'rgba(255,255,255,0.60)',
+    fontSize: 10,
+    lineHeight: 12,
+    fontWeight: '400',
+    letterSpacing: -0.08,
+  },
+  crisscrossRow: {
+    height: 49,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 3,
+  },
+  crisscrossSquare: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 2.5,
+    paddingRight: 5,
+    paddingBottom: 2.5,
+    paddingLeft: 5,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+  },
+  crisscrossOverlap: {
+    marginLeft: -6,
+  },
+  crisscrossEmoji: {
+    width: 25,
+    height: 25,
+    fontSize: 20,
+    lineHeight: 25,
+    textAlign: 'center',
+  },
+  emojiDot: {
+    position: 'absolute',
+    top: 6,
+    left: 7,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    borderWidth: 0.15,
+    borderColor: Colors.accent,
+    backgroundColor: Colors.accent,
+    shadowColor: Colors.accent,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 8,
+  },
+  extraText: {
+    color: 'rgba(255,255,255,0.80)',
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: '700',
+  },
+  metadataSection: {
+    minWidth: 132,
+    maxWidth: 220,
+    flexShrink: 0,
+    height: 56,
+    gap: 4,
+  },
+  metadataPill: {
+    minWidth: 132,
+    maxWidth: 220,
+    height: 40,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    flexWrap: 'nowrap',
+    paddingTop: 2.5,
+    paddingRight: 12,
+    paddingBottom: 2.5,
+    paddingLeft: 12,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.05)',
   },
-  emojiBubble: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    backgroundColor: 'rgba(255,255,255,0.08)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emoji: {
-    fontSize: 13,
-  },
-  overflow: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  overflowText: {
-    color: Colors.textSecondary,
-    fontSize: 10,
-    fontWeight: '600',
-  },
-  roleType: {
-    color: Colors.textPrimary,
+  metadataText: {
+    flex: 1,
+    color: 'rgba(255,255,255,0.60)',
     fontSize: 12,
-    fontWeight: '500',
     lineHeight: 16,
+    fontWeight: '500',
   },
 });

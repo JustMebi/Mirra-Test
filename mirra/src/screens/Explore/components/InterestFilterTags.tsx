@@ -1,7 +1,6 @@
 import React from 'react';
-import { ScrollView, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { glass } from '@/styles/glass';
 import { Colors } from '@/constants/colors';
 
 const FILTERS = [
@@ -9,6 +8,7 @@ const FILTERS = [
   { emoji: '⛳', label: 'Golf' },
   { emoji: '✈️', label: 'Travel' },
   { emoji: '🎥', label: 'Videography' },
+  { emoji: '💻', label: 'Tech' },
 ];
 
 interface InterestFilterTagsProps {
@@ -18,68 +18,111 @@ interface InterestFilterTagsProps {
 
 export function InterestFilterTags({ active, onSelect }: InterestFilterTagsProps) {
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.row}
-      style={styles.scroll}
-    >
-      {FILTERS.map(({ emoji, label }) => {
-        const isActive = active === label;
-        return (
-          <TouchableOpacity
-            key={label}
-            style={[glass.pill, styles.tag, isActive && styles.tagActive]}
-            onPress={() => onSelect?.(label)}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.emoji}>{emoji}</Text>
-            <Text style={[styles.label, isActive && styles.labelActive]}>{label}</Text>
-          </TouchableOpacity>
-        );
-      })}
+    <View style={styles.outer}>
+      <View style={styles.frame}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.scroll}
+          contentContainerStyle={styles.row}
+        >
+          {FILTERS.map(({ emoji, label }) => {
+            const isActive = active === label;
+            return (
+              <TouchableOpacity
+                key={label}
+                style={[styles.tag, isActive && styles.tagActive]}
+                onPress={() => onSelect?.(label)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.emoji}>{emoji}</Text>
+                <Text style={[styles.label, isActive && styles.labelActive]}>{label}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
 
-      <TouchableOpacity style={[glass.pill, styles.searchTag]} activeOpacity={0.7}>
-        <Feather name="search" size={14} color={Colors.textSecondary} />
-      </TouchableOpacity>
-    </ScrollView>
+        <TouchableOpacity style={styles.searchBtn} activeOpacity={0.7}>
+          <Feather name="search" size={15} color="rgba(255,255,255,0.80)" strokeWidth={1.4} />
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  outer: {
+    width: '100%',
+    height: 40,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+  },
+  frame: {
+    width: '100%',
+    maxWidth: 408,
+    height: 40,
+    position: 'relative',
+  },
   scroll: {
+    height: 32,
     flexGrow: 0,
   },
   row: {
-    flexDirection: 'row',
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-  },
-  tag: {
+    height: 32,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 8,
+    paddingRight: 48,
+  },
+  tag: {
+    minWidth: 85,
+    height: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
     paddingHorizontal: 12,
-    paddingVertical: 7,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
   },
   tagActive: {
-    backgroundColor: 'rgba(255,255,255,0.10)',
-    borderColor: 'rgba(255,255,255,0.20)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
   },
   emoji: {
-    fontSize: 13,
+    width: 16,
+    height: 16,
+    fontSize: 14,
+    lineHeight: 16,
+    textAlign: 'center',
   },
   label: {
-    color: Colors.textSecondary,
+    color: 'rgba(255,255,255,0.80)',
     fontSize: 12,
-    fontWeight: '500',
+    lineHeight: 16,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   labelActive: {
     color: Colors.textPrimary,
   },
-  searchTag: {
-    paddingHorizontal: 11,
-    paddingVertical: 7,
+  searchBtn: {
+    position: 'absolute',
+    top: -4,
+    right: 0,
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.05)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 12,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    shadowColor: '#FFFFFF',
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.10,
+    shadowRadius: 0,
   },
 });

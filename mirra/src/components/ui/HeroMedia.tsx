@@ -8,16 +8,30 @@ interface HeroMediaProps {
   posterUri?: any;
   style?: StyleProp<any>;
   isActive?: boolean;
+  contentPosition?: string;
+  resizeMode?: 'cover' | 'contain';
 }
 
-export function HeroMedia({ media, posterUri, style }: HeroMediaProps) {
+export function HeroMedia({
+  media,
+  posterUri,
+  style,
+  contentPosition = 'center center',
+  resizeMode = 'cover',
+}: HeroMediaProps) {
+  const imageStyle = [
+    StyleSheet.absoluteFill,
+    { objectPosition: contentPosition },
+    style,
+  ] as any;
+
   if (media.type === 'video') {
     if (posterUri) {
       return (
         <Image
           source={typeof posterUri === 'string' ? { uri: posterUri } : posterUri}
-          style={[StyleSheet.absoluteFill, style]}
-          resizeMode="cover"
+          style={imageStyle}
+          resizeMode={resizeMode}
         />
       );
     }
@@ -27,8 +41,8 @@ export function HeroMedia({ media, posterUri, style }: HeroMediaProps) {
   return (
     <Image
       source={typeof media.source === 'string' ? { uri: media.source } : media.source}
-      style={[StyleSheet.absoluteFill, style]}
-      resizeMode="cover"
+      style={imageStyle}
+      resizeMode={resizeMode}
     />
   );
 }

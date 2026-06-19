@@ -2,9 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { glass } from '@/styles/glass';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';
-import { glow } from '@/styles/glow';
 
 type ViewMode = 'card' | 'map';
 
@@ -12,131 +10,217 @@ interface LocationFilterBarProps {
   location?: string;
   viewMode: ViewMode;
   onViewModeChange: (mode: ViewMode) => void;
-  filterActive?: boolean;
 }
+
+const VIEW_MODES: { key: ViewMode; icon: keyof typeof Feather.glyphMap; label: string }[] = [
+  { key: 'card', icon: 'credit-card', label: 'Card' },
+  { key: 'map', icon: 'crosshair', label: 'Map' },
+];
 
 export function LocationFilterBar({
   location = 'Mission Beach, San Diego',
   viewMode,
   onViewModeChange,
-  filterActive = true,
 }: LocationFilterBarProps) {
   return (
-    <View style={styles.row}>
+    <View style={styles.outer}>
+      <View style={styles.row}>
+        <TouchableOpacity style={styles.locationInput} activeOpacity={0.7}>
+          <Feather name="map-pin" size={16} color="rgba(255,255,255,0.62)" />
+          <Text style={styles.locationText} numberOfLines={1}>{location}</Text>
+        </TouchableOpacity>
 
-      {/* Location pill */}
-      <TouchableOpacity style={[glass.pill, styles.locationPill]} activeOpacity={0.7}>
-        <Feather name="map-pin" size={11} color={Colors.textSecondary} />
-        <Text style={styles.locationText} numberOfLines={1}>{location}</Text>
-      </TouchableOpacity>
+        <View style={styles.actions}>
+          <TouchableOpacity activeOpacity={0.8} style={styles.filterGlow}>
+            <LinearGradient
+              colors={Gradients.blue}
+              {...GradientDir.diagonal}
+              style={styles.filterBorder}
+            >
+              <View style={styles.filterBtn}>
+                <Feather name="filter" size={16} color="#FFFFFF" />
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
 
-      {/* Active filter button — blue glow when active */}
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={filterActive ? glow.blueShadow : undefined}
-      >
-        {filterActive ? (
+          <TouchableOpacity activeOpacity={0.7} style={styles.sortBtn}>
+            <Feather name="list" size={16} color="rgba(255,255,255,0.62)" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.dividerWrap}>
           <LinearGradient
-            colors={Gradients.blue}
-            {...GradientDir.diagonal}
-            style={styles.filterBtn}
-          >
-            <Feather name="filter" size={13} color="#fff" />
-          </LinearGradient>
-        ) : (
-          <View style={[glass.pill, styles.filterBtn]}>
-            <Feather name="filter" size={13} color={Colors.textSecondary} />
-          </View>
-        )}
-      </TouchableOpacity>
+            colors={['rgba(255,255,255,0.01)', 'rgba(255,255,255,0.80)', 'rgba(255,255,255,0.01)']}
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 0.5 }}
+            style={styles.divider}
+          />
+        </View>
 
-      {/* Sort / list button */}
-      <TouchableOpacity style={[glass.pill, styles.iconBtn]} activeOpacity={0.7}>
-        <Feather name="list" size={13} color={Colors.textSecondary} />
-      </TouchableOpacity>
-
-      {/* Card / Map segmented control */}
-      <View style={[glass.pill, styles.toggle]}>
-        <TouchableOpacity
-          style={[styles.toggleBtn, viewMode === 'card' && styles.toggleActive]}
-          onPress={() => onViewModeChange('card')}
-          activeOpacity={0.7}
-        >
-          <Feather name="credit-card" size={11} color={viewMode === 'card' ? Colors.textPrimary : Colors.textSecondary} />
-          <Text style={[styles.toggleText, viewMode === 'card' && styles.toggleTextActive]}>Card</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.toggleBtn, viewMode === 'map' && styles.toggleActive]}
-          onPress={() => onViewModeChange('map')}
-          activeOpacity={0.7}
-        >
-          <Feather name="crosshair" size={11} color={viewMode === 'map' ? Colors.textPrimary : Colors.textSecondary} />
-          <Text style={[styles.toggleText, viewMode === 'map' && styles.toggleTextActive]}>Map</Text>
-        </TouchableOpacity>
+        <View style={styles.toggle}>
+          {VIEW_MODES.map(({ key, icon, label }) => {
+            const isActive = viewMode === key;
+            return (
+              <TouchableOpacity
+                key={key}
+                style={[styles.toggleBtn, isActive && styles.toggleActive]}
+                onPress={() => onViewModeChange(key)}
+                activeOpacity={0.7}
+              >
+                <Feather
+                  name={icon}
+                  size={16}
+                  color={isActive ? Colors.textPrimary : 'rgba(255,255,255,0.50)'}
+                  strokeWidth={1.2}
+                />
+                <Text style={[styles.toggleText, isActive && styles.toggleTextActive]}>{label}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  outer: {
+    width: '100%',
+    paddingHorizontal: 16,
+    alignItems: 'center',
+  },
   row: {
+    width: '100%',
+    maxWidth: 408,
+    height: 32,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
-    paddingHorizontal: 16,
-    paddingBottom: 10,
+    gap: 12,
   },
-  locationPill: {
+  locationInput: {
     flex: 1,
+    minWidth: 0,
+    height: 32,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: 11,
-    paddingVertical: 8,
+    paddingLeft: 12,
+    paddingRight: 2,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.05)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    shadowColor: '#FFFFFF',
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.10,
+    shadowRadius: 0,
   },
   locationText: {
-    color: Colors.textSecondary,
-    fontSize: 11.5,
     flex: 1,
-  },
-  filterBtn: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconBtn: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  toggle: {
-    flexDirection: 'row',
-    padding: 3,
-    gap: 2,
-  },
-  toggleBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 20,
-  },
-  toggleActive: {
-    backgroundColor: 'rgba(255,255,255,0.12)',
-  },
-  toggleText: {
-    color: Colors.textSecondary,
+    color: 'rgba(255,255,255,0.50)',
     fontSize: 11,
     fontWeight: '500',
   },
+  actions: {
+    width: 72,
+    height: 32,
+    flexDirection: 'row',
+    gap: 8,
+  },
+  filterGlow: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    shadowColor: '#26B7FF',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.95,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  filterBorder: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    padding: 1,
+  },
+  filterBtn: {
+    flex: 1,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1A1A1A',
+  },
+  sortBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.05)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    shadowColor: '#FFFFFF',
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.10,
+    shadowRadius: 0,
+  },
+  dividerWrap: {
+    width: 1,
+    height: 32,
+    opacity: 0.2,
+    overflow: 'hidden',
+  },
+  divider: {
+    position: 'absolute',
+    width: 32,
+    height: 1,
+    left: -15.5,
+    top: 15.5,
+    transform: [{ rotate: '90deg' }],
+  },
+  toggle: {
+    width: 130,
+    height: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.05)',
+    padding: 2,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    shadowColor: '#FFFFFF',
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.10,
+    shadowRadius: 0,
+  },
+  toggleBtn: {
+    width: 61,
+    height: 28,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  toggleActive: {
+    borderWidth: 0.5,
+    borderColor: 'rgba(255,255,255,0.05)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    shadowColor: '#FFFFFF',
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.10,
+    shadowRadius: 0,
+  },
+  toggleText: {
+    color: 'rgba(255,255,255,0.50)',
+    fontSize: 10,
+    fontWeight: '500',
+    lineHeight: 13.6,
+    textAlign: 'center',
+  },
   toggleTextActive: {
     color: Colors.textPrimary,
-    fontWeight: '600',
   },
 });
