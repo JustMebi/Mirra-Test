@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { Feather, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { glass } from '@/styles/glass';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';
 import { mockCurrentUser } from '@/data/mock';
@@ -15,24 +15,24 @@ export function HomeNavBar() {
       <View style={styles.row}>
         <View style={styles.leftGroup}>
           <TouchableOpacity style={[glass.pill, styles.pill]} activeOpacity={0.7}>
-            <Ionicons name="sparkles-outline" size={12} color={Colors.textSecondary} />
+            <AppIcon name="sparkles" size={12} color={Colors.textSecondary} />
             <Text style={styles.pillText}>Train AI Chat</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={[glass.pill, styles.pill]} activeOpacity={0.7}>
-            <Feather name="edit-2" size={12} color={Colors.textSecondary} />
+            <AppIcon name="edit" size={12} color={Colors.textSecondary} strokeWidth={1.5} />
             <Text style={styles.pillText}>Edit</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.rightGroup}>
           <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
-            <Feather name="sliders" size={16} color={Colors.textSecondary} />
+            <AppIcon name="sliders" size={16} color={Colors.textSecondary} strokeWidth={1.5} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
             <View>
-              <Feather name="bell" size={17} color={Colors.textPrimary} />
+              <AppIcon name="bell" size={17} color={Colors.textPrimary} strokeWidth={1.5} />
               <LinearGradient
                 colors={Gradients.accent}
                 {...GradientDir.vertical}
@@ -55,7 +55,7 @@ export function HomeNavBar() {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
-            <Feather name="more-vertical" size={17} color={Colors.textSecondary} />
+            <AppIcon name="more-vertical" size={17} color={Colors.textSecondary} />
           </TouchableOpacity>
         </View>
       </View>

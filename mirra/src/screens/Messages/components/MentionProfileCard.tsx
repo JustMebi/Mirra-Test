@@ -10,7 +10,7 @@ import {
   StyleSheet,
   useWindowDimensions,
 } from 'react-native';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import type { User } from '@/data/mock';
 
@@ -142,7 +142,7 @@ export function MentionProfileCard({ user, visible, anchor, onClose, onDM }: Men
                           <View style={styles.nameRow}>
                             <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
                             {user.verified && (
-                              <Ionicons name="checkmark-circle" size={12} color="#159BFF" />
+                              <AppIcon name="verified" size={12} />
                             )}
                           </View>
 
@@ -155,13 +155,13 @@ export function MentionProfileCard({ user, visible, anchor, onClose, onDM }: Men
 
                         <TouchableOpacity style={styles.profileBtn} activeOpacity={0.7}>
                           <Text style={styles.profileText}>Profile</Text>
-                          <Feather name="arrow-up-right" size={12} color={Colors.textPrimary} strokeWidth={1.2} />
+                          <AppIcon name="arrow-up-right" size={12} color={Colors.textPrimary} strokeWidth={1.2} />
                         </TouchableOpacity>
                       </View>
 
                       <View style={styles.metaRow}>
                         <View style={styles.locationChip}>
-                          <Feather name="navigation" size={11} color="rgba(255,255,255,0.60)" />
+                          <AppIcon name="navigation" size={11} color="rgba(255,255,255,0.60)" />
                           <Text style={styles.metaText} numberOfLines={1}>{user.city}</Text>
                         </View>
 
@@ -182,7 +182,7 @@ export function MentionProfileCard({ user, visible, anchor, onClose, onDM }: Men
                           }}
                           activeOpacity={0.7}
                         >
-                          <Feather name="send" size={13} color={Colors.textPrimary} />
+                          <AppIcon name="send" size={13} color={Colors.textPrimary} />
                         </TouchableOpacity>
                       </View>
                     </View>

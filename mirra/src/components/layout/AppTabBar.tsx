@@ -2,19 +2,16 @@ import React from 'react';
 import { View, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { router } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { GlassView } from '@/components/ui/GlassView';
+import Svg, { Circle, Rect } from 'react-native-svg';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';
 import { mockCurrentUser } from '@/data/mock';
 
-// Tab order matches app/(tabs)/_layout.tsx:
-//   0 = index (home)
-//   1 = contacts
-//   2 = messages
-//   3 = explore
-// Position 3 (chatbot) is a non-tab button that opens the DP modal.
+const TAB_SLOT_WIDTH = 80;
+const TAB_SLOT_HEIGHT = 48;
 
 export function AppTabBar({ state, navigation, descriptors }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
@@ -34,57 +31,34 @@ export function AppTabBar({ state, navigation, descriptors }: BottomTabBarProps)
 
   return (
     <View style={[styles.wrapper, { bottom: Math.max(insets.bottom, 12) }]} pointerEvents="box-none">
-      <GlassView variant="pill" style={styles.bar}>
+      <BlurView intensity={30} tint="dark" style={styles.bar}>
+        <View style={styles.innerRail}>
+          <TabItem onPress={() => goToTab(0)} isActive={state.index === 0} badge={2}>
+            <View style={styles.avatarShell}>
+              <Image source={mockCurrentUser.avatar} style={styles.avatarImg} />
+            </View>
+          </TabItem>
 
-        {/* 1 — Home: current user avatar */}
-        <TabItem onPress={() => goToTab(0)} isActive={state.index === 0} badge={2}>
-          <View style={styles.avatarWrap}>
-            <Image source={mockCurrentUser.avatar} style={styles.avatarImg} />
-          </View>
-        </TabItem>
+          <TabItem onPress={() => goToTab(1)} isActive={state.index === 1} badge={2}>
+            <AppIcon name="users" size={22} color="#FFFFFF" opacity={state.index === 1 ? 1 : 0.66} />
+          </TabItem>
 
-        {/* 2 — Contacts: people icon */}
-        <TabItem onPress={() => goToTab(1)} isActive={state.index === 1} badge={2}>
-          <Feather
-            name="users"
-            size={20}
-            color={state.index === 1 ? Colors.textPrimary : Colors.textSecondary}
-          />
-        </TabItem>
+          <TabItem onPress={() => goToTab(2)} isActive={state.index === 2} badge={12}>
+            <AppIcon name="send" size={22} color="#FFFFFF" opacity={state.index === 2 ? 1 : 0.5} />
+          </TabItem>
 
-        {/* 3 — Messages: send / paper-plane icon */}
-        <TabItem onPress={() => goToTab(2)} isActive={state.index === 2} badge={12}>
-          <Feather
-            name="send"
-            size={20}
-            color={state.index === 2 ? Colors.textPrimary : Colors.textSecondary}
-          />
-        </TabItem>
+          <TabItem onPress={() => router.push('/(modal)/chatbot')} isActive={false} badge={2}>
+            <AppIcon name="chat" size={22} color="#FFFFFF" opacity={0.66} />
+          </TabItem>
 
-        {/* 4 — DP Chatbot: chat bubble icon (opens modal, no active state) */}
-        <TabItem onPress={() => router.push('/(modal)/chatbot')} isActive={false} badge={2}>
-          <Feather
-            name="message-circle"
-            size={20}
-            color={Colors.textSecondary}
-          />
-        </TabItem>
-
-        {/* 5 — Explore: search icon */}
-        <TabItem onPress={() => goToTab(3)} isActive={state.index === 3}>
-          <Feather
-            name="search"
-            size={20}
-            color={state.index === 3 ? Colors.textPrimary : Colors.textSecondary}
-          />
-        </TabItem>
-
-      </GlassView>
+          <TabItem onPress={() => goToTab(3)} isActive={state.index === 3}>
+            <AppIcon name="search" size={22} color="#FFFFFF" opacity={state.index === 3 ? 1 : 0.5} strokeWidth={2} />
+          </TabItem>
+        </View>
+      </BlurView>
     </View>
   );
 }
-
-// ─── Tab Item ────────────────────────────────────────────────────────────────
 
 interface TabItemProps {
   onPress: () => void;
@@ -95,26 +69,31 @@ interface TabItemProps {
 
 function TabItem({ onPress, isActive, badge, children }: TabItemProps) {
   return (
-    <TouchableOpacity style={styles.tab} onPress={onPress} activeOpacity={0.7}>
-      <View style={[styles.iconWrap, isActive && styles.iconWrapActive]}>
-        {isActive && (
-          <>
-            <View style={styles.activeBase} />
-            <View style={styles.activeBloom} />
-          </>
-        )}
-        {children}
-        {badge != null && badge > 0 && (
-          <LinearGradient
-            colors={Gradients.accent}
-            {...GradientDir.vertical}
-            style={styles.badge}
-          >
-            <Text style={styles.badgeText}>{badge}</Text>
-          </LinearGradient>
-        )}
-      </View>
+    <TouchableOpacity style={styles.tabSlot} onPress={onPress} activeOpacity={0.72}>
+      {isActive && <ActiveCapsule />}
+      <View style={styles.contentLayer}>{children}</View>
+      {badge != null && badge > 0 && <Badge count={badge} />}
     </TouchableOpacity>
+  );
+}
+
+function ActiveCapsule() {
+  return (
+    <View style={styles.activeCapsule}>
+      <Svg width={TAB_SLOT_WIDTH} height={TAB_SLOT_HEIGHT} viewBox="0 0 80 48" style={StyleSheet.absoluteFill}>
+        <Rect width="80" height="48" rx="18" fill="rgba(255,255,255,0.02)" />
+        <Circle cx="57" cy="51" r="39" fill="rgba(255,255,255,0.19)" />
+      </Svg>
+      <View style={styles.activeInsetHighlight} />
+    </View>
+  );
+}
+
+function Badge({ count }: { count: number }) {
+  return (
+    <LinearGradient colors={Gradients.accent} {...GradientDir.vertical} style={styles.badge}>
+      <Text style={styles.badgeText}>{count}</Text>
+    </LinearGradient>
   );
 }
 
@@ -131,95 +110,92 @@ const styles = StyleSheet.create({
     pointerEvents: 'box-none',
   },
   bar: {
-    flexDirection: 'row',
-    alignItems: 'center',
     width: '100%',
     maxWidth: 408,
     height: 56,
     borderRadius: 22,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
-    padding: 4,
-    gap: 10,
+    overflow: 'hidden',
     backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.10)',
+    borderLeftWidth: 1,
+    borderLeftColor: 'rgba(255,255,255,0.05)',
+    borderRightWidth: 1,
+    borderRightColor: 'rgba(255,255,255,0.05)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.05)',
     elevation: 8,
   },
-  tab: {
-    flex: 1,
-    minWidth: 0,
-    minHeight: 48,
+  innerRail: {
+    width: '100%',
+    height: '100%',
+    padding: 4,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
-  iconWrap: {
-    width: 52,
-    height: 40,
+  tabSlot: {
+    width: TAB_SLOT_WIDTH,
+    height: TAB_SLOT_HEIGHT,
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  iconWrapActive: {
-    width: 80,
-    height: 48,
+  activeCapsule: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 18,
+    overflow: 'hidden',
+  },
+  activeInsetHighlight: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 18,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.2)',
+  },
+  contentLayer: {
+    width: TAB_SLOT_WIDTH,
+    height: TAB_SLOT_HEIGHT,
     paddingHorizontal: 18,
     paddingVertical: 8,
-    gap: 4,
-    shadowColor: Colors.accent,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.22,
-    shadowRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
+  },
+  avatarShell: {
+    width: 24,
+    height: 24,
+    borderRadius: 8,
     overflow: 'hidden',
-  },
-  activeBase: {
-    position: 'absolute',
-    inset: 0,
-    borderRadius: 18,
-    backgroundColor: 'rgba(255,255,255,0.02)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.055)',
-    zIndex: 0,
-  },
-  activeBloom: {
-    position: 'absolute',
-    width: 54,
-    height: 42,
-    right: 2,
-    bottom: -10,
-    borderRadius: 27,
-    backgroundColor: 'rgba(255,255,255,0.18)',
-    zIndex: 0,
-  },
-  avatarWrap: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    overflow: 'hidden',
+    backgroundColor: 'rgba(255,255,255,0.2)',
   },
   avatarImg: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 24,
+    height: 24,
+    borderRadius: 7,
   },
   badge: {
     position: 'absolute',
-    top: 2,
-    right: 7,
-    minWidth: 15,
-    height: 15,
-    borderRadius: 7.5,
+    left: 48,
+    top: 8,
+    minWidth: 16,
+    height: 16,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 3,
-    borderWidth: 1.5,
-    borderColor: Colors.bg,
+    paddingHorizontal: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.1)',
+    shadowColor: Colors.accentAlt,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    zIndex: 2,
   },
   badgeText: {
-    color: Colors.bg,
-    fontSize: 8,
-    fontWeight: '800',
+    color: 'rgba(0,0,0,0.6)',
+    fontSize: 10,
+    lineHeight: 12,
+    fontWeight: '700',
+    textAlign: 'center',
   },
 });

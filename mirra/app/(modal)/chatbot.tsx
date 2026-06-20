@@ -12,9 +12,9 @@ import {
   Image,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';
 import { glass } from '@/styles/glass';
 import { glow } from '@/styles/glow';
@@ -172,7 +172,7 @@ export default function ChatbotModal() {
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           activeOpacity={0.7}
         >
-          <Feather name="x" size={16} color={Colors.textSecondary} />
+          <AppIcon name="x" size={16} color={Colors.textSecondary} strokeWidth={1.7} />
         </TouchableOpacity>
       </View>
 
@@ -236,7 +236,7 @@ export default function ChatbotModal() {
               blurOnSubmit
             />
             <TouchableOpacity style={styles.micBtn} activeOpacity={0.7}>
-              <Feather name="mic" size={17} color={Colors.textTertiary} />
+              <AppIcon name="mic" size={17} color={Colors.textTertiary} strokeWidth={1.6} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleSend}
@@ -248,16 +248,16 @@ export default function ChatbotModal() {
                 {...GradientDir.diagonal}
                 style={styles.sendBtn}
               >
-                <Feather name="arrow-up" size={16} color="#fff" />
+                <AppIcon name="arrow-up" size={16} color="#fff" strokeWidth={1.6} />
               </LinearGradient>
             </TouchableOpacity>
           </View>
 
           {/* Anonymous mode bar */}
           <View style={styles.anonBar}>
-            <Feather name="sliders" size={13} color="rgba(255,255,255,0.72)" />
+            <AppIcon name="sliders" size={13} color="rgba(255,255,255,0.72)" strokeWidth={1.5} />
             <Text style={styles.anonText}>Anonymous Mode is on</Text>
-            <Feather name="info" size={12} color="rgba(255,255,255,0.72)" />
+            <AppIcon name="info" size={12} color="rgba(255,255,255,0.72)" strokeWidth={1.5} />
           </View>
         </LinearGradient>
       </KeyboardAvoidingView>

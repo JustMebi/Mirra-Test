@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 
 interface ChatInputProps {
@@ -24,7 +24,7 @@ export function ChatInput({
       <View style={styles.inner}>
         <View style={styles.messageBox}>
           <TouchableOpacity style={styles.iconBox} activeOpacity={0.7}>
-            <Feather name="plus" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
+            <AppIcon name="plus" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
           </TouchableOpacity>
 
           <TextInput
@@ -39,11 +39,11 @@ export function ChatInput({
 
           <View style={styles.actions}>
             <TouchableOpacity style={styles.iconBox} activeOpacity={0.7}>
-              <Feather name="mic" size={18} color="rgba(255,255,255,0.92)" strokeWidth={1.6} />
+              <AppIcon name="mic" size={18} color="rgba(255,255,255,0.92)" strokeWidth={1.6} />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.iconBox} onPress={onSend} activeOpacity={0.75}>
-              <Feather name="arrow-up" size={18} color="rgba(255,255,255,0.92)" strokeWidth={1.6} />
+              <AppIcon name="arrow-up" size={18} color="rgba(255,255,255,0.92)" strokeWidth={1.6} />
             </TouchableOpacity>
           </View>
         </View>

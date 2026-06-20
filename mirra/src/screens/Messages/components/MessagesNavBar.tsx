@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Feather, Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AppIcon } from "@/components/ui/AppIcon";
 import { Colors } from "@/constants/colors";
 
 type PrimaryTab = "primary" | "requests";
@@ -39,10 +39,10 @@ export function MessagesNavBar({
         <Text style={styles.title}>Messages</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.headerButton} activeOpacity={0.7}>
-            <Feather name="search" size={18} color={Colors.textPrimary} />
+            <AppIcon name="search" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerButton} activeOpacity={0.7}>
-            <Feather name="edit-3" size={18} color={Colors.textPrimary} />
+            <AppIcon name="edit" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
           </TouchableOpacity>
         </View>
       </View>
@@ -74,7 +74,7 @@ export function MessagesNavBar({
           ))}
         </View>
         <TouchableOpacity style={styles.slidersBtn} activeOpacity={0.7}>
-          <Feather name="sliders" size={16} color={Colors.textSecondary} />
+          <AppIcon name="sliders" size={16} color={Colors.textSecondary} strokeWidth={1.5} />
         </TouchableOpacity>
       </View>
     </View>
@@ -123,15 +123,15 @@ function FilterChip({
       activeOpacity={0.7}
     >
       {icon === "send" && (
-        <Feather
+        <AppIcon
           name="send"
           size={12}
           color={active ? Colors.textPrimary : Colors.textSecondary}
         />
       )}
       {icon === "sparkles" && (
-        <Ionicons
-          name="sparkles-outline"
+        <AppIcon
+          name="sparkles"
           size={12}
           color={active ? Colors.textPrimary : Colors.textSecondary}
         />

@@ -9,7 +9,7 @@ import {
   Modal,
   GestureResponderEvent,
 } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import type { ChatMessage } from '@/data/mock';
 
@@ -134,8 +134,7 @@ export function ChatBubble({
 function DeliveredTicks() {
   return (
     <View style={styles.deliveredTicks}>
-      <Feather name="check" size={12} color="rgba(255,255,255,0.60)" style={styles.tickBack} />
-      <Feather name="check" size={12} color="rgba(255,255,255,0.60)" style={styles.tickFront} />
+      <AppIcon name="double-check" size={18} color="rgba(255,255,255,0.60)" strokeWidth={1.7} />
     </View>
   );
 }
@@ -309,17 +308,7 @@ const styles = StyleSheet.create({
   deliveredTicks: {
     width: 18,
     height: 14,
-    position: 'relative',
-  },
-  tickBack: {
-    position: 'absolute',
-    left: 0,
-    top: 1,
-  },
-  tickFront: {
-    position: 'absolute',
-    left: 6,
-    top: 1,
+    transform: [{ scaleX: 1.15 }],
   },
   reactionsRow: {
     height: 24,

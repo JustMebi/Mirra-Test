@@ -3,29 +3,73 @@ import {
   View, Text, Image, TouchableOpacity,
   ScrollView, StyleSheet, Dimensions,
 } from 'react-native';
-import { Feather, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { glass } from '@/styles/glass';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
+import { MediaAssets } from '@/constants/assets';
 import { mockCurrentUser, mockStats, type Stat } from '@/data/mock';
 import { HeroMedia } from '@/components/ui/HeroMedia';
 
 const { height: SCREEN_H } = Dimensions.get('window');
 const CARD_H = Math.min(626, Math.max(520, Math.round(SCREEN_H * 0.655)));
 
-// ─── Stat overlay ─────────────────────────────────────────────────────────────
+// ─── Lime pulsing dot ─────────────────────────────────────────────────────────
 
-function StatOverlay({ value, label, period, growth, positive }: Stat) {
+function LimeDot() {
+  return (
+    <View style={dotStyles.outer}>
+      <View style={dotStyles.mid}>
+        <View style={dotStyles.inner} />
+      </View>
+    </View>
+  );
+}
+
+const dotStyles = StyleSheet.create({
+  outer: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: 'rgba(225,255,79,0.18)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mid: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(225,255,79,0.45)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inner: {
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: '#E1FF4F',
+    shadowColor: '#E1FF4F',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+});
+
+// ─── Stat card ────────────────────────────────────────────────────────────────
+
+function StatCard({ value, label, period, growth, positive }: Stat) {
   return (
     <View style={statStyles.card}>
       <Text style={statStyles.value}>{value}</Text>
       <View style={statStyles.textBlock}>
         <Text style={statStyles.label}>{label}</Text>
         <View style={statStyles.metaRow}>
-          <Text style={statStyles.period}>{period}</Text>
-          <Text style={[statStyles.badgeText, { color: positive ? Colors.accent : Colors.error }]}>
-            {growth}
-          </Text>
+          {period != null && <Text style={statStyles.period}>{period}</Text>}
+          {growth != null && (
+            <Text style={[statStyles.growth, { color: positive ? Colors.accent : Colors.error }]}>
+              {growth}
+            </Text>
+          )}
         </View>
       </View>
     </View>
@@ -34,8 +78,7 @@ function StatOverlay({ value, label, period, growth, positive }: Stat) {
 
 const statStyles = StyleSheet.create({
   card: {
-    width: 150,
-    height: 44,
+    flexShrink: 0,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.07)',
@@ -48,38 +91,36 @@ const statStyles = StyleSheet.create({
   },
   value: {
     color: Colors.textPrimary,
-    fontSize: 21,
+    fontSize: 20,
     fontWeight: '700',
     letterSpacing: -0.5,
   },
   textBlock: {
-    flex: 1,
-    gap: 1,
+    gap: 2,
   },
   label: {
     color: 'rgba(255,255,255,0.80)',
-    fontSize: 7.5,
+    fontSize: 10,
     fontWeight: '600',
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
     textTransform: 'uppercase',
   },
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 4,
   },
   period: {
-    color: 'rgba(255,255,255,0.62)',
-    fontSize: 8.5,
-    flexShrink: 0,
+    color: 'rgba(255,255,255,0.60)',
+    fontSize: 9,
   },
-  badgeText: {
-    fontSize: 8.5,
+  growth: {
+    fontSize: 9,
     fontWeight: '700',
   },
 });
 
-// ─── Integrated hero card ─────────────────────────────────────────────────────
+// ─── Hero profile card ────────────────────────────────────────────────────────
 
 export function HeroProfileCard() {
   const user = mockCurrentUser;
@@ -87,14 +128,20 @@ export function HeroProfileCard() {
 
   return (
     <View style={styles.card}>
-
-      {/* Hero image/video — fills entire card as background */}
+      {/* Hero image/video fills entire card */}
       <HeroMedia media={heroMedia} posterUri={user.heroImage} isActive />
 
-      {/* Gradient darkens bottom of image for readability */}
+      {/* Top gradient — darkens behind stats for readability */}
       <LinearGradient
-        colors={['transparent', 'rgba(0,0,0,0.45)', 'rgba(0,0,0,0.90)']}
-        locations={[0.3, 0.62, 1]}
+        colors={['rgba(0,0,0,0.58)', 'transparent']}
+        style={styles.topGradient}
+        pointerEvents="none"
+      />
+
+      {/* Bottom gradient — darkens behind profile info */}
+      <LinearGradient
+        colors={['transparent', 'rgba(0,0,0,0.48)', 'rgba(0,0,0,0.92)']}
+        locations={[0.28, 0.60, 1]}
         style={styles.bottomGradient}
         pointerEvents="none"
       />
@@ -102,7 +149,7 @@ export function HeroProfileCard() {
       {/* Layered content */}
       <View style={styles.content}>
 
-        {/* Stats row — overlaid on top portion of image */}
+        {/* Stats row overlaid on top portion */}
         <View style={styles.statsClip}>
           <ScrollView
             horizontal
@@ -110,7 +157,7 @@ export function HeroProfileCard() {
             contentContainerStyle={styles.statsRow}
           >
             {mockStats.map((s) => (
-              <StatOverlay key={s.label} {...s} />
+              <StatCard key={s.label} {...s} />
             ))}
           </ScrollView>
         </View>
@@ -118,46 +165,53 @@ export function HeroProfileCard() {
         {/* Bottom cluster */}
         <View style={styles.bottomCluster}>
 
-          {/* Location + filter */}
+          {/* Location badge + settings */}
           <View style={styles.locationRow}>
-            <View style={[glass.pill, styles.locationPill]}>
-              <Feather name="navigation" size={11} color={Colors.textSecondary} />
+            <View style={styles.locationBadge}>
+              <LimeDot />
+              <AppIcon name="navigation" size={12} color="rgba(255,255,255,0.8)" />
               <Text style={styles.locationText} numberOfLines={1}>{user.location}</Text>
             </View>
-            <TouchableOpacity style={[glass.pill, styles.filterBtn]} activeOpacity={0.7}>
-              <Feather name="sliders" size={13} color={Colors.textSecondary} />
+            <TouchableOpacity style={styles.settingsBtn} activeOpacity={0.7}>
+              <AppIcon name="sliders" size={12} color={Colors.textPrimary} strokeWidth={1.5} />
             </TouchableOpacity>
           </View>
 
-          {/* Avatar + name + followers */}
-          <View style={styles.nameRow}>
-            <Image source={user.avatar} style={styles.avatar} />
-            <View style={styles.nameBlock}>
-              <View style={styles.nameLine}>
-                <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
-                <Ionicons name="checkmark-circle" size={14} color="#4A9EFF" />
+          {/* Profile info bar */}
+          <View style={styles.infoBar}>
+            <View style={styles.avatarNameRow}>
+              <Image source={user.avatar} style={styles.avatar} />
+              <View style={styles.nameBlock}>
+                <View style={styles.nameLine}>
+                  <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
+                  <AppIcon name="verified" size={13} />
+                </View>
+                <Text style={styles.roleText}>{user.role}</Text>
               </View>
-              <Text style={styles.roleText}>{user.role}</Text>
             </View>
-            <View style={styles.followersBlock}>
-              <Text style={styles.followersCount}>{user.followersFormatted}</Text>
-              <Text style={styles.followersLabel}>Followers</Text>
-              <FontAwesome name="instagram" size={12} color={Colors.textSecondary} />
+
+            {/* Followers chip */}
+            <View style={styles.followersChip}>
+              <View style={styles.followersBlock}>
+                <Text style={styles.followersCount}>{user.followersFormatted}</Text>
+                <Text style={styles.followersLabel}>Followers</Text>
+              </View>
+              <Image source={MediaAssets.images.instagram} style={styles.instagramIcon} resizeMode="contain" />
             </View>
           </View>
 
           {/* Action buttons */}
           <View style={styles.actionsRow}>
-            <TouchableOpacity style={[glass.pill, styles.actionBtn]} activeOpacity={0.7}>
-              <Feather name="eye" size={12} color={Colors.textSecondary} />
+            <TouchableOpacity style={styles.actionBtn} activeOpacity={0.7}>
+              <AppIcon name="eye" size={13} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
               <Text style={styles.actionText}>View Profile</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[glass.pill, styles.actionBtn]} activeOpacity={0.7}>
-              <Feather name="layers" size={12} color={Colors.textSecondary} />
+            <TouchableOpacity style={styles.actionBtn} activeOpacity={0.7}>
+              <AppIcon name="layers" size={13} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
               <Text style={styles.actionText}>All Cards</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[glass.pill, styles.actionBtn]} activeOpacity={0.7}>
-              <Feather name="share-2" size={12} color={Colors.textSecondary} />
+            <TouchableOpacity style={styles.actionBtn} activeOpacity={0.7}>
+              <AppIcon name="share" size={13} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
               <Text style={styles.actionText}>Share</Text>
             </TouchableOpacity>
           </View>
@@ -178,6 +232,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.10)',
   },
+  topGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 90,
+  },
   bottomGradient: {
     position: 'absolute',
     bottom: 0,
@@ -187,7 +248,10 @@ const styles = StyleSheet.create({
   },
   content: {
     position: 'absolute',
-    inset: 0,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
     padding: 12,
     justifyContent: 'space-between',
   },
@@ -200,39 +264,42 @@ const styles = StyleSheet.create({
     paddingRight: 24,
   },
   bottomCluster: {
-    gap: 8,
+    gap: 6,
   },
   locationRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 32,
+    gap: 6,
   },
-  locationPill: {
+  locationBadge: {
     flex: 1,
+    height: 32,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
+    gap: 5,
+    paddingLeft: 8,
+    paddingRight: 12,
+    paddingVertical: 6,
+    backgroundColor: 'rgba(255,255,255,0.10)',
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   locationText: {
-    color: Colors.textPrimary,
-    fontSize: 11,
-    fontWeight: '500',
     flex: 1,
+    color: 'rgba(255,255,255,0.80)',
+    fontSize: 12,
+    fontWeight: '500',
+    letterSpacing: -0.2,
   },
-  filterBtn: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+  settingsBtn: {
+    width: 32,
+    height: 32,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: -32,
+    backgroundColor: 'rgba(255,255,255,0.10)',
+    borderRadius: 12,
   },
-  nameRow: {
-    width: '100%',
-    height: 58,
+  infoBar: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -242,18 +309,25 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.075)',
     paddingHorizontal: 12,
     paddingVertical: 10,
-    marginTop: -2,
+  },
+  avatarNameRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    minWidth: 0,
   },
   avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 32,
+    height: 32,
+    borderRadius: 24,
     borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.2)',
+    borderColor: 'rgba(255,255,255,0.20)',
   },
   nameBlock: {
     flex: 1,
     gap: 2,
+    minWidth: 0,
   },
   nameLine: {
     flexDirection: 'row',
@@ -270,15 +344,31 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     fontSize: 11,
   },
+  followersChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 10,
+    paddingLeft: 12,
+    paddingRight: 10,
+    paddingVertical: 5,
+    flexShrink: 0,
+  },
   followersBlock: {
-    alignItems: 'flex-end',
-    gap: 2,
+    alignItems: 'flex-start',
+    gap: 1,
+  },
+  instagramIcon: {
+    width: 13,
+    height: 13,
+    opacity: 0.72,
   },
   followersCount: {
     color: Colors.textPrimary,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
-    letterSpacing: -0.4,
+    letterSpacing: -0.3,
   },
   followersLabel: {
     color: Colors.textSecondary,
@@ -286,19 +376,30 @@ const styles = StyleSheet.create({
   },
   actionsRow: {
     flexDirection: 'row',
-    gap: 5,
+    gap: 4,
   },
   actionBtn: {
     flex: 1,
+    height: 44,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 5,
-    paddingVertical: 9,
+    gap: 6,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 12,
+    borderTopWidth: 0.5,
+    borderTopColor: 'rgba(255,255,255,0.10)',
+    borderLeftWidth: 0.5,
+    borderLeftColor: 'rgba(255,255,255,0.05)',
+    borderRightWidth: 0.5,
+    borderRightColor: 'rgba(255,255,255,0.05)',
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'rgba(255,255,255,0.05)',
   },
   actionText: {
-    color: Colors.textSecondary,
-    fontSize: 11,
-    fontWeight: '500',
+    color: 'rgba(255,255,255,0.80)',
+    fontSize: 13,
+    fontWeight: '400',
+    letterSpacing: -0.2,
   },
 });

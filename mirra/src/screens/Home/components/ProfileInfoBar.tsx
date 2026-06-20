@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons, FontAwesome, Feather } from '@expo/vector-icons';
+import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
 import { glass } from '@/styles/glass';
 import { Colors } from '@/constants/colors';
+import { MediaAssets } from '@/constants/assets';
 import type { User } from '@/data/mock';
 
 interface ProfileInfoBarProps {
@@ -19,7 +20,7 @@ export function ProfileInfoBar({ user }: ProfileInfoBarProps) {
         <View style={styles.nameBlock}>
           <View style={styles.nameRow}>
             <Text style={styles.name}>{user.name}</Text>
-            <Ionicons name="checkmark-circle" size={15} color="#4A9EFF" />
+            <AppIcon name="verified" size={15} />
           </View>
           <Text style={styles.role}>{user.role}</Text>
         </View>
@@ -27,7 +28,9 @@ export function ProfileInfoBar({ user }: ProfileInfoBarProps) {
         <View style={styles.followersBlock}>
           <Text style={styles.followersCount}>{user.followersFormatted}</Text>
           <Text style={styles.followersLabel}>Followers</Text>
-          <FontAwesome name="instagram" size={11} color="#C13584" style={styles.socialIcon} />
+          <View style={styles.socialIcon}>
+            <Image source={MediaAssets.images.instagram} style={styles.instagramIcon} resizeMode="contain" />
+          </View>
         </View>
       </View>
 
@@ -35,7 +38,7 @@ export function ProfileInfoBar({ user }: ProfileInfoBarProps) {
       <View style={styles.actionsRow}>
         {ACTIONS.map(({ icon, label }) => (
           <TouchableOpacity key={label} style={[glass.pill, styles.actionBtn]} activeOpacity={0.7}>
-            <Feather name={icon as any} size={12} color={Colors.textSecondary} />
+            <AppIcon name={icon} size={12} color={Colors.textSecondary} strokeWidth={1.5} />
             <Text style={styles.actionText}>{label}</Text>
           </TouchableOpacity>
         ))}
@@ -44,10 +47,10 @@ export function ProfileInfoBar({ user }: ProfileInfoBarProps) {
   );
 }
 
-const ACTIONS = [
+const ACTIONS: Array<{ icon: AppIconName; label: string }> = [
   { icon: 'eye', label: 'View Profile' },
   { icon: 'layers', label: 'All Cards' },
-  { icon: 'share-2', label: 'Share' },
+  { icon: 'share', label: 'Share' },
 ];
 
 const styles = StyleSheet.create({
@@ -101,6 +104,10 @@ const styles = StyleSheet.create({
   },
   socialIcon: {
     marginTop: 1,
+  },
+  instagramIcon: {
+    width: 11,
+    height: 11,
   },
   actionsRow: {
     flexDirection: 'row',

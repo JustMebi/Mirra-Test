@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather, Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
 
@@ -22,8 +22,10 @@ export function ExploreNavBar() {
 
           <TouchableOpacity activeOpacity={0.8} style={styles.searchBtn}>
             <View style={styles.searchGlow} />
-            <Feather name="search" size={16} color={Colors.textPrimary} />
-            <Ionicons name="sparkles" size={12} color={Colors.textPrimary} style={styles.sparkle} />
+            <AppIcon name="search" size={16} color={Colors.textPrimary} strokeWidth={1.6} />
+            <View style={styles.sparkle}>
+              <AppIcon name="sparkles" size={12} color={Colors.textPrimary} />
+            </View>
           </TouchableOpacity>
         </View>
       </View>

@@ -1,20 +1,22 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/colors';
 import { mockDPConversations, mockDPConversationCount } from '@/data/mock';
-import { HomeNavBar } from './components/HomeNavBar';
+import { ElinkActions } from './components/ElinkActions';
 import { HeroProfileCard } from './components/HeroProfileCard';
 import { DPConversationSection } from './components/DPConversationSection';
 
 export function HomeScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
     <View style={styles.root}>
-      <HomeNavBar />
-
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[styles.content, { paddingTop: insets.top + 8 }]}
       >
+        <ElinkActions />
         <HeroProfileCard />
 
         <DPConversationSection

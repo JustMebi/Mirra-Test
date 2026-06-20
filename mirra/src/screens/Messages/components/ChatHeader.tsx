@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather, Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
 import type { Thread } from '@/data/mock';
@@ -19,7 +19,7 @@ export function ChatHeader({ thread, onBack }: ChatHeaderProps) {
     <View style={[styles.safeArea, { paddingTop: insets.top + 10 }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={onBack} style={styles.iconButton} activeOpacity={0.7}>
-          <Feather name="arrow-left" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
+          <AppIcon name="arrow-left" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
         </TouchableOpacity>
 
         <View style={styles.identityBlock} pointerEvents="box-none">
@@ -31,9 +31,9 @@ export function ChatHeader({ thread, onBack }: ChatHeaderProps) {
           <View style={styles.infoPill}>
             <View style={styles.titleRow}>
               {isGroup ? (
-                <Ionicons name="people-outline" size={16} color={Colors.textPrimary} />
+                <AppIcon name="users" size={16} color={Colors.textPrimary} />
               ) : thread.verified ? (
-                <Ionicons name="checkmark-circle" size={16} color="#159BFF" />
+                <AppIcon name="verified" size={16} />
               ) : null}
               <Text style={styles.title} numberOfLines={1}>{thread.name}</Text>
             </View>
@@ -54,7 +54,7 @@ export function ChatHeader({ thread, onBack }: ChatHeaderProps) {
         </View>
 
         <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
-          <Feather name="more-vertical" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
+          <AppIcon name="more-vertical" size={18} color={Colors.textPrimary} />
         </TouchableOpacity>
       </View>
     </View>

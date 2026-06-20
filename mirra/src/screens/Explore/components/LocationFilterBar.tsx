@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';
 
 type ViewMode = 'card' | 'map';
@@ -12,8 +12,8 @@ interface LocationFilterBarProps {
   onViewModeChange: (mode: ViewMode) => void;
 }
 
-const VIEW_MODES: { key: ViewMode; icon: keyof typeof Feather.glyphMap; label: string }[] = [
-  { key: 'card', icon: 'credit-card', label: 'Card' },
+const VIEW_MODES: { key: ViewMode; icon: AppIconName; label: string }[] = [
+  { key: 'card', icon: 'card', label: 'Card' },
   { key: 'map', icon: 'crosshair', label: 'Map' },
 ];
 
@@ -26,7 +26,7 @@ export function LocationFilterBar({
     <View style={styles.outer}>
       <View style={styles.row}>
         <TouchableOpacity style={styles.locationInput} activeOpacity={0.7}>
-          <Feather name="map-pin" size={16} color="rgba(255,255,255,0.62)" />
+          <AppIcon name="map-pin" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.4} />
           <Text style={styles.locationText} numberOfLines={1}>{location}</Text>
         </TouchableOpacity>
 
@@ -38,13 +38,13 @@ export function LocationFilterBar({
               style={styles.filterBorder}
             >
               <View style={styles.filterBtn}>
-                <Feather name="filter" size={16} color="#FFFFFF" />
+                <AppIcon name="filter" size={16} color="#FFFFFF" strokeWidth={1.5} />
               </View>
             </LinearGradient>
           </TouchableOpacity>
 
           <TouchableOpacity activeOpacity={0.7} style={styles.sortBtn}>
-            <Feather name="list" size={16} color="rgba(255,255,255,0.62)" />
+            <AppIcon name="list" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.5} />
           </TouchableOpacity>
         </View>
 
@@ -67,7 +67,7 @@ export function LocationFilterBar({
                 onPress={() => onViewModeChange(key)}
                 activeOpacity={0.7}
               >
-                <Feather
+                <AppIcon
                   name={icon}
                   size={16}
                   color={isActive ? Colors.textPrimary : 'rgba(255,255,255,0.50)'}

@@ -7,8 +7,8 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import { Feather, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
 import { HeroMedia } from '@/components/ui/HeroMedia';
@@ -56,7 +56,7 @@ export function ExploreProfileCard({ user, isActive = true, style }: ExploreProf
           <View style={styles.nameBlock}>
             <View style={styles.nameLine}>
               <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
-              {user.verified && <Ionicons name="checkmark-circle" size={12} color="#159BFF" />}
+              {user.verified && <AppIcon name="verified" size={12} />}
             </View>
             <Text style={styles.role} numberOfLines={1}>{user.role}</Text>
           </View>
@@ -86,17 +86,17 @@ export function ExploreProfileCard({ user, isActive = true, style }: ExploreProf
             <View style={styles.pulseMedium} />
             <View style={styles.pulseCenter} />
           </View>
-          <Feather name="navigation" size={14} color="rgba(255,255,255,0.80)" />
+          <AppIcon name="navigation" size={14} color="rgba(255,255,255,0.80)" />
           <Text style={styles.locationText} numberOfLines={1}>{user.location}</Text>
         </View>
 
         <View style={styles.imageActions}>
           <TouchableOpacity style={styles.connectBtn} activeOpacity={0.7}>
-            <Ionicons name="person-add-outline" size={16} color={Colors.textPrimary} />
+            <AppIcon name="person-add" size={16} color={Colors.textPrimary} strokeWidth={1.5} />
             <Text style={styles.btnText}>Connect</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dmBtn} activeOpacity={0.7}>
-            <Feather name="send" size={16} color={Colors.textPrimary} />
+            <AppIcon name="send" size={16} color={Colors.textPrimary} />
             <Text style={styles.btnText}>DM</Text>
           </TouchableOpacity>
         </View>
@@ -184,14 +184,14 @@ function MetadataSection({
   value,
 }: {
   title: string;
-  icon: keyof typeof Feather.glyphMap;
+  icon: AppIconName;
   value: string;
 }) {
   return (
     <View style={styles.metadataSection}>
       <Text style={styles.metaTitle}>{title}</Text>
       <View style={styles.metadataPill}>
-        <Feather name={icon} size={14} color="rgba(255,255,255,0.60)" strokeWidth={1.2} />
+        <AppIcon name={icon} size={14} color="rgba(255,255,255,0.60)" strokeWidth={1.2} />
         <Text style={styles.metadataText} numberOfLines={1}>{value}</Text>
       </View>
     </View>

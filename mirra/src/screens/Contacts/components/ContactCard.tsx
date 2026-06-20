@@ -7,7 +7,7 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import type { Interest, ProSkill, User } from '@/data/mock';
 
@@ -35,10 +35,10 @@ export function ContactCard({ user, onDM, onChatDP, onVisitProfile }: ContactCar
           <View style={styles.nameRow}>
             <View style={styles.nameInner}>
               <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
-              {user.verified && <Ionicons name="checkmark-circle" size={13} color="#159BFF" />}
+              {user.verified && <AppIcon name="verified" size={13} />}
             </View>
             <TouchableOpacity hitSlop={10} activeOpacity={0.7}>
-              <Feather name="more-vertical" size={15} color={Colors.textTertiary} />
+              <AppIcon name="more-vertical" size={15} color={Colors.textTertiary} />
             </TouchableOpacity>
           </View>
 
@@ -46,17 +46,17 @@ export function ContactCard({ user, onDM, onChatDP, onVisitProfile }: ContactCar
 
           <View style={styles.actionsRow}>
             <TouchableOpacity style={[styles.actionBtn, styles.dmBtn]} onPress={onDM} activeOpacity={0.72}>
-              <Feather name="send" size={13} color={Colors.textPrimary} />
+              <AppIcon name="send" size={13} color={Colors.textPrimary} />
               <Text style={styles.actionText}>DM</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={[styles.actionBtn, styles.dpBtn]} onPress={onChatDP} activeOpacity={0.72}>
-              <Ionicons name="chatbubble-ellipses-outline" size={13} color={Colors.textPrimary} />
+              <AppIcon name="chat-dots" size={13} color={Colors.textPrimary} />
               <Text style={styles.actionText}>Chat with DP</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.personIconBtn} activeOpacity={0.7}>
-              <Feather name="user-plus" size={20} color={Colors.textPrimary} />
+              <AppIcon name="user-plus" size={20} color={Colors.textPrimary} />
             </TouchableOpacity>
           </View>
 
@@ -93,7 +93,7 @@ export function ContactCard({ user, onDM, onChatDP, onVisitProfile }: ContactCar
             <MetaSection label="Location" style={styles.locationSection}>
               <View style={styles.locationPill}>
                 <View style={styles.locationDot} />
-                <Feather name="map-pin" size={11} color="rgba(255,255,255,0.60)" />
+                <AppIcon name="map-pin" size={11} color="rgba(255,255,255,0.60)" strokeWidth={1.4} />
                 <Text style={styles.locationText} numberOfLines={1}>{user.city}</Text>
               </View>
             </MetaSection>
@@ -108,7 +108,7 @@ export function ContactCard({ user, onDM, onChatDP, onVisitProfile }: ContactCar
 
             <MetaSection label="Role" style={styles.roleSection}>
               <View style={styles.roleChip}>
-                <Feather name="target" size={12} color="rgba(255,255,255,0.60)" />
+                <AppIcon name="target" size={12} color="rgba(255,255,255,0.60)" strokeWidth={1.4} />
                 <Text style={styles.roleChipText} numberOfLines={1}>{user.roleType ?? 'Member'}</Text>
               </View>
             </MetaSection>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, StyleProp, StyleSheet, View } from 'react-native';
+import { VideoView, useVideoPlayer } from 'expo-video';
 import { Colors } from '@/constants/colors';
 import type { HeroMedia as HeroMediaType } from '@/data/mock';
 
@@ -26,16 +27,13 @@ export function HeroMedia({
   ] as any;
 
   if (media.type === 'video') {
-    if (posterUri) {
-      return (
-        <Image
-          source={typeof posterUri === 'string' ? { uri: posterUri } : posterUri}
-          style={imageStyle}
-          resizeMode={resizeMode}
-        />
-      );
-    }
-    return <View style={[StyleSheet.absoluteFill, styles.videoPlaceholder, style]} />;
+    return (
+      <VideoHero
+        source={media.source}
+        style={style}
+        resizeMode={resizeMode}
+      />
+    );
   }
 
   return (
@@ -43,6 +41,33 @@ export function HeroMedia({
       source={typeof media.source === 'string' ? { uri: media.source } : media.source}
       style={imageStyle}
       resizeMode={resizeMode}
+    />
+  );
+}
+
+function VideoHero({
+  source,
+  style,
+  resizeMode,
+}: {
+  source: any;
+  style?: StyleProp<any>;
+  resizeMode: 'cover' | 'contain';
+}) {
+  const player = useVideoPlayer(source, (instance) => {
+    instance.loop = true;
+    instance.muted = true;
+    instance.play();
+  });
+
+  return (
+    <VideoView
+      player={player}
+      style={[StyleSheet.absoluteFill, style]}
+      contentFit={resizeMode}
+      nativeControls={false}
+      allowsFullscreen={false}
+      allowsPictureInPicture={false}
     />
   );
 }

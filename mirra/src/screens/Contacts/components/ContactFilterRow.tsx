@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';
 
 export type ViewMode = 'grid' | 'list' | 'map';
@@ -12,7 +12,7 @@ interface ContactFilterRowProps {
   onViewModeChange: (mode: ViewMode) => void;
 }
 
-const VIEW_MODES: { key: ViewMode; icon: string; label: string }[] = [
+const VIEW_MODES: { key: ViewMode; icon: AppIconName; label: string }[] = [
   { key: 'grid', icon: 'grid', label: 'Grid' },
   { key: 'list', icon: 'list', label: 'List' },
   { key: 'map', icon: 'crosshair', label: 'Map' },
@@ -26,7 +26,7 @@ export function ContactFilterRow({
   return (
     <View style={styles.row}>
       <TouchableOpacity style={styles.locationInput} activeOpacity={0.7}>
-        <Feather name="map-pin" size={16} color="rgba(255,255,255,0.62)" />
+        <AppIcon name="map-pin" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.4} />
         <Text style={styles.locationText} numberOfLines={1}>
           {location}
         </Text>
@@ -40,13 +40,13 @@ export function ContactFilterRow({
             style={styles.filterBorder}
           >
             <View style={styles.filterBtn}>
-              <Feather name="filter" size={16} color="#FFFFFF" />
+              <AppIcon name="filter" size={16} color="#FFFFFF" strokeWidth={1.5} />
             </View>
           </LinearGradient>
         </TouchableOpacity>
 
         <TouchableOpacity activeOpacity={0.7} style={styles.sortBtn}>
-          <Feather name="list" size={16} color="rgba(255,255,255,0.62)" />
+          <AppIcon name="list" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.5} />
         </TouchableOpacity>
       </View>
 
@@ -69,10 +69,11 @@ export function ContactFilterRow({
               onPress={() => onViewModeChange(key)}
               activeOpacity={0.7}
             >
-              <Feather
-                name={icon as any}
+              <AppIcon
+                name={icon}
                 size={16}
                 color={isActive ? Colors.textPrimary : 'rgba(255,255,255,0.50)'}
+                strokeWidth={1.5}
               />
               <Text style={[styles.toggleText, isActive && styles.toggleTextActive]}>{label}</Text>
             </TouchableOpacity>

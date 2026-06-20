@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { glass } from '@/styles/glass';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';
 import { glow } from '@/styles/glow';
@@ -21,13 +21,13 @@ export function ContactsNavBar() {
             {...GradientDir.diagonal}
             style={styles.iconBtn}
           >
-            <Feather name="search" size={15} color="#fff" />
+            <AppIcon name="search" size={15} color="#fff" strokeWidth={1.6} />
           </LinearGradient>
         </TouchableOpacity>
 
         {/* Plus — glass pill */}
         <TouchableOpacity style={[glass.pill, styles.iconBtn]} activeOpacity={0.7}>
-          <Feather name="plus" size={15} color={Colors.textSecondary} />
+          <AppIcon name="plus" size={15} color={Colors.textSecondary} strokeWidth={1.6} />
         </TouchableOpacity>
       </View>
     </View>

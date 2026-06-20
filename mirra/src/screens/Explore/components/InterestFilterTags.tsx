@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 
 const FILTERS = [
@@ -43,7 +43,7 @@ export function InterestFilterTags({ active, onSelect }: InterestFilterTagsProps
         </ScrollView>
 
         <TouchableOpacity style={styles.searchBtn} activeOpacity={0.7}>
-          <Feather name="search" size={15} color="rgba(255,255,255,0.80)" strokeWidth={1.4} />
+          <AppIcon name="search" size={15} color="rgba(255,255,255,0.80)" strokeWidth={1.4} />
         </TouchableOpacity>
       </View>
     </View>

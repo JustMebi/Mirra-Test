@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
 import type { Thread } from '@/data/mock';
@@ -29,10 +29,10 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
       <View style={styles.content}>
         <View style={styles.nameRow}>
           <View style={styles.nameIdentity}>
-            {thread.isGroup && <Ionicons name="people-outline" size={14} color="#159BFF" />}
+            {thread.isGroup && <AppIcon name="users" size={14} color="#159BFF" />}
             <Text style={styles.name} numberOfLines={1}>{thread.name}</Text>
             {!thread.isGroup && thread.verified && (
-              <Ionicons name="checkmark-circle" size={13} color="#159BFF" />
+              <AppIcon name="verified" size={13} />
             )}
           </View>
           <Text style={styles.time}>{thread.time}</Text>
@@ -64,14 +64,14 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
               </View>
 
               <View style={styles.dpPill}>
-                <Ionicons name="sparkles-outline" size={11} color={Colors.textSecondary} />
+                <AppIcon name="sparkles" size={11} color={Colors.textSecondary} />
                 <Text style={styles.dpText} numberOfLines={1}>{thread.dpLabel}</Text>
               </View>
             </View>
 
             <View style={styles.locationRow}>
               <View style={styles.locationPill}>
-                <Feather name="navigation" size={10} color={Colors.textSecondary} />
+                <AppIcon name="navigation" size={10} color={Colors.textSecondary} />
                 <Text style={styles.locationText} numberOfLines={1}>{thread.city}</Text>
               </View>
             </View>
@@ -85,8 +85,7 @@ export function ThreadRow({ thread, onPress }: ThreadRowProps) {
 function DeliveredTicks() {
   return (
     <View style={styles.deliveredTicks}>
-      <Feather name="check" size={11} color={Colors.textTertiary} style={styles.tickBack} />
-      <Feather name="check" size={11} color={Colors.textTertiary} style={styles.tickFront} />
+      <AppIcon name="double-check" size={16} color={Colors.textTertiary} strokeWidth={1.7} />
     </View>
   );
 }
@@ -230,17 +229,6 @@ const styles = StyleSheet.create({
   deliveredTicks: {
     width: 16,
     height: 14,
-    position: 'relative',
-  },
-  tickBack: {
-    position: 'absolute',
-    left: 0,
-    top: 2,
-  },
-  tickFront: {
-    position: 'absolute',
-    left: 5,
-    top: 2,
   },
   directGrid: {
     marginTop: 7,
