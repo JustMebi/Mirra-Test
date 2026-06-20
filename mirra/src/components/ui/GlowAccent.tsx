@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, ViewStyle, TextStyle } from 'react-native';
+import { View, ViewStyle, TextStyle } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { Canvas, Circle, RadialGradient, vec } from '@shopify/react-native-skia';
 import { glow, GlowTokens } from '@/styles/glow';
 

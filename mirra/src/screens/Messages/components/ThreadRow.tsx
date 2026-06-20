@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { Text } from '@/components/ui/Text';
 import { AppIcon } from "@/components/ui/AppIcon";
 import { PulsingDot } from "@/components/ui/PulsingDot";
 import { Colors } from "@/constants/colors";

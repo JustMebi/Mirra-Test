@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppIcon } from '@/components/ui/AppIcon';
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     letterSpacing: -0.2,
+    flexShrink: 1,
   },
   rightGroup: {
     flexDirection: 'row',

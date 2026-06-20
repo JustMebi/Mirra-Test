@@ -2,12 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import {
   Animated,
   View,
-  Text,
   Image,
   TouchableOpacity,
   StyleSheet,
   ImageSourcePropType,
 } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import type { User } from '@/data/mock';

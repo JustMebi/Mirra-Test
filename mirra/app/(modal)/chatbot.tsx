@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   FlatList,
@@ -12,6 +11,7 @@ import {
   PanResponder,
   Image,
 } from "react-native";
+import { Text } from '@/components/ui/Text';
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import Svg, { Circle, Path } from "react-native-svg";

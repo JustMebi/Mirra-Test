@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
+import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { router } from 'expo-router';
 import { BlurView } from 'expo-blur';

@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   View,
-  Text,
   Image,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
 } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { PulsingDot } from '@/components/ui/PulsingDot';
 import { AppIcon, AppIconName } from '@/components/ui/AppIcon';

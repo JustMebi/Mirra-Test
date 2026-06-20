@@ -1,13 +1,13 @@
 import React from "react";
 import {
   View,
-  Text,
   Image,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
   ImageSourcePropType,
 } from "react-native";
+import { Text } from '@/components/ui/Text';
 import { AppIcon } from "@/components/ui/AppIcon";
 import { Colors } from "@/constants/colors";
 import type { Interest, ProSkill, User } from "@/data/mock";

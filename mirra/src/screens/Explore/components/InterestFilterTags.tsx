@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';

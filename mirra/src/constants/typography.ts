@@ -1,9 +1,10 @@
+import { Fonts } from './fonts';
+
 export const FontFamily = {
-  // Update these once Figma fonts are confirmed
-  regular: 'System',
-  medium: 'System',
-  semiBold: 'System',
-  bold: 'System',
+  regular: Fonts.regular,
+  medium: Fonts.medium,
+  semiBold: Fonts.semibold,
+  bold: Fonts.bold,
 } as const;
 
 export const FontSize = {

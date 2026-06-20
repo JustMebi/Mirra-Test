@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text } from '@/components/ui/Text';
 import { Colors } from "@/constants/colors";
 import { PulsingDot } from "@/components/ui/PulsingDot";
 import type { DPConversation } from "@/data/mock";

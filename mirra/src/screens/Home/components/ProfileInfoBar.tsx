@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
 import { glass } from '@/styles/glass';
 import { Colors } from '@/constants/colors';

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { glass } from '@/styles/glass';
 import { Colors } from '@/constants/colors';
 import { mockUsers } from '@/data/mock';

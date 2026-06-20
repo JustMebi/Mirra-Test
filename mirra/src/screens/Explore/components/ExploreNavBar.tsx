@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SearchButton } from '@/components/ui/SearchButton';
 import { Colors } from '@/constants/colors';

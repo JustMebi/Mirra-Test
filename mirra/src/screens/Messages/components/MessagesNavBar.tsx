@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text } from "@/components/ui/Text";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppIcon, AppIconName } from "@/components/ui/AppIcon";
 import { Colors } from "@/constants/colors";
@@ -39,10 +40,20 @@ export function MessagesNavBar({
         <Text style={styles.title}>Messages</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.headerButton} activeOpacity={0.7}>
-            <AppIcon name="search" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
+            <AppIcon
+              name="search"
+              size={18}
+              color={Colors.textPrimary}
+              strokeWidth={1.6}
+            />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerButton} activeOpacity={0.7}>
-            <AppIcon name="compose" size={18} color={Colors.textPrimary} strokeWidth={1.45} />
+            <AppIcon
+              name="compose"
+              size={18}
+              color={Colors.textPrimary}
+              strokeWidth={1.45}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -74,7 +85,12 @@ export function MessagesNavBar({
           ))}
         </View>
         <TouchableOpacity style={styles.slidersBtn} activeOpacity={0.7}>
-          <AppIcon name="sliders" size={16} color={Colors.textSecondary} strokeWidth={1.5} />
+          <AppIcon
+            name="sliders"
+            size={16}
+            color={Colors.textSecondary}
+            strokeWidth={1.5}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -160,7 +176,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.textPrimary,
-    fontSize: 24,
+    fontSize: 20,
     lineHeight: 29,
     fontWeight: "700",
   },

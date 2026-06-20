@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';

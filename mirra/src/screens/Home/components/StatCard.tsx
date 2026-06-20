@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { glass } from '@/styles/glass';
 import { Colors } from '@/constants/colors';
 import type { Stat } from '@/data/mock';

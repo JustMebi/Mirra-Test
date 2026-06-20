@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-  View, Text, Image, TouchableOpacity,
+  View, Image, TouchableOpacity,
   ScrollView, StyleSheet, Dimensions,
 } from 'react-native';
+import { Text } from '@/components/ui/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';

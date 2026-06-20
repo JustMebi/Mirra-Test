@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text } from "@/components/ui/Text";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppIcon } from "@/components/ui/AppIcon";
 import { SearchButton } from "@/components/ui/SearchButton";
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.textPrimary,
-    fontSize: 28,
-    fontWeight: "700",
+    fontSize: 24,
+    fontWeight: "500",
     letterSpacing: -0.5,
   },
   actions: {

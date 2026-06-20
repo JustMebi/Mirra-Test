@@ -81,13 +81,13 @@ function PremiumSparkle() {
   return (
     <Svg width={16} height={16} viewBox="0 0 16 16" fill="none">
       <Path
-        d="M9.45 1.2 10.25 3.35l2.15.8-2.15.82-.8 2.13-.82-2.13-2.13-.82 2.13-.8.82-2.15Z"
-        fill="#FFFFFF"
-      />
-      <Path
         d="M4.1 6.15 4.55 7.35l1.2.45-1.2.46-.45 1.19-.46-1.19-1.19-.46 1.19-.45.46-1.2Z"
         fill="#FFFFFF"
         opacity={0.86}
+      />
+      <Path
+        d="M9.45 1.2 10.25 3.35l2.15.8-2.15.82-.8 2.13-.82-2.13-2.13-.82 2.13-.8.82-2.15Z"
+        fill="#FFFFFF"
       />
     </Svg>
   );
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   premiumSparkle: {
     position: "absolute",
-    top: -3,
-    right: -1,
+    top: 2,
+    right: 2,
   },
 });
