@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Image, StyleProp, StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View } from 'react-native';
+import { Image as ExpoImage } from 'expo-image';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { Colors } from '@/constants/colors';
 import type { HeroMedia as HeroMediaType } from '@/data/mock';
@@ -18,27 +19,11 @@ export function HeroMedia({
   posterUri,
   style,
   isActive = true,
-  contentPosition = 'center center',
+  contentPosition = 'top',
   resizeMode = 'cover',
 }: HeroMediaProps) {
-  // For images: extend box below card so cover-mode anchors to top (shows faces, not walls).
-  const imageStyle = [
-    { position: 'absolute' as const, top: 0, left: 0, right: 0, bottom: -120 },
-    style,
-  ];
-
   if (media.type === 'video') {
-    // Only mount a native video player when this card is the active/visible one.
-    // Off-screen cards show the poster image to avoid simultaneous players draining memory.
-    if (!isActive) {
-      const posterSource = posterUri
-        ? (typeof posterUri === 'string' ? { uri: posterUri } : posterUri)
-        : null;
-      if (posterSource) {
-        console.log('[HeroMedia] inactive video card — showing poster instead of player');
-        return <Image source={posterSource} style={imageStyle} resizeMode={resizeMode} />;
-      }
-    }
+    if (!isActive) return null;
     return (
       <VideoHero
         source={media.source}
@@ -49,10 +34,11 @@ export function HeroMedia({
   }
 
   return (
-    <Image
+    <ExpoImage
       source={typeof media.source === 'string' ? { uri: media.source } : media.source}
-      style={imageStyle}
-      resizeMode={resizeMode}
+      style={[StyleSheet.absoluteFill, style]}
+      contentFit={resizeMode}
+      contentPosition={contentPosition as any}
     />
   );
 }
@@ -73,9 +59,7 @@ function VideoHero({
   });
 
   useEffect(() => {
-    console.log('[VideoHero] player mounted — source:', source);
     return () => {
-      console.log('[VideoHero] player unmounted — pausing');
       try { player.pause(); } catch (_) {}
     };
   }, []);
