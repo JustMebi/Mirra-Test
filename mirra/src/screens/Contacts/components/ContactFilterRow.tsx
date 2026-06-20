@@ -26,7 +26,7 @@ export function ContactFilterRow({
   return (
     <View style={styles.row}>
       <TouchableOpacity style={styles.locationInput} activeOpacity={0.7}>
-        <AppIcon name="map-pin" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.4} />
+        <AppIcon name="target" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.3} />
         <Text style={styles.locationText} numberOfLines={1}>
           {location}
         </Text>
@@ -46,7 +46,7 @@ export function ContactFilterRow({
         </TouchableOpacity>
 
         <TouchableOpacity activeOpacity={0.7} style={styles.sortBtn}>
-          <AppIcon name="list" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.5} />
+          <AppIcon name="sort-lines" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.35} />
         </TouchableOpacity>
       </View>
 
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   locationInput: {
-    width: 105,
+    flex: 1,
     height: 32,
     flexDirection: 'row',
     alignItems: 'center',
@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '90deg' }],
   },
   toggle: {
-    width: 195,
+    flex: 1,
+    minWidth: 160,
     height: 32,
     flexDirection: 'row',
     alignItems: 'center',
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
   },
   toggleBtn: {
-    width: 61,
+    flex: 1,
     height: 28,
     flexDirection: 'row',
     alignItems: 'center',

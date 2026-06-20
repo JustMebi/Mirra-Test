@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-} from 'react-native';
-import { AppIcon } from '@/components/ui/AppIcon';
-import { Colors } from '@/constants/colors';
-import type { Interest, ProSkill, User } from '@/data/mock';
+  ImageSourcePropType,
+} from "react-native";
+import { AppIcon } from "@/components/ui/AppIcon";
+import { Colors } from "@/constants/colors";
+import type { Interest, ProSkill, User } from "@/data/mock";
 
 interface ContactCardProps {
   user: User;
@@ -18,13 +19,19 @@ interface ContactCardProps {
   onVisitProfile?: () => void;
 }
 
-type ChipItem = Pick<Interest | ProSkill, 'id' | 'emoji'>;
+type ChipItem = Pick<Interest | ProSkill, "id" | "image">;
 
-const CHIP_ROTATIONS = ['15deg', '-14deg', '15deg', '-14deg'];
+const CHIP_ROTATIONS = ["15deg", "-14deg", "15deg", "-14deg"];
 
-export function ContactCard({ user, onDM, onChatDP, onVisitProfile }: ContactCardProps) {
+export function ContactCard({
+  user,
+  onDM,
+  onChatDP,
+  onVisitProfile,
+}: ContactCardProps) {
   const heroMedia = user.heroMedia;
-  const imageSource = heroMedia?.type === 'image' ? heroMedia.source : user.heroImage;
+  const imageSource =
+    heroMedia?.type === "image" ? heroMedia.source : user.heroImage;
 
   return (
     <View style={styles.card}>
@@ -34,29 +41,54 @@ export function ContactCard({ user, onDM, onChatDP, onVisitProfile }: ContactCar
         <View style={styles.content}>
           <View style={styles.nameRow}>
             <View style={styles.nameInner}>
-              <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
+              <Text style={styles.name} numberOfLines={1}>
+                {user.name}
+              </Text>
               {user.verified && <AppIcon name="verified" size={13} />}
             </View>
             <TouchableOpacity hitSlop={10} activeOpacity={0.7}>
-              <AppIcon name="more-vertical" size={15} color={Colors.textTertiary} />
+              <AppIcon
+                name="more-vertical"
+                size={15}
+                color={Colors.textTertiary}
+              />
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.role} numberOfLines={2}>{user.role}</Text>
+          <Text style={styles.role} numberOfLines={2}>
+            {user.role}
+          </Text>
 
           <View style={styles.actionsRow}>
-            <TouchableOpacity style={[styles.actionBtn, styles.dmBtn]} onPress={onDM} activeOpacity={0.72}>
+            <TouchableOpacity
+              style={[styles.actionBtn, styles.dmBtn]}
+              onPress={onDM}
+              activeOpacity={0.72}
+            >
               <AppIcon name="send" size={13} color={Colors.textPrimary} />
-              <Text style={styles.actionText}>DM</Text>
+              <Text style={styles.actionText} numberOfLines={1}>
+                DM
+              </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.actionBtn, styles.dpBtn]} onPress={onChatDP} activeOpacity={0.72}>
-              <AppIcon name="chat-dots" size={13} color={Colors.textPrimary} />
-              <Text style={styles.actionText}>Chat with DP</Text>
+            <TouchableOpacity
+              style={[styles.actionBtn, styles.dpBtn]}
+              onPress={onChatDP}
+              activeOpacity={0.72}
+            >
+              <AppIcon
+                name="chat-dp"
+                size={14}
+                color={Colors.textPrimary}
+                strokeWidth={1.35}
+              />
+              <Text style={styles.actionText} numberOfLines={1}>
+                Chat with DP
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.personIconBtn} activeOpacity={0.7}>
-              <AppIcon name="user-plus" size={20} color={Colors.textPrimary} />
+              <AppIcon name="person-check" size={20} color={Colors.textPrimary} strokeWidth={1.35} />
             </TouchableOpacity>
           </View>
 
@@ -92,9 +124,16 @@ export function ContactCard({ user, onDM, onChatDP, onVisitProfile }: ContactCar
           >
             <MetaSection label="Location" style={styles.locationSection}>
               <View style={styles.locationPill}>
-                <View style={styles.locationDot} />
-                <AppIcon name="map-pin" size={11} color="rgba(255,255,255,0.60)" strokeWidth={1.4} />
-                <Text style={styles.locationText} numberOfLines={1}>{user.city}</Text>
+                <View style={styles.locationCornerDot} />
+                <AppIcon
+                  name="map-pin"
+                  size={11}
+                  color="rgba(255,255,255,0.60)"
+                  strokeWidth={1.4}
+                />
+                <Text style={styles.locationText} numberOfLines={1}>
+                  {user.city}
+                </Text>
               </View>
             </MetaSection>
 
@@ -108,8 +147,15 @@ export function ContactCard({ user, onDM, onChatDP, onVisitProfile }: ContactCar
 
             <MetaSection label="Role" style={styles.roleSection}>
               <View style={styles.roleChip}>
-                <AppIcon name="target" size={12} color="rgba(255,255,255,0.60)" strokeWidth={1.4} />
-                <Text style={styles.roleChipText} numberOfLines={1}>{user.roleType ?? 'Member'}</Text>
+                <AppIcon
+                  name="target"
+                  size={12}
+                  color="rgba(255,255,255,0.60)"
+                  strokeWidth={1.4}
+                />
+                <Text style={styles.roleChipText} numberOfLines={1}>
+                  {user.roleType ?? "Member"}
+                </Text>
               </View>
             </MetaSection>
           </ScrollView>
@@ -136,7 +182,13 @@ function MetaSection({
   );
 }
 
-function TiltedEmojiRow({ items, maxVisible }: { items: ChipItem[]; maxVisible: number }) {
+function TiltedEmojiRow({
+  items,
+  maxVisible,
+}: {
+  items: ChipItem[];
+  maxVisible: number;
+}) {
   const visible = items.slice(0, maxVisible);
   const overflow = Math.max(0, items.length - maxVisible);
 
@@ -147,11 +199,19 @@ function TiltedEmojiRow({ items, maxVisible }: { items: ChipItem[]; maxVisible: 
           key={item.id}
           style={[
             styles.emojiChip,
-            { transform: [{ rotate: CHIP_ROTATIONS[index % CHIP_ROTATIONS.length] }] },
+            {
+              transform: [
+                { rotate: CHIP_ROTATIONS[index % CHIP_ROTATIONS.length] },
+              ],
+            },
             index > 0 && styles.overlapChip,
           ]}
         >
-          <Text style={styles.emoji}>{item.emoji}</Text>
+          <Image
+            source={item.image as ImageSourcePropType}
+            style={styles.emojiImg}
+            resizeMode="contain"
+          />
         </View>
       ))}
       {overflow > 0 && (
@@ -174,22 +234,22 @@ const styles = StyleSheet.create({
   card: {
     height: 265,
     borderRadius: 20,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginHorizontal: 16,
-    backgroundColor: 'rgba(255,255,255,0.05)',
+    backgroundColor: "rgba(255,255,255,0.05)",
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.055)',
+    borderColor: "rgba(255,255,255,0.055)",
   },
   contactArea: {
     height: 152,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
     paddingRight: 16,
     borderRadius: 20,
-    overflow: 'hidden',
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    overflow: "hidden",
+    backgroundColor: "rgba(255,255,255,0.03)",
     borderTopWidth: 0.5,
-    borderTopColor: 'rgba(255,255,255,0.08)',
+    borderTopColor: "rgba(255,255,255,0.08)",
   },
   photo: {
     width: 112,
@@ -204,77 +264,77 @@ const styles = StyleSheet.create({
     gap: 7,
   },
   nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     gap: 8,
   },
   nameInner: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 4,
   },
   name: {
     flexShrink: 1,
     color: Colors.textPrimary,
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   role: {
     color: Colors.textSecondary,
     fontSize: 11,
-    lineHeight: 15,
+    lineHeight: 11,
   },
   actionsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 7,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
     marginTop: 2,
   },
   actionBtn: {
     height: 36,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 6,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderColor: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255,255,255,0.05)",
     paddingHorizontal: 16,
-    shadowColor: '#FFFFFF',
+    shadowColor: "#FFFFFF",
     shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
+    shadowOpacity: 0.1,
     shadowRadius: 0,
   },
-  dmBtn: {
-    width: 73,
-  },
+  dmBtn: {},
   dpBtn: {
     flex: 1,
-    minWidth: 128,
+    paddingHorizontal: 8,
   },
   personIconBtn: {
     width: 36,
     height: 36,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     opacity: 0.4,
   },
   actionText: {
     color: Colors.textPrimary,
     fontSize: 11,
-    fontWeight: '600',
+    lineHeight: 13,
+    fontWeight: "600",
+    flexShrink: 1,
   },
   visitBtn: {
-    width: '100%',
+    width: "100%",
   },
   visitText: {
     color: Colors.textSecondary,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   lowerArea: {
     height: 113,
@@ -288,24 +348,24 @@ const styles = StyleSheet.create({
   },
   commonSlot: {
     height: 16,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   commonBadge: {
     width: 133,
     height: 16,
-    alignSelf: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
     gap: 4,
   },
   commonDot: {
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#E1FF4F',
+    backgroundColor: "#E1FF4F",
     borderWidth: 0.15,
-    borderColor: '#E1FF4F',
-    shadowColor: '#E1FF4F',
+    borderColor: "#E1FF4F",
+    shadowColor: "#E1FF4F",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 8,
@@ -313,31 +373,31 @@ const styles = StyleSheet.create({
   commonText: {
     width: 103,
     height: 16,
-    color: 'rgba(255,255,255,0.80)',
+    color: "rgba(255,255,255,0.80)",
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
     lineHeight: 15.84,
   },
   commonCount: {
-    color: 'rgba(255,255,255,0.80)',
+    color: "rgba(255,255,255,0.80)",
     fontSize: 10,
-    fontWeight: '600',
+    fontWeight: "600",
     lineHeight: 12,
-    textAlign: 'center',
+    textAlign: "center",
   },
   commonCountPill: {
     width: 16,
     height: 16,
     borderRadius: 16,
     borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    backgroundColor: 'rgba(255,255,255,0.10)',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255,255,255,0.10)",
+    alignItems: "center",
+    justifyContent: "center",
     paddingTop: 1,
   },
   metaScroll: {
-    width: '100%',
+    width: "100%",
     height: 65,
   },
   metaRail: {
@@ -358,88 +418,99 @@ const styles = StyleSheet.create({
     width: 150,
   },
   metaLabel: {
-    color: 'rgba(255,255,255,0.60)',
+    color: "rgba(255,255,255,0.60)",
     fontSize: 10,
-    fontWeight: '400',
+    fontWeight: "400",
     lineHeight: 12,
     letterSpacing: -0.08,
   },
   metaContent: {
     height: 40,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   locationPill: {
     width: 183,
     height: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
+    position: "relative",
+    flexDirection: "row",
+    alignItems: "center",
     gap: 4,
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 2.5,
-    backgroundColor: 'rgba(255,255,255,0.05)',
+    backgroundColor: "rgba(255,255,255,0.05)",
   },
-  locationDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: Colors.accent,
+  locationCornerDot: {
+    position: "absolute",
+    top: 5,
+    left: 7,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: "#E1FF4F",
+    borderWidth: 0.15,
+    borderColor: "#E1FF4F",
+    shadowColor: "#E1FF4F",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 8,
   },
   locationText: {
-    color: 'rgba(255,255,255,0.60)',
+    color: "rgba(255,255,255,0.60)",
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
     lineHeight: 15.84,
     maxWidth: 130,
   },
   emojiRow: {
     height: 49,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingLeft: 5,
   },
   emojiChip: {
     width: 40,
     height: 40,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 5,
     paddingVertical: 2.5,
-    backgroundColor: 'rgba(255,255,255,0.065)',
+    backgroundColor: "rgba(255,255,255,0.065)",
     borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
+    borderColor: "rgba(255,255,255,0.05)",
   },
   overlapChip: {
     marginLeft: -6,
   },
-  emoji: {
-    fontSize: 17,
+  emojiImg: {
+    width: 24,
+    height: 24,
   },
   overflowChip: {
-    backgroundColor: 'rgba(255,255,255,0.075)',
+    backgroundColor: "rgba(255,255,255,0.075)",
   },
   overflowText: {
     color: Colors.textSecondary,
     fontSize: 11,
-    fontWeight: '800',
+    fontWeight: "800",
   },
   roleChip: {
     width: 150,
     height: 40,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 6,
     paddingHorizontal: 12,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    alignItems: "center",
+    justifyContent: "flex-start",
     borderRadius: 10,
-    backgroundColor: 'rgba(255,255,255,0.055)',
+    backgroundColor: "rgba(255,255,255,0.055)",
   },
   roleChipText: {
     flex: 1,
-    color: 'rgba(255,255,255,0.60)',
+    color: "rgba(255,255,255,0.60)",
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
     lineHeight: 15.84,
   },
 });

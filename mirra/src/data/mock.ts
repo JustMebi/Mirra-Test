@@ -9,13 +9,13 @@ export interface HeroMedia {
 
 export interface Interest {
   id: string;
-  emoji: string;
+  image: ReturnType<typeof require>;
   label: string;
 }
 
 export interface ProSkill {
   id: string;
-  emoji: string;
+  image: ReturnType<typeof require>;
   label: string;
 }
 
@@ -79,30 +79,24 @@ export interface Thread {
   verified?: boolean;
   city?: string;
   dpLabel?: string;
+  userId?: string;
+  isOnline?: boolean;
   messages: ChatMessage[];
 }
 
 const interests = {
-  tennis: { id: 'tennis', emoji: '🎾', label: 'Tennis' },
-  golf: { id: 'golf', emoji: '⛳', label: 'Golf' },
-  travel: { id: 'travel', emoji: '✈️', label: 'Travel' },
-  video: { id: 'video', emoji: '🎥', label: 'Videography' },
-  tech: { id: 'tech', emoji: '💻', label: 'Tech' },
-  wellness: { id: 'wellness', emoji: '🌿', label: 'Wellness' },
-  running: { id: 'running', emoji: '🏃', label: 'Running' },
-  fitness: { id: 'fitness', emoji: '🏋️', label: 'Fitness' },
+  tennis:     { id: 'tennis',     image: MediaAssets.emojis.interests.tennis,     label: 'Tennis' },
+  golf:       { id: 'golf',       image: MediaAssets.emojis.interests.golf,        label: 'Golf' },
+  travel:     { id: 'travel',     image: MediaAssets.emojis.interests.travel,      label: 'Travel' },
+  sportscar:  { id: 'sportscar',  image: MediaAssets.emojis.interests.sportscar,   label: 'Sports Cars' },
+  iceskating: { id: 'iceskating', image: MediaAssets.emojis.interests.iceskating,  label: 'Ice Skating' },
 };
 
 const skills = {
-  photography: { id: 'photography', emoji: '📸', label: 'Photography' },
-  video: { id: 'video', emoji: '🎬', label: 'Video' },
-  social: { id: 'social', emoji: '📱', label: 'Social' },
-  writing: { id: 'writing', emoji: '✍️', label: 'Writing' },
-  startups: { id: 'startups', emoji: '🚀', label: 'Startups' },
-  medicine: { id: 'medicine', emoji: '🏥', label: 'Medicine' },
-  naturopathy: { id: 'naturopathy', emoji: '🌱', label: 'Naturopathy' },
-  engineering: { id: 'engineering', emoji: '⚙️', label: 'Engineering' },
-  consulting: { id: 'consulting', emoji: '📊', label: 'Consulting' },
+  photography: { id: 'photography', image: MediaAssets.emojis.proSkills.photography, label: 'Photography' },
+  videography: { id: 'videography', image: MediaAssets.emojis.proSkills.videography, label: 'Videography' },
+  film:        { id: 'film',        image: MediaAssets.emojis.proSkills.film,         label: 'Film' },
+  laptop:      { id: 'laptop',      image: MediaAssets.emojis.proSkills.laptop,       label: 'Tech' },
 };
 
 export const mockCurrentUser: User = {
@@ -119,7 +113,7 @@ export const mockCurrentUser: User = {
   followersFormatted: '72.5k',
   socialPlatform: 'instagram',
   interests: [interests.tennis, interests.golf, interests.travel],
-  proSkills: [skills.photography, skills.video],
+  proSkills: [skills.photography, skills.film],
   roleType: 'Creator',
   connections: 18,
 };
@@ -151,7 +145,7 @@ export const mockUsers: User[] = [
     verified: true,
     connections: 264,
     interests: [interests.tennis, interests.golf, interests.travel],
-    proSkills: [skills.video, skills.social],
+    proSkills: [skills.film, skills.videography],
     roleType: 'Startup Founder',
   },
   {
@@ -161,12 +155,12 @@ export const mockUsers: User[] = [
     location: 'Mission Beach, San Diego',
     city: 'San Diego',
     avatar: MediaAssets.images.evanNicolini,
-    heroImage: MediaAssets.images.evanNicolini,
-    heroMedia: { type: 'image', source: MediaAssets.images.evanNicolini },
+    heroImage: MediaAssets.images.arianaWall,
+    heroMedia: { type: 'image', source: MediaAssets.images.arianaWall },
     verified: true,
     connections: 264,
     interests: [interests.tennis, interests.golf, interests.travel],
-    proSkills: [skills.writing, skills.startups],
+    proSkills: [skills.laptop, skills.photography],
     roleType: 'Founder',
   },
   {
@@ -176,13 +170,13 @@ export const mockUsers: User[] = [
     location: 'Mission Beach, San Diego',
     city: 'San Diego',
     avatar: MediaAssets.images.chelseaSmithback,
-    heroImage: MediaAssets.images.chelseaSmithback,
-    heroMedia: { type: 'image', source: MediaAssets.images.chelseaSmithback },
+    heroImage: MediaAssets.images.oliviaBrown,
+    heroMedia: { type: 'image', source: MediaAssets.images.oliviaBrown },
     verified: true,
     connections: 264,
     thingsInCommon: 3,
     interests: [interests.tennis, interests.golf, interests.travel],
-    proSkills: [skills.medicine, skills.naturopathy],
+    proSkills: [skills.film, skills.videography],
     roleType: 'Doctor',
   },
   {
@@ -196,8 +190,8 @@ export const mockUsers: User[] = [
     heroMedia: { type: 'video', source: MediaAssets.videos.darinSmith },
     verified: true,
     connections: 264,
-    interests: [interests.fitness, interests.tech],
-    proSkills: [skills.engineering, skills.consulting],
+    interests: [interests.sportscar, interests.iceskating],
+    proSkills: [skills.laptop, skills.film],
     roleType: 'Consultant',
   },
   {
@@ -207,12 +201,12 @@ export const mockUsers: User[] = [
     location: 'Mission Beach, San Diego',
     city: 'San Diego',
     avatar: MediaAssets.images.emmittBurk,
-    heroImage: MediaAssets.images.emmittBurk,
-    heroMedia: { type: 'image', source: MediaAssets.images.emmittBurk },
+    heroImage: MediaAssets.images.loganArmstrong,
+    heroMedia: { type: 'image', source: MediaAssets.images.loganArmstrong },
     verified: true,
     connections: 180,
-    interests: [interests.tech, interests.golf],
-    proSkills: [skills.engineering, skills.consulting],
+    interests: [interests.iceskating, interests.golf],
+    proSkills: [skills.laptop, skills.film],
     roleType: 'Consultant',
   },
   {
@@ -223,11 +217,11 @@ export const mockUsers: User[] = [
     city: 'San Francisco',
     avatar: MediaAssets.images.oliviaBrown,
     heroImage: MediaAssets.images.oliviaBrown,
-    heroMedia: { type: 'image', source: MediaAssets.images.oliviaBrown },
+    heroMedia: { type: 'video', source: MediaAssets.videos.sageMiller },
     verified: true,
     connections: 86,
     interests: [interests.tennis, interests.golf, interests.travel],
-    proSkills: [skills.social, skills.video],
+    proSkills: [skills.videography, skills.film],
     roleType: 'Admin',
   },
   {
@@ -238,11 +232,11 @@ export const mockUsers: User[] = [
     city: 'San Francisco',
     avatar: MediaAssets.images.andriyBoychuk,
     heroImage: MediaAssets.images.andriyBoychuk,
-    heroMedia: { type: 'image', source: MediaAssets.images.andriyBoychuk },
+    heroMedia: { type: 'video', source: MediaAssets.videos.celiaSmith },
     verified: false,
     connections: 42,
-    interests: [interests.travel, interests.tech],
-    proSkills: [skills.photography, skills.video],
+    interests: [interests.travel, interests.sportscar],
+    proSkills: [skills.photography, skills.film],
     roleType: 'Creator',
   },
 ];
@@ -265,6 +259,8 @@ export const mockThreads: Thread[] = [
     verified: true,
     city: 'San Diego',
     dpLabel: "Evan's DP",
+    userId: 'u2',
+    isOnline: true,
     messages: [
       { id: 'ev1', senderId: 'u2', senderName: 'Evan', senderAvatar: evan.avatar, text: 'Hey, are you still free to hit Mission Beach later?', time: '11:42 am', isOwn: false },
       { id: 'ev2', senderId: 'ariana', senderName: 'Me', senderAvatar: mockCurrentUser.avatar, text: 'Yes, I can do after my run. Around 4?', time: '11:44 am', isOwn: true },
@@ -284,6 +280,8 @@ export const mockThreads: Thread[] = [
     verified: true,
     city: 'San Diego',
     dpLabel: "Emmitt's DP",
+    userId: 'u5',
+    isOnline: false,
     messages: [
       { id: 'em1', senderId: 'ariana', senderName: 'Me', senderAvatar: mockCurrentUser.avatar, text: 'I cleaned up the deck and added the new contact screenshots.', time: '9:12 am', isOwn: true },
       { id: 'em2', senderId: 'u5', senderName: 'Emmitt', senderAvatar: emmitt.avatar, text: 'Nice. Did you include the intro slide too?', time: '9:20 am', isOwn: false },
@@ -302,6 +300,8 @@ export const mockThreads: Thread[] = [
     verified: true,
     city: 'San Diego',
     dpLabel: "Chelsea's DP",
+    userId: 'u3',
+    isOnline: false,
     messages: [
       { id: 'ch1', senderId: 'u3', senderName: 'Chelsea', senderAvatar: chelsea.avatar, text: 'How did your long ride feel this morning?', time: '7:18 am', isOwn: false },
       { id: 'ch2', senderId: 'ariana', senderName: 'Me', senderAvatar: mockCurrentUser.avatar, text: 'Better than expected. My legs were heavy at first but opened up after 20 minutes.', time: '7:34 am', isOwn: true },

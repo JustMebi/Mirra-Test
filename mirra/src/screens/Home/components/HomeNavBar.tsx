@@ -14,9 +14,9 @@ export function HomeNavBar() {
     <View style={[styles.container, { paddingTop: insets.top + 6 }]}>
       <View style={styles.row}>
         <View style={styles.leftGroup}>
-          <TouchableOpacity style={[glass.pill, styles.pill]} activeOpacity={0.7}>
+          <TouchableOpacity style={[glass.pill, styles.pill, styles.trainAiPill]} activeOpacity={0.7}>
             <AppIcon name="sparkles" size={12} color={Colors.textSecondary} />
-            <Text style={styles.pillText}>Train AI Chat</Text>
+            <Text style={styles.pillText} numberOfLines={1} ellipsizeMode="clip">Train AI Chat</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={[glass.pill, styles.pill]} activeOpacity={0.7}>
@@ -55,7 +55,7 @@ export function HomeNavBar() {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
-            <AppIcon name="more-vertical" size={17} color={Colors.textSecondary} />
+            <AppIcon name="three-lines-vertical" size={18} color={Colors.textSecondary} strokeWidth={1.6} />
           </TouchableOpacity>
         </View>
       </View>
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    flexShrink: 1,
   },
   pill: {
     flexDirection: 'row',
@@ -85,6 +86,10 @@ const styles = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 12,
     paddingVertical: 7,
+  },
+  trainAiPill: {
+    flexShrink: 1,
+    overflow: 'hidden',
   },
   pillText: {
     color: Colors.textSecondary,

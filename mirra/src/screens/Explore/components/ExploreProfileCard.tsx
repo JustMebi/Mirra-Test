@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { PulsingDot } from '@/components/ui/PulsingDot';
 import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
@@ -22,7 +23,7 @@ interface ExploreProfileCardProps {
   style?: object;
 }
 
-export function ExploreProfileCard({ user, isActive = true, style }: ExploreProfileCardProps) {
+export const ExploreProfileCard = React.memo(function ExploreProfileCard({ user, isActive = true, style }: ExploreProfileCardProps) {
   const heroMedia = user.heroMedia ?? { type: 'image' as const, source: user.heroImage };
   const extraInterests = Math.max(0, user.interests.length - MAX_ICONS);
   const extraSkills = Math.max(0, user.proSkills.length - MAX_ICONS);
@@ -81,11 +82,7 @@ export function ExploreProfileCard({ user, isActive = true, style }: ExploreProf
         </View>
 
         <View style={styles.locationPill}>
-          <View style={styles.pulseDot}>
-            <View style={styles.pulseLarge} />
-            <View style={styles.pulseMedium} />
-            <View style={styles.pulseCenter} />
-          </View>
+          <PulsingDot size={6} />
           <AppIcon name="navigation" size={14} color="rgba(255,255,255,0.80)" />
           <Text style={styles.locationText} numberOfLines={1}>{user.location}</Text>
         </View>
@@ -109,12 +106,12 @@ export function ExploreProfileCard({ user, isActive = true, style }: ExploreProf
           >
             <EmojiSection
               title="Interests"
-              items={user.interests.map((interest) => interest.emoji)}
+              items={user.interests.map((interest) => interest.image)}
               extra={extraInterests}
             />
             <EmojiSection
               title="Pro Skills"
-              items={user.proSkills.map((skill) => skill.emoji)}
+              items={user.proSkills.map((skill) => skill.image)}
               extra={extraSkills}
             />
             <MetadataSection title="Role" icon="user" value={user.roleType ?? user.role} />
@@ -124,7 +121,7 @@ export function ExploreProfileCard({ user, isActive = true, style }: ExploreProf
       </View>
     </View>
   );
-}
+});
 
 function EmojiSection({
   title,
@@ -132,7 +129,7 @@ function EmojiSection({
   extra,
 }: {
   title: string;
-  items: string[];
+  items: any[];
   extra: number;
 }) {
   const shown = items.slice(0, MAX_ICONS);
@@ -141,13 +138,13 @@ function EmojiSection({
     <View style={styles.emojiSection}>
       <Text style={styles.metaTitle}>{title}</Text>
       <View style={styles.crisscrossRow}>
-        {shown.map((emoji, index) => {
+        {shown.map((image, index) => {
           const rotate = index % 2 === 0 ? '15deg' : '-14deg';
           const counterRotate = index % 2 === 0 ? '-15deg' : '14deg';
 
           return (
             <View
-              key={`${emoji}-${index}`}
+              key={index}
               style={[
                 styles.crisscrossSquare,
                 index > 0 && styles.crisscrossOverlap,
@@ -155,9 +152,11 @@ function EmojiSection({
               ]}
             >
               <View style={styles.emojiDot} />
-              <Text style={[styles.crisscrossEmoji, { transform: [{ rotate: counterRotate }] }]}>
-                {emoji}
-              </Text>
+              <Image
+                source={image}
+                style={[styles.crisscrossEmoji, { transform: [{ rotate: counterRotate }] }]}
+                resizeMode="contain"
+              />
             </View>
           );
         })}
@@ -392,44 +391,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 24,
   },
-  pulseDot: {
-    width: 16,
-    height: 16,
-    position: 'relative',
-  },
-  pulseLarge: {
-    position: 'absolute',
-    top: 4,
-    left: 4,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    opacity: 0.2,
-    backgroundColor: Colors.accent,
-  },
-  pulseMedium: {
-    position: 'absolute',
-    top: 5,
-    left: 5,
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    opacity: 0.5,
-    backgroundColor: Colors.accent,
-  },
-  pulseCenter: {
-    position: 'absolute',
-    top: 6,
-    left: 6,
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: Colors.accent,
-    shadowColor: Colors.accent,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 8,
-  },
   locationText: {
     color: 'rgba(255,255,255,0.80)',
     fontSize: 14,
@@ -540,11 +501,8 @@ const styles = StyleSheet.create({
     marginLeft: -6,
   },
   crisscrossEmoji: {
-    width: 25,
-    height: 25,
-    fontSize: 20,
-    lineHeight: 25,
-    textAlign: 'center',
+    width: 22,
+    height: 22,
   },
   emojiDot: {
     position: 'absolute',

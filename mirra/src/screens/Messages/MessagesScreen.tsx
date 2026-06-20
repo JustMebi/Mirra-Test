@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import { useNavigation } from 'expo-router';
+import { useNavigation, router } from 'expo-router';
 import { Colors } from '@/constants/colors';
 import { mockThreads } from '@/data/mock';
 import { MessagesNavBar } from './components/MessagesNavBar';
@@ -40,7 +40,15 @@ export function MessagesScreen() {
         data={mockThreads}
         keyExtractor={(t) => t.id}
         renderItem={({ item }) => (
-          <ThreadRow thread={item} onPress={() => setOpenThread(item)} />
+          <ThreadRow
+              thread={item}
+              onPress={() => setOpenThread(item)}
+              onDPPress={
+                !item.isGroup && item.userId
+                  ? () => router.push({ pathname: '/(modal)/chatbot', params: { userId: item.userId } })
+                  : undefined
+              }
+            />
         )}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}

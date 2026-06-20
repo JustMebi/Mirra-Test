@@ -26,7 +26,7 @@ export function LocationFilterBar({
     <View style={styles.outer}>
       <View style={styles.row}>
         <TouchableOpacity style={styles.locationInput} activeOpacity={0.7}>
-          <AppIcon name="map-pin" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.4} />
+          <AppIcon name="target" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.3} />
           <Text style={styles.locationText} numberOfLines={1}>{location}</Text>
         </TouchableOpacity>
 
@@ -41,11 +41,11 @@ export function LocationFilterBar({
                 <AppIcon name="filter" size={16} color="#FFFFFF" strokeWidth={1.5} />
               </View>
             </LinearGradient>
-          </TouchableOpacity>
+        </TouchableOpacity>
 
-          <TouchableOpacity activeOpacity={0.7} style={styles.sortBtn}>
-            <AppIcon name="list" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.5} />
-          </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} style={styles.sortBtn}>
+            <AppIcon name="sort-lines" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.35} />
+        </TouchableOpacity>
         </View>
 
         <View style={styles.dividerWrap}>

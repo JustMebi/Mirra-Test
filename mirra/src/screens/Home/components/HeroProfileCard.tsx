@@ -9,51 +9,11 @@ import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
 import { mockCurrentUser, mockStats, type Stat } from '@/data/mock';
 import { HeroMedia } from '@/components/ui/HeroMedia';
+import { PulsingDot } from '@/components/ui/PulsingDot';
 
 const { height: SCREEN_H } = Dimensions.get('window');
 const CARD_H = Math.min(626, Math.max(520, Math.round(SCREEN_H * 0.655)));
 
-// ─── Lime pulsing dot ─────────────────────────────────────────────────────────
-
-function LimeDot() {
-  return (
-    <View style={dotStyles.outer}>
-      <View style={dotStyles.mid}>
-        <View style={dotStyles.inner} />
-      </View>
-    </View>
-  );
-}
-
-const dotStyles = StyleSheet.create({
-  outer: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: 'rgba(225,255,79,0.18)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  mid: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'rgba(225,255,79,0.45)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inner: {
-    width: 5,
-    height: 5,
-    borderRadius: 3,
-    backgroundColor: '#E1FF4F',
-    shadowColor: '#E1FF4F',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-});
 
 // ─── Stat card ────────────────────────────────────────────────────────────────
 
@@ -168,7 +128,7 @@ export function HeroProfileCard() {
           {/* Location badge + settings */}
           <View style={styles.locationRow}>
             <View style={styles.locationBadge}>
-              <LimeDot />
+              <PulsingDot size={6} />
               <AppIcon name="navigation" size={12} color="rgba(255,255,255,0.8)" />
               <Text style={styles.locationText} numberOfLines={1}>{user.location}</Text>
             </View>
@@ -180,7 +140,7 @@ export function HeroProfileCard() {
           {/* Profile info bar */}
           <View style={styles.infoBar}>
             <View style={styles.avatarNameRow}>
-              <Image source={user.avatar} style={styles.avatar} />
+              <Image source={MediaAssets.images.homeIcon} style={styles.avatar} resizeMode="cover" />
               <View style={styles.nameBlock}>
                 <View style={styles.nameLine}>
                   <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
@@ -269,10 +229,10 @@ const styles = StyleSheet.create({
   locationRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 6,
   },
   locationBadge: {
-    flex: 1,
     height: 32,
     flexDirection: 'row',
     alignItems: 'center',
@@ -283,9 +243,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.10)',
     borderRadius: 12,
     overflow: 'hidden',
+    maxWidth: '86%',
   },
   locationText: {
-    flex: 1,
+    flexShrink: 1,
     color: 'rgba(255,255,255,0.80)',
     fontSize: 12,
     fontWeight: '500',

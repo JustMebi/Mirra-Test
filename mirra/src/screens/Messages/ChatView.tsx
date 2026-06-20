@@ -5,6 +5,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  LayoutAnimation,
 } from 'react-native';
 import { Colors } from '@/constants/colors';
 import { mockCurrentUser, mockUsers } from '@/data/mock';
@@ -22,26 +23,33 @@ interface Reaction {
 
 type ReactionsMap = Record<string, Reaction[]>;
 
+type ListItem = ChatMessage | { type: 'mention_card'; id: string; user: User };
+
+const MENTION_SPRING = {
+  duration: 360,
+  create: { type: 'spring' as const, property: 'scaleY' as const, springDamping: 0.72 },
+  update: { type: 'spring' as const, springDamping: 0.72 },
+  delete: { type: 'spring' as const, property: 'scaleY' as const, springDamping: 0.72 },
+};
+
 interface ChatViewProps {
   thread: Thread;
   onBack: () => void;
 }
 
 export function ChatView({ thread, onBack }: ChatViewProps) {
-  const [messages, setMessages] = useState<ChatMessage[]>(thread.messages);
+  const [listItems, setListItems] = useState<ListItem[]>(thread.messages);
   const [input, setInput] = useState('');
   const [reactions, setReactions] = useState<ReactionsMap>((): ReactionsMap => {
     if (!thread.isGroup) return {};
     return {
       g2: [
-        { emoji: '\u2764\uFE0F', count: 34, mine: true },
-        { emoji: '\u26A1', count: 123, mine: false },
+        { emoji: '❤️', count: 34, mine: true },
+        { emoji: '⚡', count: 123, mine: false },
       ],
     };
   });
-  const [mentionUser, setMentionUser] = useState<User | null>(null);
-  const [mentionVisible, setMentionVisible] = useState(false);
-  const [mentionAnchor, setMentionAnchor] = useState<{ x: number; y: number } | null>(null);
+  const [activeMentionMessageId, setActiveMentionMessageId] = useState<string | null>(null);
   const listRef = useRef<FlatList>(null);
 
   const isGroup = thread.isGroup;
@@ -60,7 +68,8 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
       isOwn: true,
     };
 
-    const nextMessages = [...thread.messages, newMsg];
+    const baseMessages = listItems.filter((item): item is ChatMessage => !('type' in item));
+    const nextMessages = [...baseMessages, newMsg];
     thread.messages = nextMessages;
     thread.lastMessage = text;
     thread.time = 'Now';
@@ -70,7 +79,8 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
       thread.lastMessageIsOwn = true;
     }
 
-    setMessages(nextMessages);
+    setListItems(nextMessages);
+    setActiveMentionMessageId(null);
     setInput('');
     setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 80);
   };
@@ -97,35 +107,70 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
     });
   };
 
-  const handleMentionPress = (name: string, anchor: { x: number; y: number }) => {
+  const handleMentionPress = (name: string, messageId: string) => {
     const normalized = name.trim().toLowerCase();
-    const found = mockUsers.find((user) =>
-      user.name.toLowerCase() === normalized
-      || user.name.toLowerCase().startsWith(normalized)
+    const found = mockUsers.find(
+      (user) =>
+        user.name.toLowerCase() === normalized ||
+        user.name.toLowerCase().startsWith(normalized),
     );
     if (!found) return;
 
-    setMentionUser(found);
-    setMentionAnchor(anchor);
-    setMentionVisible(true);
+    LayoutAnimation.configureNext(MENTION_SPRING);
+
+    if (activeMentionMessageId === messageId) {
+      setListItems((prev) => prev.filter((item) => !('type' in item)));
+      setActiveMentionMessageId(null);
+      return;
+    }
+
+    setListItems((prev) => {
+      const base = prev.filter((item): item is ChatMessage => !('type' in item));
+      const idx = base.findIndex((m) => m.id === messageId);
+      if (idx < 0) return prev;
+      const next = [...base] as ListItem[];
+      next.splice(idx, 0, { type: 'mention_card', id: `mc-${messageId}`, user: found });
+      return next;
+    });
+    setActiveMentionMessageId(messageId);
+  };
+
+  const dismissCard = () => {
+    LayoutAnimation.configureNext(MENTION_SPRING);
+    setListItems((prev) => prev.filter((item) => !('type' in item)));
+    setActiveMentionMessageId(null);
   };
 
   const handleDM = (user: User) => {
     console.log('DM', user.name);
   };
 
-  const renderItem = ({ item, index }: { item: ChatMessage; index: number }) => {
-    const prev = messages[index - 1];
-    const next = messages[index + 1];
-    const showAvatar = !item.isOwn && (!next || next.senderId !== item.senderId);
-    const showSenderName = isGroup && !item.isOwn && (!prev || prev.senderId !== item.senderId);
+  const msgItems = listItems.filter((item): item is ChatMessage => !('type' in item));
+
+  const renderItem = ({ item }: { item: ListItem }) => {
+    if ('type' in item && item.type === 'mention_card') {
+      return (
+        <MentionProfileCard
+          user={item.user}
+          onClose={dismissCard}
+          onDM={handleDM}
+        />
+      );
+    }
+
+    const message = item as ChatMessage;
+    const msgIndex = msgItems.findIndex((m) => m.id === message.id);
+    const prev = msgItems[msgIndex - 1];
+    const next = msgItems[msgIndex + 1];
+    const showAvatar = !message.isOwn && (!next || next.senderId !== message.senderId);
+    const showSenderName = isGroup && !message.isOwn && (!prev || prev.senderId !== message.senderId);
 
     return (
       <ChatBubble
-        message={item}
+        message={message}
         showAvatar={showAvatar}
         showSenderName={showSenderName}
-        reactions={reactions[item.id] ?? []}
+        reactions={reactions[message.id] ?? []}
         onReaction={handleReaction}
         onMentionPress={handleMentionPress}
       />
@@ -142,8 +187,8 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
 
       <FlatList
         ref={listRef}
-        data={messages}
-        keyExtractor={(message) => message.id}
+        data={listItems}
+        keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
@@ -156,14 +201,6 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
         onChange={setInput}
         onSend={handleSend}
         placeholder={isGroup ? 'Message group...' : 'Message...'}
-      />
-
-      <MentionProfileCard
-        user={mentionUser}
-        visible={mentionVisible}
-        anchor={mentionAnchor}
-        onClose={() => setMentionVisible(false)}
-        onDM={handleDM}
       />
     </KeyboardAvoidingView>
   );

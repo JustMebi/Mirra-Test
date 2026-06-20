@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { AppIcon } from "@/components/ui/AppIcon";
+import { AppIcon, AppIconName } from "@/components/ui/AppIcon";
 import { Colors } from "@/constants/colors";
 
 type PrimaryTab = "primary" | "requests";
@@ -17,12 +17,12 @@ interface MessagesNavBarProps {
 const FILTERS: Array<{
   key: FilterTab;
   label: string;
-  icon?: "send" | "sparkles";
+  icon?: AppIconName;
   badge?: number;
 }> = [
   { key: "all", label: "All", badge: 2 },
-  { key: "direct", label: "Direct", icon: "send", badge: 2 },
-  { key: "dp", label: "Digital Persona", icon: "sparkles" },
+  { key: "direct", label: "Direct", icon: "send-outline", badge: 2 },
+  { key: "dp", label: "Digital Persona", icon: "sparkles-outline" },
 ];
 
 export function MessagesNavBar({
@@ -42,7 +42,7 @@ export function MessagesNavBar({
             <AppIcon name="search" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerButton} activeOpacity={0.7}>
-            <AppIcon name="edit" size={18} color={Colors.textPrimary} strokeWidth={1.6} />
+            <AppIcon name="compose" size={18} color={Colors.textPrimary} strokeWidth={1.45} />
           </TouchableOpacity>
         </View>
       </View>
@@ -112,7 +112,7 @@ function FilterChip({
 }: {
   active: boolean;
   label: string;
-  icon?: "send" | "sparkles";
+  icon?: AppIconName;
   badge?: number;
   onPress: () => void;
 }) {
@@ -122,18 +122,12 @@ function FilterChip({
       onPress={onPress}
       activeOpacity={0.7}
     >
-      {icon === "send" && (
+      {icon != null && (
         <AppIcon
-          name="send"
+          name={icon}
           size={12}
           color={active ? Colors.textPrimary : Colors.textSecondary}
-        />
-      )}
-      {icon === "sparkles" && (
-        <AppIcon
-          name="sparkles"
-          size={12}
-          color={active ? Colors.textPrimary : Colors.textSecondary}
+          strokeWidth={1.4}
         />
       )}
       <Text

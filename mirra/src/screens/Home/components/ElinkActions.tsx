@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { AppIcon } from '@/components/ui/AppIcon';
-import { Colors, Gradients } from '@/constants/colors';
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { AppIcon } from "@/components/ui/AppIcon";
+import { Colors, Gradients } from "@/constants/colors";
 
 export function ElinkActions() {
   return (
@@ -13,17 +13,32 @@ export function ElinkActions() {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.labelBtn} activeOpacity={0.7}>
-        <AppIcon name="edit" size={14} color={Colors.textPrimary} strokeWidth={1.5} />
+        <AppIcon
+          name="edit"
+          size={18}
+          color={Colors.textPrimary}
+          strokeWidth={1.5}
+        />
         <Text style={styles.btnText}>Edit</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
-        <AppIcon name="sliders" size={14} color={Colors.textPrimary} strokeWidth={1.5} />
+        <AppIcon
+          name="sliders"
+          size={18}
+          color={Colors.textPrimary}
+          strokeWidth={1.5}
+        />
       </TouchableOpacity>
 
       <View>
         <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
-          <AppIcon name="bell" size={14} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+          <AppIcon
+            name="bell"
+            size={18}
+            color="rgba(255,255,255,0.8)"
+            strokeWidth={1.5}
+          />
         </TouchableOpacity>
         <LinearGradient
           colors={Gradients.accent}
@@ -34,8 +49,16 @@ export function ElinkActions() {
         </LinearGradient>
       </View>
 
-      <TouchableOpacity style={[styles.iconBtn, styles.iconBtnRound]} activeOpacity={0.7}>
-        <AppIcon name="more-vertical" size={14} color={Colors.textPrimary} />
+      <TouchableOpacity
+        style={[styles.iconBtn, styles.iconBtnRound]}
+        activeOpacity={0.7}
+      >
+        <AppIcon
+          name="three-lines-vertical"
+          size={18}
+          color={Colors.textPrimary}
+          strokeWidth={1.6}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -43,75 +66,75 @@ export function ElinkActions() {
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
   labelBtn: {
     flex: 1,
     height: 44,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 7,
     paddingHorizontal: 14,
-    backgroundColor: 'rgba(255,255,255,0.05)',
+    backgroundColor: "rgba(255,255,255,0.05)",
     borderRadius: 10,
     borderTopWidth: 0.5,
-    borderTopColor: 'rgba(255,255,255,0.10)',
+    borderTopColor: "rgba(255,255,255,0.10)",
     borderLeftWidth: 0.5,
-    borderLeftColor: 'rgba(255,255,255,0.05)',
+    borderLeftColor: "rgba(255,255,255,0.05)",
     borderRightWidth: 0.5,
-    borderRightColor: 'rgba(255,255,255,0.05)',
+    borderRightColor: "rgba(255,255,255,0.05)",
     borderBottomWidth: 0.5,
-    borderBottomColor: 'rgba(255,255,255,0.05)',
+    borderBottomColor: "rgba(255,255,255,0.05)",
   },
   btnText: {
-    color: 'rgba(255,255,255,0.80)',
+    color: "rgba(255,255,255,0.80)",
     fontSize: 14,
-    fontWeight: '400',
+    fontWeight: "400",
     letterSpacing: -0.25,
   },
   iconBtn: {
     width: 44,
     height: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.05)',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(255,255,255,0.05)",
     borderRadius: 10,
     borderTopWidth: 0.5,
-    borderTopColor: 'rgba(255,255,255,0.10)',
+    borderTopColor: "rgba(255,255,255,0.10)",
     borderLeftWidth: 0.5,
-    borderLeftColor: 'rgba(255,255,255,0.05)',
+    borderLeftColor: "rgba(255,255,255,0.05)",
     borderRightWidth: 0.5,
-    borderRightColor: 'rgba(255,255,255,0.05)',
+    borderRightColor: "rgba(255,255,255,0.05)",
     borderBottomWidth: 0.5,
-    borderBottomColor: 'rgba(255,255,255,0.05)',
+    borderBottomColor: "rgba(255,255,255,0.05)",
   },
   iconBtnRound: {
     borderRadius: 16,
   },
   badge: {
-    position: 'absolute',
+    position: "absolute",
     left: 24,
     top: -3,
     width: 20,
     height: 20,
     borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.1)',
+    borderColor: "rgba(0,0,0,0.1)",
     shadowColor: Colors.accent,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 4,
   },
   badgeText: {
-    color: 'rgba(0,0,0,0.6)',
+    color: "rgba(0,0,0,0.6)",
     fontSize: 10,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: "600",
+    textAlign: "center",
     lineHeight: 12,
   },
 });

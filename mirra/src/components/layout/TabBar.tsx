@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { GlassView } from '@/components/ui/GlassView';
-import { GlowDot } from '@/components/ui/GlowAccent';
-import { Colors } from '@/constants/colors';
-import { Spacing, Radius } from '@/constants/spacing';
+import React from "react";
+import { View, TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { GlassView } from "@/components/ui/GlassView";
+import { GlowDot } from "@/components/ui/GlowAccent";
+import { Colors } from "@/constants/colors";
+import { Spacing, Radius } from "@/constants/spacing";
 
 export interface TabItem {
   key: string;
@@ -27,7 +27,13 @@ export function TabBar({ tabs, activeKey, onPress, style }: TabBarProps) {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={[styles.wrapper, { paddingBottom: insets.bottom || Spacing[4] }, style]}>
+    <View
+      style={[
+        styles.wrapper,
+        { paddingBottom: insets.bottom || Spacing[4] },
+        style,
+      ]}
+    >
       <GlassView variant="pill" style={styles.bar}>
         {tabs.map((tab) => {
           const isActive = tab.key === activeKey;
@@ -52,28 +58,28 @@ export function TabBar({ tabs, activeKey, onPress, style }: TabBarProps) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: Spacing[5],
   },
   bar: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: Spacing[3],
     paddingHorizontal: Spacing[4],
     gap: Spacing[2],
   },
   tab: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     minHeight: 44,
   },
   iconWrap: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     gap: 4,
   },
   activeDot: {

@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
 import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
+import { MediaAssets } from '@/constants/assets';
 
 const FILTERS = [
-  { emoji: '🎾', label: 'Tennis' },
-  { emoji: '⛳', label: 'Golf' },
-  { emoji: '✈️', label: 'Travel' },
-  { emoji: '🎥', label: 'Videography' },
-  { emoji: '💻', label: 'Tech' },
+  { image: MediaAssets.emojis.interests.tennis,      label: 'Tennis' },
+  { image: MediaAssets.emojis.interests.golf,        label: 'Golf' },
+  { image: MediaAssets.emojis.interests.travel,      label: 'Travel' },
+  { image: MediaAssets.emojis.proSkills.videography, label: 'Videography' },
+  { image: MediaAssets.emojis.proSkills.laptop,      label: 'Tech' },
 ];
 
 interface InterestFilterTagsProps {
@@ -26,7 +27,7 @@ export function InterestFilterTags({ active, onSelect }: InterestFilterTagsProps
           style={styles.scroll}
           contentContainerStyle={styles.row}
         >
-          {FILTERS.map(({ emoji, label }) => {
+          {FILTERS.map(({ image, label }) => {
             const isActive = active === label;
             return (
               <TouchableOpacity
@@ -35,7 +36,7 @@ export function InterestFilterTags({ active, onSelect }: InterestFilterTagsProps
                 onPress={() => onSelect?.(label)}
                 activeOpacity={0.7}
               >
-                <Text style={styles.emoji}>{emoji}</Text>
+                <Image source={image} style={styles.emojiImg} resizeMode="contain" />
                 <Text style={[styles.label, isActive && styles.labelActive]}>{label}</Text>
               </TouchableOpacity>
             );
@@ -90,12 +91,9 @@ const styles = StyleSheet.create({
   tagActive: {
     backgroundColor: 'rgba(255,255,255,0.08)',
   },
-  emoji: {
+  emojiImg: {
     width: 16,
     height: 16,
-    fontSize: 14,
-    lineHeight: 16,
-    textAlign: 'center',
   },
   label: {
     color: 'rgba(255,255,255,0.80)',

@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Rect } from 'react-native-svg';
 import { AppIcon } from '@/components/ui/AppIcon';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';
-import { mockCurrentUser } from '@/data/mock';
+import { MediaAssets } from '@/constants/assets';
 
 const TAB_SLOT_WIDTH = 80;
 const TAB_SLOT_HEIGHT = 48;
@@ -34,9 +34,7 @@ export function AppTabBar({ state, navigation, descriptors }: BottomTabBarProps)
       <BlurView intensity={30} tint="dark" style={styles.bar}>
         <View style={styles.innerRail}>
           <TabItem onPress={() => goToTab(0)} isActive={state.index === 0} badge={2}>
-            <View style={styles.avatarShell}>
-              <Image source={mockCurrentUser.avatar} style={styles.avatarImg} />
-            </View>
+            <Image source={MediaAssets.images.homeIcon} style={styles.homeIcon} resizeMode="cover" />
           </TabItem>
 
           <TabItem onPress={() => goToTab(1)} isActive={state.index === 1} badge={2}>
@@ -80,7 +78,7 @@ function TabItem({ onPress, isActive, badge, children }: TabItemProps) {
 function ActiveCapsule() {
   return (
     <View style={styles.activeCapsule}>
-      <Svg width={TAB_SLOT_WIDTH} height={TAB_SLOT_HEIGHT} viewBox="0 0 80 48" style={StyleSheet.absoluteFill}>
+      <Svg width="100%" height={TAB_SLOT_HEIGHT} viewBox="0 0 80 48" style={StyleSheet.absoluteFill}>
         <Rect width="80" height="48" rx="18" fill="rgba(255,255,255,0.02)" />
         <Circle cx="57" cy="51" r="39" fill="rgba(255,255,255,0.19)" />
       </Svg>
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   tabSlot: {
-    width: TAB_SLOT_WIDTH,
+    flex: 1,
     height: TAB_SLOT_HEIGHT,
     borderRadius: 18,
     alignItems: 'center',
@@ -153,30 +151,24 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(255,255,255,0.2)',
   },
   contentLayer: {
-    width: TAB_SLOT_WIDTH,
+    width: '100%',
     height: TAB_SLOT_HEIGHT,
-    paddingHorizontal: 18,
+    paddingHorizontal: 8,
     paddingVertical: 8,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1,
   },
-  avatarShell: {
-    width: 24,
-    height: 24,
-    borderRadius: 8,
-    overflow: 'hidden',
-    backgroundColor: 'rgba(255,255,255,0.2)',
-  },
-  avatarImg: {
+  homeIcon: {
     width: 24,
     height: 24,
     borderRadius: 7,
+    opacity: 1,
   },
   badge: {
     position: 'absolute',
-    left: 48,
-    top: 8,
+    right: 6,
+    top: 6,
     minWidth: 16,
     height: 16,
     borderRadius: 16,

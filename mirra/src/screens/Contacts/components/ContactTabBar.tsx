@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { AppIcon, AppIconName } from "@/components/ui/AppIcon";
 import { Colors, Gradients, GradientDir } from "@/constants/colors";
 
 export type ContactTab = "saved" | "mirra";
@@ -21,13 +22,15 @@ export function ContactTabBar({
   return (
     <View style={styles.segmented}>
       <Segment
-        label="Saved Connections"
+        icon="users-outline"
+        label="Saved Contacts"
         count={savedCount}
         isActive={active === "saved"}
         accentBadge={false}
         onPress={() => onChange("saved")}
       />
       <Segment
+        icon="user-plus"
         label="MIRRA Connections"
         count={mirraCount}
         isActive={active === "mirra"}
@@ -39,12 +42,14 @@ export function ContactTabBar({
 }
 
 function Segment({
+  icon,
   label,
   count,
   isActive,
   accentBadge,
   onPress,
 }: {
+  icon: AppIconName;
   label: string;
   count: number;
   isActive: boolean;
@@ -57,7 +62,14 @@ function Segment({
       onPress={onPress}
       activeOpacity={0.75}
     >
-      <Text style={[styles.label, isActive && styles.labelActive]}>
+      <AppIcon
+        name={icon}
+        size={16}
+        color={isActive ? Colors.textPrimary : Colors.textSecondary}
+        strokeWidth={1.4}
+        opacity={isActive ? 1 : 0.72}
+      />
+      <Text style={[styles.label, isActive && styles.labelActive]} numberOfLines={1}>
         {label}
       </Text>
       {accentBadge ? (
@@ -96,6 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 6,
     paddingVertical: 8,
+    paddingHorizontal: 8,
     borderRadius: 11,
   },
   segmentActive: {
@@ -105,6 +118,7 @@ const styles = StyleSheet.create({
     color: Colors.textTertiary,
     fontSize: 12,
     fontWeight: "500",
+    flexShrink: 1,
   },
   labelActive: {
     color: Colors.textPrimary,

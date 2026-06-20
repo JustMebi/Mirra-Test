@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { glass } from '@/styles/glass';
-import { Colors } from '@/constants/colors';
-import type { DPConversation } from '@/data/mock';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Colors } from "@/constants/colors";
+import { PulsingDot } from "@/components/ui/PulsingDot";
+import type { DPConversation } from "@/data/mock";
 
 interface DPConversationSectionProps {
   count: number;
@@ -10,7 +10,11 @@ interface DPConversationSectionProps {
   onSeeAll?: () => void;
 }
 
-export function DPConversationSection({ count, conversations, onSeeAll }: DPConversationSectionProps) {
+export function DPConversationSection({
+  count,
+  conversations,
+  onSeeAll,
+}: DPConversationSectionProps) {
   const first = conversations[0];
 
   return (
@@ -18,8 +22,7 @@ export function DPConversationSection({ count, conversations, onSeeAll }: DPConv
       {/* Section header */}
       <View style={styles.header}>
         <Text style={styles.headerLabel}>
-          DP Conversations{' '}
-          <Text style={styles.headerCount}>{count}</Text>
+          DP Conversations <Text style={styles.headerCount}>{count}</Text>
         </Text>
         <TouchableOpacity onPress={onSeeAll} activeOpacity={0.7}>
           <Text style={styles.seeAll}>See all &rsaquo;</Text>
@@ -30,14 +33,20 @@ export function DPConversationSection({ count, conversations, onSeeAll }: DPConv
         <View style={styles.stack}>
           <View style={[styles.backCard, styles.backCardTwo]} />
           <View style={[styles.backCard, styles.backCardOne]} />
-          <TouchableOpacity style={[glass.card, styles.card]} activeOpacity={0.8}>
-            <View style={styles.dot} />
-            <Text style={styles.cardText} numberOfLines={1}>
-              <Text style={styles.anonLabel}>
-                {first.isAnonymous ? 'Anonymous Ask: ' : `${first.preview.split(':')[0]}: `}
+          <TouchableOpacity style={styles.cardTouch} activeOpacity={0.8}>
+            <View style={styles.card}>
+              <PulsingDot />
+              <Text style={styles.cardText} numberOfLines={1}>
+                <Text style={styles.anonLabel}>
+                  {first.isAnonymous
+                    ? "Anonymous Ask: "
+                    : `${first.preview.split(":")[0]}: `}
+                </Text>
+                {first.isAnonymous
+                  ? first.preview
+                  : first.preview.split(":").slice(1).join(":").trim()}
               </Text>
-              {first.isAnonymous ? first.preview : first.preview.split(':').slice(1).join(':').trim()}
-            </Text>
+            </View>
           </TouchableOpacity>
         </View>
       )}
@@ -50,71 +59,70 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   headerLabel: {
     color: Colors.textSecondary,
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   headerCount: {
     color: Colors.textPrimary,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   seeAll: {
-    color: Colors.accent,
+    color: Colors.textSecondary,
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   stack: {
-    height: 50,
-    position: 'relative',
+    height: 60,
+    position: "relative",
   },
   backCard: {
-    position: 'absolute',
+    position: "absolute",
     left: 16,
     right: 16,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(255,255,255,0.055)',
+    backgroundColor: "rgba(255,255,255,0.055)",
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.045)',
+    borderColor: "rgba(255,255,255,0.045)",
   },
   backCardOne: {
-    top: 8,
+    top: 10,
   },
   backCardTwo: {
-    top: 14,
+    top: 16,
     left: 34,
     right: 34,
     opacity: 0.65,
   },
-  card: {
-    position: 'absolute',
+  cardTouch: {
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    width: '100%',
+    shadowColor: "rgb(31,30,135)",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.37,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  card: {
+    width: "100%",
     height: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 10,
     paddingHorizontal: 14,
     borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.075)',
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: Colors.accent,
-    shadowColor: Colors.accent,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 6,
-    flexShrink: 0,
+    backgroundColor: "rgba(91, 92, 100, 0.53)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.18)",
+    overflow: "hidden",
   },
   cardText: {
     color: Colors.textPrimary,
@@ -123,7 +131,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   anonLabel: {
-    color: Colors.accent,
-    fontWeight: '600',
+    color: Colors.textPrimary,
+    fontWeight: "600",
   },
 });
