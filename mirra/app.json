@@ -14,14 +14,17 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.mirra.app"
+      "bundleIdentifier": "com.mebismirra.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0A0A0F"
       },
-      "package": "com.mirra.app"
+      "package": "com.mebismirra.app"
     },
     "plugins": [
       "expo-router",
@@ -39,6 +42,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "369c4309-0717-4742-a72b-ec6d46cd650f"
+      }
+    },
+    "owner": "justmebi"
   }
 }

@@ -1,4 +1,4 @@
-package com.mirra.app
+package com.mebismirra.app
 
 import android.app.Application
 import android.content.res.Configuration
