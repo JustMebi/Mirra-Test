@@ -119,9 +119,9 @@ export const mockCurrentUser: User = {
 };
 
 export const mockStats: Stat[] = [
-  { value: 64, label: 'PROFILE VIEWS', period: 'Last 7 days', growth: '↗ 20%', positive: true },
-  { value: 35, label: 'DP CHATS', period: 'Last 7 days', growth: '↗ +14%', positive: true },
-  { value: 18, label: 'CONNECTIONS', period: 'Last 7 days', growth: '↗ 5%', positive: true },
+  { value: 64, label: 'PROFILE VIEWS', period: 'Last 7 days', growth: '20%', positive: true },
+  { value: 35, label: 'DP CHATS', period: 'Last 7 days', growth: '+14%', positive: true },
+  { value: 18, label: 'CONNECTIONS', period: 'Last 7 days', growth: '5%', positive: true },
 ];
 
 export const mockDPConversationCount = 260;

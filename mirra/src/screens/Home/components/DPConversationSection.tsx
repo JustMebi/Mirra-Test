@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from '@/components/ui/Text';
 import { Colors } from "@/constants/colors";
 import { PulsingDot } from "@/components/ui/PulsingDot";
+import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
 import Svg, { Defs, RadialGradient, Rect, Stop } from "react-native-svg";
 import type { DPConversation } from "@/data/mock";
 
@@ -33,10 +34,25 @@ export function DPConversationSection({
 
       {first && (
         <View style={styles.stack}>
-          <View style={[styles.backCard, styles.backCardTwo]} />
-          <View style={[styles.backCard, styles.backCardOne]} />
+          <FrostedGlassView
+            style={[styles.backCard, styles.backCardTwo]}
+            borderRadius={18}
+            frostLevel="dense"
+            animatedEdges={false}
+          />
+          <FrostedGlassView
+            style={[styles.backCard, styles.backCardOne]}
+            borderRadius={18}
+            frostLevel="dense"
+            animatedEdges={false}
+          />
           <TouchableOpacity style={styles.cardTouch} activeOpacity={0.8}>
-            <View style={styles.card}>
+            <FrostedGlassView
+              style={styles.card}
+              borderRadius={12}
+              frostLevel="dense"
+              animatedEdges={false}
+            >
               <AnonymousGlassLight />
               <PulsingDot />
               <Text style={styles.cardText} numberOfLines={1}>
@@ -49,7 +65,7 @@ export function DPConversationSection({
                   ? first.preview
                   : first.preview.split(":").slice(1).join(":").trim()}
               </Text>
-            </View>
+            </FrostedGlassView>
           </TouchableOpacity>
         </View>
       )}
@@ -116,9 +132,6 @@ const styles = StyleSheet.create({
     right: 16,
     height: 36,
     borderRadius: 18,
-    backgroundColor: "rgba(255,255,255,0.055)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.045)",
   },
   backCardOne: {
     top: 10,
@@ -148,10 +161,6 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: 14,
     borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.055)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.12)",
-    overflow: "hidden",
   },
   cardText: {
     color: Colors.textPrimary,

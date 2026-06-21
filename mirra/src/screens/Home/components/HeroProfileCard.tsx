@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, Image, TouchableOpacity,
+  View, Image,
   ScrollView, StyleSheet, Dimensions,
 } from 'react-native';
 import { Text } from '@/components/ui/Text';
@@ -11,6 +11,8 @@ import { MediaAssets } from '@/constants/assets';
 import { mockCurrentUser, mockStats, type Stat } from '@/data/mock';
 import { HeroMedia } from '@/components/ui/HeroMedia';
 import { PulsingDot } from '@/components/ui/PulsingDot';
+import { FrostedGlassPressable } from '@/components/ui/FrostedGlassPressable';
+import { FrostedGlassView } from '@/components/ui/FrostedGlassView';
 
 const { height: SCREEN_H } = Dimensions.get('window');
 const CARD_H = Math.min(626, Math.max(520, Math.round(SCREEN_H * 0.655)));
@@ -20,20 +22,33 @@ const CARD_H = Math.min(626, Math.max(520, Math.round(SCREEN_H * 0.655)));
 
 function StatCard({ value, label, period, growth, positive }: Stat) {
   return (
-    <View style={statStyles.card}>
+    <FrostedGlassView
+      style={statStyles.card}
+      borderRadius={16}
+      frostLevel="regular"
+      animatedEdges={false}
+    >
       <Text style={statStyles.value}>{value}</Text>
       <View style={statStyles.textBlock}>
         <Text style={statStyles.label}>{label}</Text>
         <View style={statStyles.metaRow}>
           {period != null && <Text style={statStyles.period}>{period}</Text>}
           {growth != null && (
-            <Text style={[statStyles.growth, { color: positive ? Colors.accent : Colors.error }]}>
-              {growth}
-            </Text>
+            <View style={statStyles.growthGroup}>
+              <AppIcon
+                name="arrow-up-right"
+                size={8}
+                color={positive ? Colors.accent : Colors.error}
+                strokeWidth={2.4}
+              />
+              <Text style={[statStyles.growth, { color: positive ? Colors.accent : Colors.error }]}>
+                {growth}
+              </Text>
+            </View>
           )}
         </View>
       </View>
-    </View>
+    </FrostedGlassView>
   );
 }
 
@@ -42,10 +57,7 @@ const statStyles = StyleSheet.create({
     flexShrink: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.07)',
     borderRadius: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.09)',
     paddingHorizontal: 12,
     paddingVertical: 8,
     gap: 10,
@@ -78,6 +90,11 @@ const statStyles = StyleSheet.create({
   growth: {
     fontSize: 9,
     fontWeight: '700',
+  },
+  growthGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
   },
 });
 
@@ -128,18 +145,34 @@ export function HeroProfileCard() {
 
           {/* Location badge + settings */}
           <View style={styles.locationRow}>
-            <View style={styles.locationBadge}>
+            <FrostedGlassView
+              style={styles.locationBadge}
+              borderRadius={12}
+              frostLevel="regular"
+              animatedEdges={false}
+            >
               <PulsingDot size={6} />
               <AppIcon name="navigation" size={12} color="rgba(255,255,255,0.8)" />
               <Text style={styles.locationText} numberOfLines={1}>{user.location}</Text>
-            </View>
-            <TouchableOpacity style={styles.settingsBtn} activeOpacity={0.7}>
+            </FrostedGlassView>
+            <FrostedGlassPressable
+              style={styles.settingsBtn}
+              contentStyle={styles.settingsBtnContent}
+              borderRadius={12}
+              frostLevel="regular"
+              activeOpacity={0.7}
+            >
               <AppIcon name="sliders" size={12} color={Colors.textPrimary} strokeWidth={1.5} />
-            </TouchableOpacity>
+            </FrostedGlassPressable>
           </View>
 
           {/* Profile info bar */}
-          <View style={styles.infoBar}>
+          <FrostedGlassView
+            style={styles.infoBar}
+            borderRadius={20}
+            frostLevel="regular"
+            animatedEdges={false}
+          >
             <View style={styles.avatarNameRow}>
               <Image source={MediaAssets.images.homeIcon} style={styles.avatar} resizeMode="cover" />
               <View style={styles.nameBlock}>
@@ -152,29 +185,52 @@ export function HeroProfileCard() {
             </View>
 
             {/* Followers chip */}
-            <View style={styles.followersChip}>
+            <FrostedGlassView
+              style={styles.followersChip}
+              borderRadius={10}
+              frostLevel="regular"
+              animatedEdges={false}
+            >
               <View style={styles.followersBlock}>
                 <Text style={styles.followersCount}>{user.followersFormatted}</Text>
                 <Text style={styles.followersLabel}>Followers</Text>
               </View>
               <Image source={MediaAssets.images.instagram} style={styles.instagramIcon} resizeMode="contain" />
-            </View>
-          </View>
+            </FrostedGlassView>
+          </FrostedGlassView>
 
           {/* Action buttons */}
           <View style={styles.actionsRow}>
-            <TouchableOpacity style={styles.actionBtn} activeOpacity={0.7}>
+            <FrostedGlassPressable
+              style={styles.actionBtn}
+              contentStyle={styles.actionBtnContent}
+              borderRadius={12}
+              frostLevel="regular"
+              activeOpacity={0.7}
+            >
               <AppIcon name="eye" size={13} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
               <Text style={styles.actionText}>View Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionBtn} activeOpacity={0.7}>
+            </FrostedGlassPressable>
+            <FrostedGlassPressable
+              style={styles.actionBtn}
+              contentStyle={styles.actionBtnContent}
+              borderRadius={12}
+              frostLevel="regular"
+              activeOpacity={0.7}
+            >
               <AppIcon name="layers" size={13} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
               <Text style={styles.actionText}>All Cards</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionBtn} activeOpacity={0.7}>
+            </FrostedGlassPressable>
+            <FrostedGlassPressable
+              style={styles.actionBtn}
+              contentStyle={styles.actionBtnContent}
+              borderRadius={12}
+              frostLevel="regular"
+              activeOpacity={0.7}
+            >
               <AppIcon name="share" size={13} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
               <Text style={styles.actionText}>Share</Text>
-            </TouchableOpacity>
+            </FrostedGlassPressable>
           </View>
 
         </View>
@@ -241,7 +297,6 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     paddingRight: 12,
     paddingVertical: 6,
-    backgroundColor: 'rgba(255,255,255,0.10)',
     borderRadius: 12,
     overflow: 'hidden',
     maxWidth: '86%',
@@ -256,19 +311,17 @@ const styles = StyleSheet.create({
   settingsBtn: {
     width: 32,
     height: 32,
+    borderRadius: 12,
+  },
+  settingsBtnContent: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.10)',
-    borderRadius: 12,
   },
   infoBar: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: 'rgba(255,255,255,0.07)',
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.075)',
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
@@ -310,7 +363,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: 10,
     paddingLeft: 12,
     paddingRight: 10,
@@ -343,20 +395,13 @@ const styles = StyleSheet.create({
   actionBtn: {
     flex: 1,
     height: 44,
+    borderRadius: 12,
+  },
+  actionBtnContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: 12,
-    borderTopWidth: 0.5,
-    borderTopColor: 'rgba(255,255,255,0.10)',
-    borderLeftWidth: 0.5,
-    borderLeftColor: 'rgba(255,255,255,0.05)',
-    borderRightWidth: 0.5,
-    borderRightColor: 'rgba(255,255,255,0.05)',
-    borderBottomWidth: 0.5,
-    borderBottomColor: 'rgba(255,255,255,0.05)',
   },
   actionText: {
     color: 'rgba(255,255,255,0.80)',

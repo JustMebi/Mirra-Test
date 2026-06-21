@@ -139,9 +139,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#26B7FF',
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.95,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOpacity: 0.72,
+    shadowRadius: 6,
+    elevation: 6,
   },
   filterBorder: {
     width: 32,

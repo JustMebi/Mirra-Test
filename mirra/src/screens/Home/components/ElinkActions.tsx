@@ -8,19 +8,25 @@ import { Colors, Gradients } from "@/constants/colors";
 export function ElinkActions() {
   return (
     <View style={styles.row}>
-      <TouchableOpacity style={styles.labelBtn} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={[styles.labelBtn, styles.trainBtn]}
+        activeOpacity={0.7}
+      >
         <AppIcon name="sparkles" size={15} color={Colors.textPrimary} />
-        <Text style={styles.btnText}>Train AI Chat</Text>
+        <Text style={styles.btnText} numberOfLines={1}>Train AI Chat</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.labelBtn} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={[styles.labelBtn, styles.editBtn]}
+        activeOpacity={0.7}
+      >
         <AppIcon
           name="edit"
           size={18}
           color={Colors.textPrimary}
           strokeWidth={1.5}
         />
-        <Text style={styles.btnText}>Edit</Text>
+        <Text style={styles.btnText} numberOfLines={1}>Edit</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
@@ -72,7 +78,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   labelBtn: {
-    flex: 1,
     height: 44,
     flexDirection: "row",
     alignItems: "center",
@@ -89,6 +94,14 @@ const styles = StyleSheet.create({
     borderRightColor: "rgba(255,255,255,0.05)",
     borderBottomWidth: 0.5,
     borderBottomColor: "rgba(255,255,255,0.05)",
+  },
+  trainBtn: {
+    flex: 1.45,
+    paddingHorizontal: 10,
+  },
+  editBtn: {
+    flex: 0.75,
+    paddingHorizontal: 10,
   },
   btnText: {
     color: "rgba(255,255,255,0.80)",
