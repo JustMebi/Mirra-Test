@@ -5,7 +5,7 @@ export default function TabLayout() {
   return (
     <Tabs
       tabBar={(props) => <AppTabBar {...props} />}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, tabBarStyle: { position: 'absolute' } }}
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="contacts" />

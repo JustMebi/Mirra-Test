@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { GlassView } from "@/components/ui/GlassView";
+import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
 import { GlowDot } from "@/components/ui/GlowAccent";
 import { Colors } from "@/constants/colors";
 import { Spacing, Radius } from "@/constants/spacing";
@@ -25,7 +25,6 @@ interface TabBarProps {
  */
 export function TabBar({ tabs, activeKey, onPress, style }: TabBarProps) {
   const insets = useSafeAreaInsets();
-
   return (
     <View
       style={[
@@ -34,7 +33,7 @@ export function TabBar({ tabs, activeKey, onPress, style }: TabBarProps) {
         style,
       ]}
     >
-      <GlassView variant="pill" style={styles.bar}>
+      <FrostedGlassView borderRadius={Radius.full} style={styles.bar}>
         {tabs.map((tab) => {
           const isActive = tab.key === activeKey;
           return (
@@ -51,7 +50,7 @@ export function TabBar({ tabs, activeKey, onPress, style }: TabBarProps) {
             </TouchableOpacity>
           );
         })}
-      </GlassView>
+      </FrostedGlassView>
     </View>
   );
 }

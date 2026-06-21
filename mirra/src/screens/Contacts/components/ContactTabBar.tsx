@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from '@/components/ui/Text';
 import { LinearGradient } from "expo-linear-gradient";
 import { AppIcon, AppIconName } from "@/components/ui/AppIcon";
+import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
 import { Colors, Gradients, GradientDir } from "@/constants/colors";
 
 export type ContactTab = "saved" | "mirra";
@@ -21,7 +22,11 @@ export function ContactTabBar({
   onChange,
 }: ContactTabBarProps) {
   return (
-    <View style={styles.segmented}>
+    <FrostedGlassView
+      style={styles.segmented}
+      borderRadius={14}
+      animatedEdges={false}
+    >
       <Segment
         icon="users-outline"
         label="Saved Contacts"
@@ -38,7 +43,7 @@ export function ContactTabBar({
         accentBadge
         onPress={() => onChange("mirra")}
       />
-    </View>
+    </FrostedGlassView>
   );
 }
 
@@ -95,10 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginHorizontal: 16,
     marginBottom: 10,
-    backgroundColor: "rgba(255,255,255,0.05)",
     borderRadius: 14,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
     padding: 3,
     gap: 3,
   },

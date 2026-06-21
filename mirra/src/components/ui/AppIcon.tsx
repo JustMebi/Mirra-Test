@@ -31,6 +31,7 @@ export type AppIconName =
   | 'person-add'
   | 'person-check'
   | 'plus'
+  | 'role-target'
   | 'search'
   | 'send'
   | 'send-outline'
@@ -124,7 +125,7 @@ export function AppIcon({
         <Svg x="1.38" y="2.75" width="19.25" height="16.48" viewBox="0 0 19.25 16.4824">
           <Path d={figmaPaths.chat} fill={color} fillOpacity={opacity * 0.75} />
         </Svg>
-        <Svg x="12.43" y="11.8" width="8.66" height="7.43" viewBox="0 0 8.65641 7.42543">
+        <Svg x="12.43" y="12.9" width="8.66" height="7.43" viewBox="0 0 8.65641 7.42543">
           <Path d={figmaPaths.chatBack} fill={secondary} fillOpacity={opacity * 0.4} />
         </Svg>
       </Svg>
@@ -147,7 +148,7 @@ export function AppIcon({
     return (
       <Svg width={size} height={size} viewBox="0 0 22 22" fill="none">
         <Svg x="1.75" y="1.75" width="18.5" height="18.5" viewBox="0 0 18.5 18.5">
-          <Path d={figmaPaths.search} {...strokeProps} />
+          <Path d={figmaPaths.search} fill="none" {...strokeProps} />
         </Svg>
       </Svg>
     );
@@ -353,6 +354,15 @@ function renderIcon(
       );
     case 'plus':
       return <Path d="M12 5v14M5 12h14" {...strokeProps} />;
+    case 'role-target':
+      return (
+        <G {...strokeProps}>
+          <Circle cx="10.5" cy="13.5" r="6.7" />
+          <Circle cx="10.5" cy="13.5" r="3.2" />
+          <Circle cx="10.5" cy="13.5" r="0.7" fill={color} stroke="none" />
+          <Path d="m10.5 13.5 8-8M15.5 5.5h3v3" />
+        </G>
+      );
     case 'share':
       return (
         <G {...strokeProps} transform="translate(4.6 4.6) scale(1.05)">

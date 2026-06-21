@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View,
   Image,
-  TouchableOpacity,
   ScrollView,
   StyleSheet,
 } from 'react-native';
@@ -13,6 +12,8 @@ import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
 import { HeroMedia } from '@/components/ui/HeroMedia';
+import { FrostedGlassPressable } from '@/components/ui/FrostedGlassPressable';
+import { FrostedGlassView } from '@/components/ui/FrostedGlassView';
 import type { User } from '@/data/mock';
 
 const MAX_ICONS = 3;
@@ -63,13 +64,18 @@ export const ExploreProfileCard = React.memo(function ExploreProfileCard({ user,
           </View>
         </View>
 
-        <View style={styles.statsBar}>
+        <FrostedGlassView
+          style={styles.statsBar}
+          borderRadius={10}
+          frostLevel="dense"
+          animatedEdges={false}
+        >
           <Image source={MediaAssets.images.mirraLogoBigger} style={styles.statsLogo} resizeMode="contain" />
           <View style={styles.statsTextBlock}>
             <Text style={styles.connectionsCount}>{user.connections}</Text>
             <Text style={styles.connectionsLabel}>Connections</Text>
           </View>
-        </View>
+        </FrostedGlassView>
       </View>
 
       <View style={styles.bottomContent}>
@@ -88,17 +94,34 @@ export const ExploreProfileCard = React.memo(function ExploreProfileCard({ user,
         </View>
 
         <View style={styles.imageActions}>
-          <TouchableOpacity style={styles.connectBtn} activeOpacity={0.7}>
+          <FrostedGlassPressable
+            style={styles.actionBtn}
+            contentStyle={styles.actionBtnContent}
+            borderRadius={10}
+            frostLevel="dense"
+            activeOpacity={0.7}
+          >
             <AppIcon name="person-add" size={16} color={Colors.textPrimary} strokeWidth={1.5} />
             <Text style={styles.btnText}>Connect</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dmBtn} activeOpacity={0.7}>
+          </FrostedGlassPressable>
+          <FrostedGlassPressable
+            style={styles.actionBtn}
+            contentStyle={styles.actionBtnContent}
+            borderRadius={10}
+            frostLevel="dense"
+            activeOpacity={0.7}
+          >
             <AppIcon name="send" size={16} color={Colors.textPrimary} />
             <Text style={styles.btnText}>DM</Text>
-          </TouchableOpacity>
+          </FrostedGlassPressable>
         </View>
 
-        <View style={styles.infoTray}>
+        <FrostedGlassView
+          style={styles.infoTray}
+          borderRadius={16}
+          frostLevel="dense"
+          animatedEdges={false}
+        >
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -114,10 +137,10 @@ export const ExploreProfileCard = React.memo(function ExploreProfileCard({ user,
               items={user.proSkills.map((skill) => skill.image)}
               extra={extraSkills}
             />
-            <MetadataSection title="Role" icon="user" value={user.roleType ?? user.role} />
+            <MetadataSection title="Role" icon="role-target" value={user.roleType ?? user.role} />
             <MetadataSection title="Education" icon="book-open" value={getEducationLabel(user.id)} />
           </ScrollView>
-        </View>
+        </FrostedGlassView>
       </View>
     </View>
   );
@@ -324,7 +347,6 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     paddingLeft: 16,
     borderRadius: 10,
-    backgroundColor: 'rgba(255,255,255,0.05)',
   },
   statsLogo: {
     width: 20,
@@ -404,39 +426,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 4,
   },
-  connectBtn: {
+  actionBtn: {
     flex: 1,
     height: 36,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingHorizontal: 16,
     borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
   },
-  dmBtn: {
-    flex: 1,
-    height: 36,
+  actionBtnContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
     paddingHorizontal: 16,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
   },
   btnText: {
     color: 'rgba(255,255,255,0.80)',
@@ -450,7 +450,6 @@ const styles = StyleSheet.create({
     height: 77,
     gap: 2,
     borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.07)',
     shadowColor: '#FFFFFF',
     shadowOffset: { width: 0, height: 0.5 },
     shadowOpacity: 0.10,
@@ -465,7 +464,6 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     paddingBottom: 4,
     paddingLeft: 12,
-    backgroundColor: 'rgba(255,255,255,0.05)',
   },
   emojiSection: {
     flexShrink: 0,

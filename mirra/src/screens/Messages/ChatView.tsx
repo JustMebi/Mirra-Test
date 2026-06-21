@@ -141,10 +141,6 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
     setActiveMentionMessageId(null);
   };
 
-  const handleDM = (user: User) => {
-    console.log('DM', user.name);
-  };
-
   const msgItems = listItems.filter((item): item is ChatMessage => !('type' in item));
 
   const renderItem = ({ item }: { item: ListItem }) => {
@@ -153,7 +149,6 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
         <MentionProfileCard
           user={item.user}
           onClose={dismissCard}
-          onDM={handleDM}
         />
       );
     }

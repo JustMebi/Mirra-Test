@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Text } from '@/components/ui/Text';
 import { AppIcon } from "@/components/ui/AppIcon";
+import { FrostedGlassPressable } from "@/components/ui/FrostedGlassPressable";
 import { Colors } from "@/constants/colors";
 import { MediaAssets } from "@/constants/assets";
 
@@ -60,14 +61,20 @@ export function ContactInterestTags({
         })}
       </ScrollView>
 
-      <TouchableOpacity style={styles.searchTag} activeOpacity={0.7}>
+      <FrostedGlassPressable
+        style={styles.searchTag}
+        contentStyle={styles.searchTagContent}
+        borderRadius={10}
+        intensity={28}
+        tint="systemUltraThinMaterialDark"
+      >
         <AppIcon
           name="search"
           size={15}
           color="rgba(255,255,255,0.80)"
           strokeWidth={1.4}
         />
-      </TouchableOpacity>
+      </FrostedGlassPressable>
     </View>
   );
 }
@@ -127,16 +134,11 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: "rgba(64, 62, 62, 0.05)",
+    backgroundColor: "rgba(255,255,255,0.05)",
+  },
+  searchTagContent: {
     padding: 12,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    shadowColor: "#535151",
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.1,
-    shadowRadius: 0,
-    elevation: 4,
   },
 });

@@ -1,10 +1,10 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppIcon } from "@/components/ui/AppIcon";
 import { SearchButton } from "@/components/ui/SearchButton";
-import { glass } from "@/styles/glass";
+import { FrostedGlassPressable } from "@/components/ui/FrostedGlassPressable";
 import { Colors } from "@/constants/colors";
 
 export function ContactsNavBar() {
@@ -17,9 +17,12 @@ export function ContactsNavBar() {
         <SearchButton />
 
         {/* Plus — glass pill */}
-        <TouchableOpacity
-          style={[glass.pill, styles.iconBtn]}
-          activeOpacity={0.7}
+        <FrostedGlassPressable
+          style={styles.iconBtn}
+          contentStyle={styles.iconBtnContent}
+          borderRadius={16}
+          intensity={28}
+          tint="systemUltraThinMaterialDark"
         >
           <AppIcon
             name="plus"
@@ -27,7 +30,7 @@ export function ContactsNavBar() {
             color={Colors.textSecondary}
             strokeWidth={1.6}
           />
-        </TouchableOpacity>
+        </FrostedGlassPressable>
       </View>
     </View>
   );
@@ -56,6 +59,9 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 16,
+    backgroundColor: "rgba(255,255,255,0.05)",
+  },
+  iconBtnContent: {
     alignItems: "center",
     justifyContent: "center",
   },

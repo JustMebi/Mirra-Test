@@ -3,6 +3,8 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '@/components/ui/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
+import { FrostedGlassPressable } from '@/components/ui/FrostedGlassPressable';
+import { FrostedGlassView } from '@/components/ui/FrostedGlassView';
 import { Colors, Gradients, GradientDir } from '@/constants/colors';
 
 export type ViewMode = 'grid' | 'list' | 'map';
@@ -26,12 +28,16 @@ export function ContactFilterRow({
 }: ContactFilterRowProps) {
   return (
     <View style={styles.row}>
-      <TouchableOpacity style={styles.locationInput} activeOpacity={0.7}>
+      <FrostedGlassPressable
+        style={styles.locationInput}
+        contentStyle={styles.locationInputContent}
+        borderRadius={10}
+      >
         <AppIcon name="target" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.3} />
         <Text style={styles.locationText} numberOfLines={1}>
           {location}
         </Text>
-      </TouchableOpacity>
+      </FrostedGlassPressable>
 
       <View style={styles.actions}>
         <TouchableOpacity activeOpacity={0.8} style={styles.filterGlow}>
@@ -46,9 +52,13 @@ export function ContactFilterRow({
           </LinearGradient>
         </TouchableOpacity>
 
-        <TouchableOpacity activeOpacity={0.7} style={styles.sortBtn}>
+        <FrostedGlassPressable
+          style={styles.sortBtn}
+          contentStyle={styles.sortBtnContent}
+          borderRadius={10}
+        >
           <AppIcon name="sort-lines" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.35} />
-        </TouchableOpacity>
+        </FrostedGlassPressable>
       </View>
 
       <View style={styles.dividerWrap}>
@@ -60,7 +70,11 @@ export function ContactFilterRow({
         />
       </View>
 
-      <View style={styles.toggle}>
+      <FrostedGlassView
+        style={styles.toggle}
+        borderRadius={10}
+        animatedEdges={false}
+      >
         {VIEW_MODES.map(({ key, icon, label }) => {
           const isActive = viewMode === key;
           return (
@@ -80,7 +94,7 @@ export function ContactFilterRow({
             </TouchableOpacity>
           );
         })}
-      </View>
+      </FrostedGlassView>
     </View>
   );
 }
@@ -98,19 +112,14 @@ const styles = StyleSheet.create({
   locationInput: {
     flex: 1,
     height: 32,
+    borderRadius: 10,
+  },
+  locationInputContent: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
     paddingLeft: 12,
     paddingRight: 2,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
   },
   locationText: {
     flex: 1,
@@ -151,15 +160,10 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  sortBtnContent: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
   },
   dividerWrap: {
     width: 1,
@@ -183,14 +187,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4,
     borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
     padding: 2,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
   },
   toggleBtn: {
     flex: 1,

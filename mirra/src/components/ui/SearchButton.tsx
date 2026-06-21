@@ -6,61 +6,69 @@ import {
   StyleProp,
   ViewStyle,
 } from "react-native";
-import Svg, { Ellipse, Path } from "react-native-svg";
+import Svg, { Defs, Path, RadialGradient, Rect, Stop } from "react-native-svg";
 import { AppIcon } from "./AppIcon";
+import { FrostedGlassView, FrostLevel } from "./FrostedGlassView";
 import { Colors } from "@/constants/colors";
 
 interface SearchButtonProps {
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
+  frostLevel?: FrostLevel;
 }
 
-export function SearchButton({ onPress, style }: SearchButtonProps) {
+export function SearchButton({
+  onPress,
+  style,
+  frostLevel = "regular",
+}: SearchButtonProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       style={[styles.outer, style]}
       onPress={onPress}
     >
-      <View style={styles.inner}>
+      <FrostedGlassView
+        style={styles.inner}
+        borderRadius={16}
+        intensity={28}
+        tint="systemUltraThinMaterialDark"
+        frostLevel={frostLevel}
+        animatedEdges={false}
+      >
         <Svg
           width={44}
-          height={44}
-          viewBox="0 0 44 44"
+          height={22}
+          viewBox="0 0 44 22"
           style={styles.glowLayer}
         >
-          <Ellipse
-            cx="22"
-            cy="44.9"
-            rx="18.5"
-            ry="5"
-            fill="rgba(217, 217, 217, 1)"
-            opacity={0.2}
-          />
-          <Ellipse
-            cx="22"
-            cy="44.8"
-            rx="20.5"
-            ry="8.6"
-            fill="rgba(38, 183, 255, 1)"
-            opacity={0.13}
-          />
-          <Ellipse
-            cx="22"
-            cy="44.2"
-            rx="18.5"
-            ry="5"
-            fill="rgba(38, 183, 255, 1)"
-            opacity={0.5}
-          />
-          <Ellipse
-            cx="22"
-            cy="46"
-            rx="13.8"
-            ry="3.2"
-            fill="rgba(29, 74, 254, 1)"
-            opacity={0.38}
-          />
+          <Defs>
+            <RadialGradient
+              id="searchBlueGlow"
+              cx="22"
+              cy="30"
+              rx="22"
+              ry="16"
+              gradientUnits="userSpaceOnUse"
+            >
+              <Stop offset="0" stopColor="#26B7FF" stopOpacity="0.52" />
+              <Stop offset="0.42" stopColor="#26B7FF" stopOpacity="0.24" />
+              <Stop offset="1" stopColor="#26B7FF" stopOpacity="0" />
+            </RadialGradient>
+            <RadialGradient
+              id="searchBlueCore"
+              cx="22"
+              cy="32"
+              rx="14"
+              ry="9"
+              gradientUnits="userSpaceOnUse"
+            >
+              <Stop offset="0" stopColor="#1D4AFE" stopOpacity="0.42" />
+              <Stop offset="1" stopColor="#1D4AFE" stopOpacity="0" />
+            </RadialGradient>
+          </Defs>
+          <Rect width="44" height="22" fill="url(#searchBlueGlow)" />
+          <Rect width="44" height="22" fill="url(#searchBlueCore)" />
         </Svg>
         <AppIcon
           name="search"
@@ -72,7 +80,7 @@ export function SearchButton({ onPress, style }: SearchButtonProps) {
         <View style={styles.premiumSparkle}>
           <PremiumSparkle />
         </View>
-      </View>
+      </FrostedGlassView>
     </TouchableOpacity>
   );
 }
@@ -110,14 +118,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    backgroundColor: "rgba(255,255,255,0.045)",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.075)",
   },
   glowLayer: {
     position: "absolute",
     left: 0,
-    top: 0,
+    bottom: 0,
   },
   premiumSparkle: {
     position: "absolute",

@@ -8,7 +8,10 @@ import {
   ImageSourcePropType,
 } from "react-native";
 import { Text } from '@/components/ui/Text';
+import { LinearGradient } from "expo-linear-gradient";
 import { AppIcon } from "@/components/ui/AppIcon";
+import { FrostedGlassPressable } from "@/components/ui/FrostedGlassPressable";
+import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
 import { Colors } from "@/constants/colors";
 import type { Interest, ProSkill, User } from "@/data/mock";
 
@@ -60,8 +63,10 @@ export function ContactCard({
           </Text>
 
           <View style={styles.actionsRow}>
-            <TouchableOpacity
+            <FrostedGlassPressable
               style={[styles.actionBtn, styles.dmBtn]}
+              contentStyle={styles.actionBtnContent}
+              borderRadius={10}
               onPress={onDM}
               activeOpacity={0.72}
             >
@@ -69,10 +74,12 @@ export function ContactCard({
               <Text style={styles.actionText} numberOfLines={1}>
                 DM
               </Text>
-            </TouchableOpacity>
+            </FrostedGlassPressable>
 
-            <TouchableOpacity
+            <FrostedGlassPressable
               style={[styles.actionBtn, styles.dpBtn]}
+              contentStyle={[styles.actionBtnContent, styles.dpBtnContent]}
+              borderRadius={10}
               onPress={onChatDP}
               activeOpacity={0.72}
             >
@@ -85,27 +92,29 @@ export function ContactCard({
               <Text style={styles.actionText} numberOfLines={1}>
                 Chat with DP
               </Text>
-            </TouchableOpacity>
+            </FrostedGlassPressable>
 
             <TouchableOpacity style={styles.personIconBtn} activeOpacity={0.7}>
               <AppIcon name="person-check" size={20} color={Colors.textPrimary} strokeWidth={1.35} />
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
+          <FrostedGlassPressable
             style={[styles.actionBtn, styles.visitBtn]}
+            contentStyle={styles.actionBtnContent}
+            borderRadius={10}
             onPress={onVisitProfile}
             activeOpacity={0.72}
           >
             <Text style={styles.visitText}>Visit Profile</Text>
-          </TouchableOpacity>
+          </FrostedGlassPressable>
         </View>
       </View>
 
       <View style={styles.lowerArea}>
         <View style={styles.lowerContent}>
-          <View style={styles.commonSlot}>
-            {user.thingsInCommon != null && user.thingsInCommon > 0 && (
+          {user.thingsInCommon != null && user.thingsInCommon > 0 && (
+            <View style={styles.commonSlot}>
               <View style={styles.commonBadge}>
                 <View style={styles.commonDot} />
                 <Text style={styles.commonText}>Things in Common</Text>
@@ -113,8 +122,8 @@ export function ContactCard({
                   <Text style={styles.commonCount}>{user.thingsInCommon}</Text>
                 </View>
               </View>
-            )}
-          </View>
+            </View>
+          )}
 
           <ScrollView
             horizontal
@@ -123,7 +132,11 @@ export function ContactCard({
             contentContainerStyle={styles.metaRail}
           >
             <MetaSection label="Location" style={styles.locationSection}>
-              <View style={styles.locationPill}>
+              <FrostedGlassView
+                style={styles.locationPill}
+                borderRadius={10}
+                animatedEdges={false}
+              >
                 <View style={styles.locationCornerDot} />
                 <AppIcon
                   name="map-pin"
@@ -134,7 +147,7 @@ export function ContactCard({
                 <Text style={styles.locationText} numberOfLines={1}>
                   {user.city}
                 </Text>
-              </View>
+              </FrostedGlassView>
             </MetaSection>
 
             <MetaSection label="Interests" style={styles.emojiSection}>
@@ -146,7 +159,11 @@ export function ContactCard({
             </MetaSection>
 
             <MetaSection label="Role" style={styles.roleSection}>
-              <View style={styles.roleChip}>
+              <FrostedGlassView
+                style={styles.roleChip}
+                borderRadius={10}
+                animatedEdges={false}
+              >
                 <AppIcon
                   name="target"
                   size={12}
@@ -156,12 +173,29 @@ export function ContactCard({
                 <Text style={styles.roleChipText} numberOfLines={1}>
                   {user.roleType ?? "Member"}
                 </Text>
-              </View>
+              </FrostedGlassView>
             </MetaSection>
           </ScrollView>
         </View>
       </View>
     </View>
+  );
+}
+
+function MetaFrost() {
+  return (
+    <LinearGradient
+      pointerEvents="none"
+      colors={[
+        "rgba(255,255,255,0.075)",
+        "rgba(255,255,255,0.02)",
+        "rgba(255,255,255,0.045)",
+      ]}
+      locations={[0, 0.62, 1]}
+      start={{ x: 0.5, y: 0 }}
+      end={{ x: 0.5, y: 1 }}
+      style={StyleSheet.absoluteFill}
+    />
   );
 }
 
@@ -207,6 +241,7 @@ function TiltedEmojiRow({
             index > 0 && styles.overlapChip,
           ]}
         >
+          <MetaFrost />
           <Image
             source={item.image as ImageSourcePropType}
             style={styles.emojiImg}
@@ -223,6 +258,7 @@ function TiltedEmojiRow({
             { transform: [{ rotate: CHIP_ROTATIONS[3] }] },
           ]}
         >
+          <MetaFrost />
           <Text style={styles.overflowText}>+{overflow}</Text>
         </View>
       )}
@@ -294,23 +330,22 @@ const styles = StyleSheet.create({
   },
   actionBtn: {
     height: 36,
+    borderRadius: 10,
+  },
+  actionBtnContent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.05)",
-    backgroundColor: "rgba(255,255,255,0.05)",
     paddingHorizontal: 16,
-    shadowColor: "#FFFFFF",
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.1,
-    shadowRadius: 0,
   },
-  dmBtn: {},
+  dmBtn: {
+    width: 72,
+  },
   dpBtn: {
     flex: 1,
+  },
+  dpBtnContent: {
     paddingHorizontal: 8,
   },
   personIconBtn: {
@@ -436,9 +471,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 4,
     borderRadius: 10,
+    overflow: "hidden",
     paddingHorizontal: 12,
     paddingVertical: 2.5,
-    backgroundColor: "rgba(255,255,255,0.05)",
   },
   locationCornerDot: {
     position: "absolute",
@@ -472,13 +507,14 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
+    overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 5,
     paddingVertical: 2.5,
-    backgroundColor: "rgba(255,255,255,0.065)",
+    backgroundColor: "rgba(255,255,255,0.035)",
     borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.05)",
+    borderColor: "rgba(255,255,255,0.075)",
   },
   overlapChip: {
     marginLeft: -6,
@@ -488,7 +524,7 @@ const styles = StyleSheet.create({
     height: 24,
   },
   overflowChip: {
-    backgroundColor: "rgba(255,255,255,0.075)",
+    backgroundColor: "rgba(255,255,255,0.045)",
   },
   overflowText: {
     color: Colors.textSecondary,
@@ -504,7 +540,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     borderRadius: 10,
-    backgroundColor: "rgba(255,255,255,0.055)",
   },
   roleChipText: {
     flex: 1,
