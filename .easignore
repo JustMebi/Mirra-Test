@@ -1,0 +1,13 @@
+/*
+!/mirra
+!/.gitignore
+!/.easignore
+mirra/android/.gradle
+mirra/android/app/build
+mirra/android/build
+mirra/android/.cxx
+mirra/android/app/.cxx
+mirra/android/local.properties
+mirra/ios/build
+mirra/ios/Pods
+mirra/.expo
