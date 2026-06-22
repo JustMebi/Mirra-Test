@@ -1,24 +1,18 @@
-import React from 'react';
-import {
-  View, Image,
-  ScrollView, StyleSheet, Dimensions,
-} from 'react-native';
-import { Text } from '@/components/ui/Text';
-import { LinearGradient } from 'expo-linear-gradient';
-import { AppIcon } from '@/components/ui/AppIcon';
-import { Colors } from '@/constants/colors';
-import { MediaAssets } from '@/constants/assets';
-import { mockCurrentUser, mockStats, type Stat } from '@/data/mock';
-import { HeroMedia } from '@/components/ui/HeroMedia';
-import { PulsingDot } from '@/components/ui/PulsingDot';
-import { FrostedGlassPressable } from '@/components/ui/FrostedGlassPressable';
-import { FrostedGlassView } from '@/components/ui/FrostedGlassView';
+import React from "react";
+import { View, Image, ScrollView, StyleSheet, Dimensions } from "react-native";
+import { Text } from "@/components/ui/Text";
+import { LinearGradient } from "expo-linear-gradient";
+import { AppIcon } from "@/components/ui/AppIcon";
+import { Colors } from "@/constants/colors";
+import { MediaAssets } from "@/constants/assets";
+import { mockCurrentUser, mockStats, type Stat } from "@/data/mock";
+import { HeroMedia } from "@/components/ui/HeroMedia";
+import { PulsingDot } from "@/components/ui/PulsingDot";
+import { FrostedGlassPressable } from "@/components/ui/FrostedGlassPressable";
+import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
 
-const { height: SCREEN_H } = Dimensions.get('window');
+const { height: SCREEN_H } = Dimensions.get("window");
 const CARD_H = Math.min(626, Math.max(520, Math.round(SCREEN_H * 0.655)));
-
-
-// ─── Stat card ────────────────────────────────────────────────────────────────
 
 function StatCard({ value, label, period, growth, positive }: Stat) {
   return (
@@ -41,7 +35,12 @@ function StatCard({ value, label, period, growth, positive }: Stat) {
                 color={positive ? Colors.accent : Colors.error}
                 strokeWidth={2.4}
               />
-              <Text style={[statStyles.growth, { color: positive ? Colors.accent : Colors.error }]}>
+              <Text
+                style={[
+                  statStyles.growth,
+                  { color: positive ? Colors.accent : Colors.error },
+                ]}
+              >
                 {growth}
               </Text>
             </View>
@@ -55,8 +54,8 @@ function StatCard({ value, label, period, growth, positive }: Stat) {
 const statStyles = StyleSheet.create({
   card: {
     flexShrink: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -65,44 +64,45 @@ const statStyles = StyleSheet.create({
   value: {
     color: Colors.textPrimary,
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: "700",
     letterSpacing: -0.5,
   },
   textBlock: {
     gap: 2,
   },
   label: {
-    color: 'rgba(255,255,255,0.80)',
+    color: "rgba(255,255,255,0.80)",
     fontSize: 10,
-    fontWeight: '600',
+    fontWeight: "600",
     letterSpacing: 0.3,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   metaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 4,
   },
   period: {
-    color: 'rgba(255,255,255,0.60)',
+    color: "rgba(255,255,255,0.60)",
     fontSize: 9,
   },
   growth: {
     fontSize: 9,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   growthGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 2,
   },
 });
 
-// ─── Hero profile card ────────────────────────────────────────────────────────
-
 export function HeroProfileCard() {
   const user = mockCurrentUser;
-  const heroMedia = user.heroMedia ?? { type: 'image' as const, source: { uri: user.heroImage } };
+  const heroMedia = user.heroMedia ?? {
+    type: "image" as const,
+    source: { uri: user.heroImage },
+  };
 
   return (
     <View style={styles.card}>
@@ -111,22 +111,21 @@ export function HeroProfileCard() {
 
       {/* Top gradient — darkens behind stats for readability */}
       <LinearGradient
-        colors={['rgba(0,0,0,0.58)', 'transparent']}
+        colors={["rgba(0,0,0,0.58)", "transparent"]}
         style={styles.topGradient}
         pointerEvents="none"
       />
 
       {/* Bottom gradient — darkens behind profile info */}
       <LinearGradient
-        colors={['transparent', 'rgba(0,0,0,0.48)', 'rgba(0,0,0,0.92)']}
-        locations={[0.28, 0.60, 1]}
+        colors={["transparent", "rgba(0,0,0,0.48)", "rgba(0,0,0,0.92)"]}
+        locations={[0.28, 0.6, 1]}
         style={styles.bottomGradient}
         pointerEvents="none"
       />
 
       {/* Layered content */}
       <View style={styles.content}>
-
         {/* Stats row overlaid on top portion */}
         <View style={styles.statsClip}>
           <ScrollView
@@ -142,7 +141,6 @@ export function HeroProfileCard() {
 
         {/* Bottom cluster */}
         <View style={styles.bottomCluster}>
-
           {/* Location badge + settings */}
           <View style={styles.locationRow}>
             <FrostedGlassView
@@ -152,8 +150,14 @@ export function HeroProfileCard() {
               animatedEdges={false}
             >
               <PulsingDot size={6} />
-              <AppIcon name="navigation" size={12} color="rgba(255,255,255,0.8)" />
-              <Text style={styles.locationText} numberOfLines={1}>{user.location}</Text>
+              <AppIcon
+                name="navigation"
+                size={12}
+                color="rgba(255,255,255,0.8)"
+              />
+              <Text style={styles.locationText} numberOfLines={1}>
+                {user.location}
+              </Text>
             </FrostedGlassView>
             <FrostedGlassPressable
               style={styles.settingsBtn}
@@ -162,7 +166,12 @@ export function HeroProfileCard() {
               frostLevel="regular"
               activeOpacity={0.7}
             >
-              <AppIcon name="sliders" size={12} color={Colors.textPrimary} strokeWidth={1.5} />
+              <AppIcon
+                name="sliders"
+                size={12}
+                color={Colors.textPrimary}
+                strokeWidth={1.5}
+              />
             </FrostedGlassPressable>
           </View>
 
@@ -174,10 +183,16 @@ export function HeroProfileCard() {
             animatedEdges={false}
           >
             <View style={styles.avatarNameRow}>
-              <Image source={MediaAssets.images.homeIcon} style={styles.avatar} resizeMode="cover" />
+              <Image
+                source={MediaAssets.images.homeIcon}
+                style={styles.avatar}
+                resizeMode="cover"
+              />
               <View style={styles.nameBlock}>
                 <View style={styles.nameLine}>
-                  <Text style={styles.name} numberOfLines={1}>{user.name}</Text>
+                  <Text style={styles.name} numberOfLines={1}>
+                    {user.name}
+                  </Text>
                   <AppIcon name="verified" size={13} />
                 </View>
                 <Text style={styles.roleText}>{user.role}</Text>
@@ -192,10 +207,16 @@ export function HeroProfileCard() {
               animatedEdges={false}
             >
               <View style={styles.followersBlock}>
-                <Text style={styles.followersCount}>{user.followersFormatted}</Text>
+                <Text style={styles.followersCount}>
+                  {user.followersFormatted}
+                </Text>
                 <Text style={styles.followersLabel}>Followers</Text>
               </View>
-              <Image source={MediaAssets.images.instagram} style={styles.instagramIcon} resizeMode="contain" />
+              <Image
+                source={MediaAssets.images.instagram}
+                style={styles.instagramIcon}
+                resizeMode="contain"
+              />
             </FrostedGlassView>
           </FrostedGlassView>
 
@@ -208,7 +229,12 @@ export function HeroProfileCard() {
               frostLevel="regular"
               activeOpacity={0.7}
             >
-              <AppIcon name="eye" size={13} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+              <AppIcon
+                name="eye"
+                size={13}
+                color="rgba(255,255,255,0.8)"
+                strokeWidth={1.5}
+              />
               <Text style={styles.actionText}>View Profile</Text>
             </FrostedGlassPressable>
             <FrostedGlassPressable
@@ -218,7 +244,12 @@ export function HeroProfileCard() {
               frostLevel="regular"
               activeOpacity={0.7}
             >
-              <AppIcon name="layers" size={13} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+              <AppIcon
+                name="layers"
+                size={13}
+                color="rgba(255,255,255,0.8)"
+                strokeWidth={1.5}
+              />
               <Text style={styles.actionText}>All Cards</Text>
             </FrostedGlassPressable>
             <FrostedGlassPressable
@@ -228,11 +259,15 @@ export function HeroProfileCard() {
               frostLevel="regular"
               activeOpacity={0.7}
             >
-              <AppIcon name="share" size={13} color="rgba(255,255,255,0.8)" strokeWidth={1.5} />
+              <AppIcon
+                name="share"
+                size={13}
+                color="rgba(255,255,255,0.8)"
+                strokeWidth={1.5}
+              />
               <Text style={styles.actionText}>Share</Text>
             </FrostedGlassPressable>
           </View>
-
         </View>
       </View>
     </View>
@@ -241,42 +276,42 @@ export function HeroProfileCard() {
 
 const styles = StyleSheet.create({
   card: {
-    width: '100%',
+    width: "100%",
     height: CARD_H,
     borderRadius: 24,
-    overflow: 'hidden',
+    overflow: "hidden",
     backgroundColor: Colors.bgSurface,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.10)',
+    borderBottomColor: "rgba(255,255,255,0.10)",
   },
   topGradient: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     height: 90,
   },
   bottomGradient: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     height: CARD_H * 0.58,
   },
   content: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
     padding: 12,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   statsClip: {
     marginHorizontal: 2,
   },
   statsRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 4,
     paddingRight: 24,
   },
@@ -284,28 +319,28 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   locationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 6,
   },
   locationBadge: {
     height: 32,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 5,
     paddingLeft: 8,
     paddingRight: 12,
     paddingVertical: 6,
     borderRadius: 12,
-    overflow: 'hidden',
-    maxWidth: '86%',
+    overflow: "hidden",
+    maxWidth: "86%",
   },
   locationText: {
     flexShrink: 1,
-    color: 'rgba(255,255,255,0.80)',
+    color: "rgba(255,255,255,0.80)",
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
     letterSpacing: -0.2,
   },
   settingsBtn: {
@@ -314,12 +349,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   settingsBtnContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   infoBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 10,
     borderRadius: 20,
     paddingHorizontal: 12,
@@ -327,8 +362,8 @@ const styles = StyleSheet.create({
   },
   avatarNameRow: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
     minWidth: 0,
   },
@@ -337,7 +372,7 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 24,
     borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.20)',
+    borderColor: "rgba(255,255,255,0.20)",
   },
   nameBlock: {
     flex: 1,
@@ -345,14 +380,14 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   nameLine: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 4,
   },
   name: {
     color: Colors.textPrimary,
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: "700",
     letterSpacing: -0.3,
   },
   roleText: {
@@ -360,8 +395,8 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   followersChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
     borderRadius: 10,
     paddingLeft: 12,
@@ -370,7 +405,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   followersBlock: {
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     gap: 1,
   },
   instagramIcon: {
@@ -381,7 +416,7 @@ const styles = StyleSheet.create({
   followersCount: {
     color: Colors.textPrimary,
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: "700",
     letterSpacing: -0.3,
   },
   followersLabel: {
@@ -389,7 +424,7 @@ const styles = StyleSheet.create({
     fontSize: 9,
   },
   actionsRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 4,
   },
   actionBtn: {
@@ -398,15 +433,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   actionBtnContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 6,
   },
   actionText: {
-    color: 'rgba(255,255,255,0.80)',
+    color: "rgba(255,255,255,0.80)",
     fontSize: 13,
-    fontWeight: '400',
+    fontWeight: "400",
     letterSpacing: -0.2,
   },
 });

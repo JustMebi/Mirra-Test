@@ -18,7 +18,6 @@ interface LiquidGlassOverlayProps {
   sweepDuration?: number;
 }
 
-/** Transparent highlights layered over the blur/fallback glass surface. */
 export function LiquidGlassOverlay({
   width,
   height,
@@ -44,7 +43,13 @@ export function LiquidGlassOverlay({
   const topLensStyle = useAnimatedStyle(() => ({
     opacity: interpolate(phase.value, [0, 1], [0.5, 0.9]),
     transform: [
-      { translateX: interpolate(phase.value, [0, 1], [-width * 0.12, width * 0.12]) },
+      {
+        translateX: interpolate(
+          phase.value,
+          [0, 1],
+          [-width * 0.12, width * 0.12],
+        ),
+      },
       { scaleX: interpolate(phase.value, [0, 1], [0.92, 1.08]) },
     ],
   }));
@@ -52,7 +57,13 @@ export function LiquidGlassOverlay({
   const bottomLensStyle = useAnimatedStyle(() => ({
     opacity: interpolate(phase.value, [0, 1], [0.75, 0.4]),
     transform: [
-      { translateX: interpolate(phase.value, [0, 1], [width * 0.1, -width * 0.1]) },
+      {
+        translateX: interpolate(
+          phase.value,
+          [0, 1],
+          [width * 0.1, -width * 0.1],
+        ),
+      },
       { scaleX: interpolate(phase.value, [0, 1], [1.06, 0.94]) },
     ],
   }));

@@ -1,10 +1,13 @@
-import React from 'react';
-import { View, ViewStyle, TextStyle } from 'react-native';
-import { Text } from '@/components/ui/Text';
-import { Canvas, Circle, RadialGradient, vec } from '@shopify/react-native-skia';
-import { glow, GlowTokens } from '@/styles/glow';
-
-// ─── Glow Halo (ambient light blob behind an element) ──────────────────────
+import React from "react";
+import { View, ViewStyle, TextStyle } from "react-native";
+import { Text } from "@/components/ui/Text";
+import {
+  Canvas,
+  Circle,
+  RadialGradient,
+  vec,
+} from "@shopify/react-native-skia";
+import { glow, GlowTokens } from "@/styles/glow";
 
 interface GlowHaloProps {
   size?: number;
@@ -12,7 +15,11 @@ interface GlowHaloProps {
   style?: ViewStyle;
 }
 
-export function GlowHalo({ size = 200, intensity = 0.4, style }: GlowHaloProps) {
+export function GlowHalo({
+  size = 200,
+  intensity = 0.4,
+  style,
+}: GlowHaloProps) {
   const r = size / 2;
   return (
     <View style={[{ width: size, height: size }, style]} pointerEvents="none">
@@ -22,8 +29,8 @@ export function GlowHalo({ size = 200, intensity = 0.4, style }: GlowHaloProps) 
             c={vec(r, r)}
             r={r}
             colors={[
-              GlowTokens.glowColor.replace('0.25', String(intensity)),
-              'transparent',
+              GlowTokens.glowColor.replace("0.25", String(intensity)),
+              "transparent",
             ]}
           />
         </Circle>
@@ -31,8 +38,6 @@ export function GlowHalo({ size = 200, intensity = 0.4, style }: GlowHaloProps) 
     </View>
   );
 }
-
-// ─── Glow Text ──────────────────────────────────────────────────────────────
 
 interface GlowTextProps {
   children: React.ReactNode;
@@ -45,8 +50,6 @@ export function GlowText({ children, style, soft = false }: GlowTextProps) {
     <Text style={[soft ? glow.textGlow : glow.text, style]}>{children}</Text>
   );
 }
-
-// ─── Glow Dot ───────────────────────────────────────────────────────────────
 
 interface GlowDotProps {
   size?: number;

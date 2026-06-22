@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, ViewStyle, LayoutChangeEvent, Platform } from 'react-native';
-import { BlurView } from 'expo-blur';
-import { glass } from '@/styles/glass';
+import React from "react";
+import { View, ViewStyle, LayoutChangeEvent, Platform } from "react-native";
+import { BlurView } from "expo-blur";
+import { glass } from "@/styles/glass";
 
 interface GlassViewProps {
   children?: React.ReactNode;
@@ -12,15 +12,11 @@ interface GlassViewProps {
   onLayout?: (e: LayoutChangeEvent) => void;
 }
 
-/**
- * Drop-in glass surface. Uses expo-blur when `blur` is true,
- * otherwise falls back to the semi-transparent fill from glass.ts.
- */
 export function GlassView({
   children,
   style,
   intensity = 20,
-  variant = 'card',
+  variant = "card",
   blur = false,
   onLayout,
 }: GlassViewProps) {
@@ -32,7 +28,7 @@ export function GlassView({
         intensity={intensity}
         tint="dark"
         blurReductionFactor={1}
-        experimentalBlurMethod={Platform.OS === 'android' ? 'none' : undefined}
+        experimentalBlurMethod={Platform.OS === "android" ? "none" : undefined}
         style={[baseStyle, style]}
         onLayout={onLayout}
       >

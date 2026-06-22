@@ -14,7 +14,6 @@ export function SplashIntro({ onDone }: SplashIntroProps) {
 
   useEffect(() => {
     Animated.sequence([
-      // Fade + scale logo in
       Animated.parallel([
         Animated.timing(logoOpacity, {
           toValue: 1,
@@ -28,7 +27,6 @@ export function SplashIntro({ onDone }: SplashIntroProps) {
         }),
       ]),
       Animated.delay(520),
-      // Fade whole screen out
       Animated.timing(screenOpacity, {
         toValue: 0,
         duration: 280,
@@ -36,10 +34,9 @@ export function SplashIntro({ onDone }: SplashIntroProps) {
       }),
     ]).start(() => onDone());
 
-    // Hard fallback — always dismiss by 1.8s regardless
     const fallback = setTimeout(onDone, 1800);
     return () => clearTimeout(fallback);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Animated.View style={[styles.overlay, { opacity: screenOpacity }]} pointerEvents="none">

@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
-import { Colors } from '@/constants/colors';
-import { mockUsers } from '@/data/mock';
-import { ContactsNavBar } from './components/ContactsNavBar';
-import { ContactTabBar, ContactTab } from './components/ContactTabBar';
-import { ContactFilterRow, ViewMode } from './components/ContactFilterRow';
-import { ContactInterestTags } from './components/ContactInterestTags';
-import { ConnectionRequestBanner } from './components/ConnectionRequestBanner';
-import { ContactCard } from './components/ContactCard';
+import React, { useState } from "react";
+import { View, ScrollView, StyleSheet } from "react-native";
+import { router } from "expo-router";
+import { Colors } from "@/constants/colors";
+import { mockUsers } from "@/data/mock";
+import { ContactsNavBar } from "./components/ContactsNavBar";
+import { ContactTabBar, ContactTab } from "./components/ContactTabBar";
+import { ContactFilterRow, ViewMode } from "./components/ContactFilterRow";
+import { ContactInterestTags } from "./components/ContactInterestTags";
+import { ConnectionRequestBanner } from "./components/ConnectionRequestBanner";
+import { ContactCard } from "./components/ContactCard";
 
 export function ContactsScreen() {
-  const [tab, setTab] = useState<ContactTab>('mirra');
-  const [viewMode, setViewMode] = useState<ViewMode>('list');
+  const [tab, setTab] = useState<ContactTab>("mirra");
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [activeFilter, setActiveFilter] = useState<string | undefined>();
 
-  // Evan (index 1) appears first per design
   const contacts = [mockUsers[1], mockUsers[0], ...mockUsers.slice(2)];
 
   return (
@@ -26,7 +25,12 @@ export function ContactsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
       >
-        <ContactTabBar active={tab} onChange={setTab} savedCount={2} mirraCount={7} />
+        <ContactTabBar
+          active={tab}
+          onChange={setTab}
+          savedCount={2}
+          mirraCount={7}
+        />
         <ContactFilterRow viewMode={viewMode} onViewModeChange={setViewMode} />
         <ContactInterestTags active={activeFilter} onSelect={setActiveFilter} />
 
@@ -38,7 +42,10 @@ export function ContactsScreen() {
               user={user}
               onDM={() => {}}
               onChatDP={() =>
-                router.push({ pathname: '/(modal)/chatbot', params: { userId: user.id } })
+                router.push({
+                  pathname: "/(modal)/chatbot",
+                  params: { userId: user.id },
+                })
               }
               onVisitProfile={() => {}}
             />

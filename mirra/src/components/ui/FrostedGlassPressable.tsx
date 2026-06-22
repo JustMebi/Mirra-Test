@@ -7,13 +7,12 @@ import {
   ViewStyle,
 } from "react-native";
 import { BlurTint } from "expo-blur";
-import {
-  FrostedGlassView,
-  FrostLevel,
-} from "@/components/ui/FrostedGlassView";
+import { FrostedGlassView, FrostLevel } from "@/components/ui/FrostedGlassView";
 
-interface FrostedGlassPressableProps
-  extends Omit<TouchableOpacityProps, "style"> {
+interface FrostedGlassPressableProps extends Omit<
+  TouchableOpacityProps,
+  "style"
+> {
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
   borderRadius?: number;
@@ -23,7 +22,6 @@ interface FrostedGlassPressableProps
   animatedEdges?: boolean;
 }
 
-/** Touchable companion to FrostedGlassView for glass buttons and controls. */
 export function FrostedGlassPressable({
   children,
   style,

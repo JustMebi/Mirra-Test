@@ -26,8 +26,6 @@ import {
   type ChatMessage,
 } from "@/data/mock";
 
-// ─── Typing indicator ─────────────────────────────────────────────────────────
-
 function TypingGlyph() {
   const pulse = useRef(new Animated.Value(0)).current;
   const rotate = useRef(new Animated.Value(0)).current;
@@ -216,8 +214,6 @@ const glyphStyles = StyleSheet.create({
   },
 });
 
-// ─── Main modal ───────────────────────────────────────────────────────────────
-
 export default function ChatbotModal() {
   const { userId } = useLocalSearchParams<{ userId?: string }>();
   const insets = useSafeAreaInsets();
@@ -300,7 +296,6 @@ export default function ChatbotModal() {
     item: ChatMessage;
     index: number;
   }) => {
-    // Show timestamp only after last message in a same-sender run or isOwn
     const nextMsg = messages[index + 1];
     const showTime =
       !nextMsg || nextMsg.senderId !== item.senderId || item.isOwn;
@@ -352,7 +347,6 @@ export default function ChatbotModal() {
         <View style={styles.dragHandlePill} />
       </View>
 
-      {/* ── Ghost watermark ─────────────────────────────── */}
       <View style={styles.watermarkWrap} pointerEvents="none">
         <Text style={styles.watermark}>
           Hey, you're chatting with{"\n"}
@@ -360,7 +354,6 @@ export default function ChatbotModal() {
         </Text>
       </View>
 
-      {/* ── Header ──────────────────────────────────────── */}
       <View style={styles.header}>
         <View style={styles.headerCenter}>
           <Image source={dpUser.avatar} style={styles.headerAvatar} />
@@ -385,7 +378,6 @@ export default function ChatbotModal() {
         </TouchableOpacity>
       </View>
 
-      {/* ── Tab pill ────────────────────────────────────── */}
       <View style={styles.tabWrap}>
         <View style={[glass.pill, styles.tabPill]}>
           <TouchableOpacity
@@ -420,7 +412,6 @@ export default function ChatbotModal() {
         </View>
       </View>
 
-      {/* ── Messages + input ────────────────────────────── */}
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -439,7 +430,6 @@ export default function ChatbotModal() {
           ListFooterComponent={isTyping ? <TypingRow /> : null}
         />
 
-        {/* ── Input area ────────────────────────────────── */}
         <LinearGradient
           colors={[
             "rgba(129, 157, 222, 0)",
@@ -487,7 +477,6 @@ export default function ChatbotModal() {
             </TouchableOpacity>
           </View>
 
-          {/* Anonymous mode bar */}
           <View style={styles.anonBar}>
             <AnonymousModeIcon />
             <Text style={styles.anonText}>Anonymous Mode is on</Text>
@@ -504,10 +493,7 @@ export default function ChatbotModal() {
   );
 }
 
-// ─── Message styles ───────────────────────────────────────────────────────────
-
 const msgStyles = StyleSheet.create({
-  // DP received
   dpWrap: {
     alignItems: "flex-start",
     marginBottom: 10,
@@ -534,7 +520,6 @@ const msgStyles = StyleSheet.create({
     alignSelf: "flex-end",
   },
 
-  // Own message
   ownWrap: {
     alignItems: "flex-end",
     marginBottom: 10,
@@ -557,7 +542,6 @@ const msgStyles = StyleSheet.create({
     lineHeight: 20,
   },
 
-  // Choice bubble (Stay Anonymous)
   choiceWrap: {
     alignItems: "flex-end",
     marginBottom: 10,
@@ -591,14 +575,12 @@ const msgStyles = StyleSheet.create({
     alignSelf: "flex-end",
   },
 
-  // Shared time label
   timeLabel: {
     color: Colors.textTertiary,
     fontSize: 10,
     marginTop: 2,
   },
 
-  // Typing indicator
   typingWrap: {
     paddingHorizontal: 16,
     marginBottom: 10,
@@ -618,8 +600,6 @@ const msgStyles = StyleSheet.create({
     fontSize: 12,
   },
 });
-
-// ─── Screen styles ────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   root: {
@@ -650,7 +630,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.72)",
   },
 
-  // Watermark
   watermarkWrap: {
     position: "absolute",
     top: 118,
@@ -666,7 +645,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
   },
 
-  // Header
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -716,7 +694,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  // Tab pill
   tabWrap: {
     alignItems: "center",
     paddingBottom: 12,
@@ -756,14 +733,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
 
-  // Message list
   listContent: {
     paddingTop: 8,
     paddingBottom: 4,
     zIndex: 1,
   },
 
-  // Input area
   inputArea: {
     paddingHorizontal: 16,
     paddingTop: 18,
@@ -810,7 +785,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.08)",
   },
 
-  // Anonymous mode bar
   anonBar: {
     flexDirection: "row",
     gap: 5,

@@ -23,7 +23,6 @@ interface FrostedGlassViewProps {
   onLayout?: (event: LayoutChangeEvent) => void;
 }
 
-/** Reusable frosted surface with native backdrop blur and animated lens edges. */
 export function FrostedGlassView({
   children,
   style,

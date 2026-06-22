@@ -19,10 +19,6 @@ interface TabBarProps {
   style?: ViewStyle;
 }
 
-/**
- * Shared footer tab bar. Floats above the safe-area with glass backing.
- * Replace icon props with whatever icon library the Figma uses.
- */
 export function TabBar({ tabs, activeKey, onPress, style }: TabBarProps) {
   const insets = useSafeAreaInsets();
   return (

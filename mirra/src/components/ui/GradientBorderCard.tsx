@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import React from "react";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import {
   Canvas,
   RoundedRect,
@@ -8,18 +8,17 @@ import {
   Paint,
   BlurMask,
   Group,
-} from '@shopify/react-native-skia';
-import { Radius } from '@/constants/spacing';
-import { GlassTokens } from '@/styles/glass';
-import { GlowTokens } from '@/styles/glow';
+} from "@shopify/react-native-skia";
+import { Radius } from "@/constants/spacing";
+import { GlassTokens } from "@/styles/glass";
+import { GlowTokens } from "@/styles/glow";
 
 interface GradientBorderCardProps {
   width: number;
   height: number;
   borderRadius?: number;
   borderWidth?: number;
-  /** 'accent' = glowing yellow gradient border  |  'glass' = subtle white glass border */
-  variant?: 'accent' | 'glass';
+  variant?: "accent" | "glass";
   children?: React.ReactNode;
   style?: ViewStyle;
 }
@@ -29,15 +28,19 @@ export function GradientBorderCard({
   height,
   borderRadius = Radius.xl,
   borderWidth = 1.5,
-  variant = 'glass',
+  variant = "glass",
   children,
   style,
 }: GradientBorderCardProps) {
-  const isAccent = variant === 'accent';
+  const isAccent = variant === "accent";
 
   const gradientColors = isAccent
     ? GlowTokens.gradientStops
-    : ['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.18)'];
+    : [
+        "rgba(255,255,255,0.18)",
+        "rgba(255,255,255,0.06)",
+        "rgba(255,255,255,0.18)",
+      ];
 
   return (
     <View style={[{ width, height }, style]}>
@@ -91,7 +94,7 @@ export function GradientBorderCard({
             margin: borderWidth,
             borderRadius: borderRadius - borderWidth,
             backgroundColor: GlassTokens.fillColor,
-            overflow: 'hidden',
+            overflow: "hidden",
           },
         ]}
       >
