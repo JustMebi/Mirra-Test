@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppIcon, AppIconName } from "@/components/ui/AppIcon";
+import { SegmentedTabs } from "@/components/ui/SegmentedTabs";
 import { Colors } from "@/constants/colors";
 
 type PrimaryTab = "primary" | "requests";
@@ -16,14 +17,19 @@ interface MessagesNavBarProps {
 }
 
 const FILTERS: Array<{
-  key: FilterTab;
+  value: FilterTab;
   label: string;
   icon?: AppIconName;
   badge?: number;
 }> = [
-  { key: "all", label: "All", badge: 2 },
-  { key: "direct", label: "Direct", icon: "send-outline", badge: 2 },
-  { key: "dp", label: "Digital Persona", icon: "sparkles-outline" },
+  { value: "all", label: "All", badge: 2 },
+  { value: "direct", label: "Direct", icon: "send-outline", badge: 2 },
+  { value: "dp", label: "Digital Persona", icon: "sparkles-outline" },
+];
+
+const PRIMARY_TABS: Array<{ value: PrimaryTab; label: string }> = [
+  { value: "primary", label: "Primary" },
+  { value: "requests", label: "Requests" },
 ];
 
 export function MessagesNavBar({
@@ -58,32 +64,22 @@ export function MessagesNavBar({
         </View>
       </View>
 
-      <View style={styles.segmented}>
-        <PrimaryButton
-          label="Primary"
-          active={activeTab === "primary"}
-          onPress={() => onTabChange("primary")}
-        />
-        <PrimaryButton
-          label="Requests"
-          active={activeTab === "requests"}
-          onPress={() => onTabChange("requests")}
-        />
-      </View>
+      <SegmentedTabs
+        value={activeTab}
+        tabs={PRIMARY_TABS}
+        onChange={onTabChange}
+        size="large"
+        style={styles.segmented}
+      />
 
       <View style={styles.filterRow}>
-        <View style={styles.filterTabs}>
-          {FILTERS.map((filter) => (
-            <FilterChip
-              key={filter.key}
-              active={activeFilter === filter.key}
-              label={filter.label}
-              icon={filter.icon}
-              badge={filter.badge}
-              onPress={() => onFilterChange?.(filter.key)}
-            />
-          ))}
-        </View>
+        <SegmentedTabs
+          value={activeFilter}
+          tabs={FILTERS}
+          onChange={(next) => onFilterChange?.(next)}
+          size="small"
+          style={styles.filterTabs}
+        />
         <TouchableOpacity style={styles.slidersBtn} activeOpacity={0.7}>
           <AppIcon
             name="sliders"
@@ -94,70 +90,6 @@ export function MessagesNavBar({
         </TouchableOpacity>
       </View>
     </View>
-  );
-}
-
-function PrimaryButton({
-  label,
-  active,
-  onPress,
-}: {
-  label: string;
-  active: boolean;
-  onPress: () => void;
-}) {
-  return (
-    <TouchableOpacity
-      style={[styles.segment, active && styles.segmentActive]}
-      onPress={onPress}
-      activeOpacity={0.7}
-    >
-      <Text style={[styles.segmentText, active && styles.segmentTextActive]}>
-        {label}
-      </Text>
-    </TouchableOpacity>
-  );
-}
-
-function FilterChip({
-  active,
-  label,
-  icon,
-  badge,
-  onPress,
-}: {
-  active: boolean;
-  label: string;
-  icon?: AppIconName;
-  badge?: number;
-  onPress: () => void;
-}) {
-  return (
-    <TouchableOpacity
-      style={[styles.filterChip, active && styles.filterChipActive]}
-      onPress={onPress}
-      activeOpacity={0.7}
-    >
-      {icon != null && (
-        <AppIcon
-          name={icon}
-          size={12}
-          color={active ? Colors.textPrimary : Colors.textSecondary}
-          strokeWidth={1.4}
-        />
-      )}
-      <Text
-        style={[styles.filterText, active && styles.filterTextActive]}
-        numberOfLines={1}
-      >
-        {label}
-      </Text>
-      {badge != null && (
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{badge}</Text>
-        </View>
-      )}
-    </TouchableOpacity>
   );
 }
 
@@ -195,38 +127,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.08)",
   },
   segmented: {
-    height: 40,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    padding: 4,
     borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.08)",
-  },
-  segment: {
-    flex: 1,
-    height: 32,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 18,
-  },
-  segmentActive: {
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.05)",
-  },
-  segmentText: {
-    color: Colors.textTertiary,
-    fontSize: 12,
-    lineHeight: 12,
-    fontWeight: "500",
-    textAlign: "center",
-  },
-  segmentTextActive: {
-    color: Colors.textPrimary,
   },
   filterRow: {
     height: 32,
@@ -236,64 +137,7 @@ const styles = StyleSheet.create({
   },
   filterTabs: {
     flex: 1,
-    height: 32,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    padding: 2,
     borderRadius: 10,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.08)",
-  },
-  filterChip: {
-    flex: 1,
-    minWidth: 0,
-    height: 28,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-    paddingHorizontal: 8,
-    borderRadius: 8,
-  },
-  filterChipActive: {
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.05)",
-  },
-  filterText: {
-    color: "rgba(255,255,255,0.50)",
-    fontSize: 10,
-    lineHeight: 14,
-    fontWeight: "500",
-    textAlign: "center",
-    flexShrink: 1,
-  },
-  filterTextActive: {
-    color: Colors.textPrimary,
-  },
-  badge: {
-    minWidth: 16,
-    height: 16,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 5,
-    backgroundColor: Colors.accentAlt,
-    borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.10)",
-    shadowColor: Colors.accentAlt,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 6,
-    elevation: 4,
-  },
-  badgeText: {
-    color: Colors.bg,
-    fontSize: 9,
-    lineHeight: 12,
-    fontWeight: "800",
   },
   slidersBtn: {
     width: 32,

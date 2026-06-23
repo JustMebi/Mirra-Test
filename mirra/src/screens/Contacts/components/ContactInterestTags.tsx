@@ -65,6 +65,7 @@ export function ContactInterestTags({
         style={styles.searchTag}
         contentStyle={styles.searchTagContent}
         borderRadius={10}
+        variant="borderBlur"
         intensity={28}
         tint="systemUltraThinMaterialDark"
       >
@@ -134,7 +135,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: "rgba(255,255,255,0.05)",
   },
   searchTagContent: {
     padding: 12,

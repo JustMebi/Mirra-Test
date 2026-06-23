@@ -38,12 +38,14 @@ export function DPConversationSection({
             style={[styles.backCard, styles.backCardTwo]}
             borderRadius={18}
             frostLevel="dense"
+            variant="borderless"
             animatedEdges={false}
           />
           <FrostedGlassView
             style={[styles.backCard, styles.backCardOne]}
             borderRadius={18}
             frostLevel="dense"
+            variant="borderless"
             animatedEdges={false}
           />
           <TouchableOpacity style={styles.cardTouch} activeOpacity={0.8}>
@@ -51,6 +53,7 @@ export function DPConversationSection({
               style={styles.card}
               borderRadius={12}
               frostLevel="dense"
+              variant="borderless"
               animatedEdges={false}
             >
               <AnonymousGlassLight />

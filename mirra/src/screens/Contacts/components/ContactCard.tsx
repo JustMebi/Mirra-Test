@@ -67,6 +67,7 @@ export function ContactCard({
               style={[styles.actionBtn, styles.dmBtn]}
               contentStyle={styles.actionBtnContent}
               borderRadius={10}
+              variant="borderBlur"
               onPress={onDM}
               activeOpacity={0.72}
             >
@@ -80,6 +81,7 @@ export function ContactCard({
               style={[styles.actionBtn, styles.dpBtn]}
               contentStyle={[styles.actionBtnContent, styles.dpBtnContent]}
               borderRadius={10}
+              variant="borderless"
               onPress={onChatDP}
               activeOpacity={0.72}
             >
@@ -135,6 +137,8 @@ export function ContactCard({
               <FrostedGlassView
                 style={styles.locationPill}
                 borderRadius={10}
+                frostLevel="regular"
+                variant="borderless"
                 animatedEdges={false}
               >
                 <View style={styles.locationCornerDot} />
@@ -162,6 +166,8 @@ export function ContactCard({
               <FrostedGlassView
                 style={styles.roleChip}
                 borderRadius={10}
+                frostLevel="regular"
+                variant="borderless"
                 animatedEdges={false}
               >
                 <AppIcon
@@ -513,8 +519,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 2.5,
     backgroundColor: "rgba(255,255,255,0.035)",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.075)",
   },
   overlapChip: {
     marginLeft: -6,

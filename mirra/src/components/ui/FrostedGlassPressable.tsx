@@ -7,7 +7,12 @@ import {
   ViewStyle,
 } from "react-native";
 import { BlurTint } from "expo-blur";
-import { FrostedGlassView, FrostLevel } from "@/components/ui/FrostedGlassView";
+import {
+  FrostedGlassBlurVariant,
+  FrostedGlassView,
+  FrostedGlassVariant,
+  FrostLevel,
+} from "@/components/ui/FrostedGlassView";
 
 interface FrostedGlassPressableProps extends Omit<
   TouchableOpacityProps,
@@ -19,6 +24,8 @@ interface FrostedGlassPressableProps extends Omit<
   intensity?: number;
   tint?: BlurTint;
   frostLevel?: FrostLevel;
+  variant?: FrostedGlassVariant;
+  blurVariant?: FrostedGlassBlurVariant;
   animatedEdges?: boolean;
 }
 
@@ -30,6 +37,8 @@ export function FrostedGlassPressable({
   intensity,
   tint,
   frostLevel,
+  variant,
+  blurVariant,
   animatedEdges = false,
   activeOpacity = 0.72,
   ...touchableProps
@@ -41,6 +50,8 @@ export function FrostedGlassPressable({
       intensity={intensity}
       tint={tint}
       frostLevel={frostLevel}
+      variant={variant}
+      blurVariant={blurVariant}
       animatedEdges={animatedEdges}
     >
       <TouchableOpacity

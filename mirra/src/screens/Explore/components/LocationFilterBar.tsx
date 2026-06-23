@@ -2,8 +2,9 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '@/components/ui/Text';
 import { LinearGradient } from 'expo-linear-gradient';
-import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
-import { Colors, Gradients, GradientDir } from '@/constants/colors';
+import { AppIcon } from '@/components/ui/AppIcon';
+import { SegmentedTabs, SegmentedTabItem } from '@/components/ui/SegmentedTabs';
+import { Gradients, GradientDir } from '@/constants/colors';
 
 type ViewMode = 'card' | 'map';
 
@@ -13,9 +14,9 @@ interface LocationFilterBarProps {
   onViewModeChange: (mode: ViewMode) => void;
 }
 
-const VIEW_MODES: { key: ViewMode; icon: AppIconName; label: string }[] = [
-  { key: 'card', icon: 'card', label: 'Card' },
-  { key: 'map', icon: 'crosshair', label: 'Map' },
+const VIEW_MODES: Array<SegmentedTabItem<ViewMode>> = [
+  { value: 'card', icon: 'card', label: 'Card' },
+  { value: 'map', icon: 'crosshair', label: 'Map' },
 ];
 
 export function LocationFilterBar({
@@ -58,27 +59,15 @@ export function LocationFilterBar({
           />
         </View>
 
-        <View style={styles.toggle}>
-          {VIEW_MODES.map(({ key, icon, label }) => {
-            const isActive = viewMode === key;
-            return (
-              <TouchableOpacity
-                key={key}
-                style={[styles.toggleBtn, isActive && styles.toggleActive]}
-                onPress={() => onViewModeChange(key)}
-                activeOpacity={0.7}
-              >
-                <AppIcon
-                  name={icon}
-                  size={16}
-                  color={isActive ? Colors.textPrimary : 'rgba(255,255,255,0.50)'}
-                  strokeWidth={1.2}
-                />
-                <Text style={[styles.toggleText, isActive && styles.toggleTextActive]}>{label}</Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+        <SegmentedTabs
+          value={viewMode}
+          tabs={VIEW_MODES}
+          onChange={onViewModeChange}
+          size="small"
+          style={styles.toggle}
+          borderRadius={10}
+          iconSize={16}
+        />
       </View>
     </View>
   );
@@ -181,47 +170,6 @@ const styles = StyleSheet.create({
   },
   toggle: {
     width: 130,
-    height: 32,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
     borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    padding: 2,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
-  },
-  toggleBtn: {
-    width: 61,
-    height: 28,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  toggleActive: {
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
-  },
-  toggleText: {
-    color: 'rgba(255,255,255,0.50)',
-    fontSize: 10,
-    fontWeight: '500',
-    lineHeight: 13.6,
-    textAlign: 'center',
-  },
-  toggleTextActive: {
-    color: Colors.textPrimary,
   },
 });

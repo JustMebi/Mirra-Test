@@ -2,6 +2,7 @@ import React from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from '@/components/ui/Text';
 import { AppIcon } from "@/components/ui/AppIcon";
+import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
 import { PulsingDot } from "@/components/ui/PulsingDot";
 import { Colors } from "@/constants/colors";
 import { MediaAssets } from "@/constants/assets";
@@ -76,16 +77,22 @@ export function ThreadRow({ thread, onPress, onDPPress }: ThreadRowProps) {
         )}
 
         {!thread.isGroup && (
-          <View style={styles.directGrid}>
-            <View style={styles.topPillsRow}>
-              <View style={styles.chatPill}>
-                <Text style={styles.chatText}>Chat</Text>
-                {thread.unread > 0 && (
-                  <View style={styles.smallBadge}>
-                    <Text style={styles.smallBadgeText}>{thread.unread}</Text>
-                  </View>
-                )}
-              </View>
+            <View style={styles.directGrid}>
+              <View style={styles.topPillsRow}>
+              <FrostedGlassView
+                style={styles.chatPill}
+                borderRadius={10}
+                frostLevel="subtle"
+                variant="borderless"
+                animatedEdges={false}
+              >
+                  <Text style={styles.chatText}>Chat</Text>
+                  {thread.unread > 0 && (
+                    <View style={styles.smallBadge}>
+                      <Text style={styles.smallBadgeText}>{thread.unread}</Text>
+                    </View>
+                  )}
+                </FrostedGlassView>
 
               <TouchableOpacity
                 style={styles.dpPill}
@@ -104,16 +111,22 @@ export function ThreadRow({ thread, onPress, onDPPress }: ThreadRowProps) {
             </View>
 
             <View style={styles.locationRow}>
-              <View style={styles.locationPill}>
-                <AppIcon
-                  name="navigation"
-                  size={10}
-                  color={Colors.textSecondary}
-                />
-                <Text style={styles.locationText} numberOfLines={1}>
-                  {thread.city}
-                </Text>
-              </View>
+              <FrostedGlassView
+                style={styles.locationPill}
+                borderRadius={10}
+                frostLevel="subtle"
+                variant="borderless"
+                animatedEdges={false}
+              >
+                  <AppIcon
+                    name="navigation"
+                    size={10}
+                    color={Colors.textSecondary}
+                  />
+                  <Text style={styles.locationText} numberOfLines={1}>
+                    {thread.city}
+                  </Text>
+                </FrostedGlassView>
             </View>
           </View>
         )}
@@ -324,9 +337,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
-    backgroundColor: "rgba(255,255,255,0.055)",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.08)",
   },
   chatText: {
     color: Colors.textPrimary,
@@ -359,7 +369,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 6,
     paddingHorizontal: 10,
-    backgroundColor: "rgba(255,255,255,0.035)",
   },
   dpText: {
     color: Colors.textSecondary,
@@ -385,7 +394,6 @@ const styles = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 10,
     borderRadius: 10,
-    backgroundColor: "rgba(255,255,255,0.055)",
   },
   locationText: {
     color: Colors.textSecondary,

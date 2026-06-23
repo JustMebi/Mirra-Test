@@ -3,21 +3,31 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { LinearGradient } from "expo-linear-gradient";
 import { AppIcon } from "@/components/ui/AppIcon";
+import { FrostedGlassPressable } from "@/components/ui/FrostedGlassPressable";
 import { Colors, Gradients } from "@/constants/colors";
 
 export function ElinkActions() {
   return (
     <View style={styles.row}>
-      <TouchableOpacity
+      <FrostedGlassPressable
         style={[styles.labelBtn, styles.trainBtn]}
+        contentStyle={styles.buttonContent}
+        borderRadius={10}
+        frostLevel="regular"
+        variant="borderBlur"
         activeOpacity={0.7}
       >
         <AppIcon name="sparkles" size={15} color={Colors.textPrimary} />
         <Text style={styles.btnText} numberOfLines={1}>Train AI Chat</Text>
-      </TouchableOpacity>
+      </FrostedGlassPressable>
 
       <TouchableOpacity
-        style={[styles.labelBtn, styles.editBtn]}
+        style={[
+          styles.labelBtn,
+          styles.buttonContent,
+          styles.standardButton,
+          styles.editBtn,
+        ]}
         activeOpacity={0.7}
       >
         <AppIcon
@@ -79,13 +89,24 @@ const styles = StyleSheet.create({
   },
   labelBtn: {
     height: 44,
+    borderRadius: 10,
+  },
+  buttonContent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 7,
     paddingHorizontal: 14,
+  },
+  trainBtn: {
+    flex: 1.45,
+  },
+  editBtn: {
+    flex: 0.75,
+    paddingHorizontal: 10,
+  },
+  standardButton: {
     backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: 10,
     borderTopWidth: 0.5,
     borderTopColor: "rgba(255,255,255,0.10)",
     borderLeftWidth: 0.5,
@@ -94,14 +115,6 @@ const styles = StyleSheet.create({
     borderRightColor: "rgba(255,255,255,0.05)",
     borderBottomWidth: 0.5,
     borderBottomColor: "rgba(255,255,255,0.05)",
-  },
-  trainBtn: {
-    flex: 1.45,
-    paddingHorizontal: 10,
-  },
-  editBtn: {
-    flex: 0.75,
-    paddingHorizontal: 10,
   },
   btnText: {
     color: "rgba(255,255,255,0.80)",

@@ -19,7 +19,8 @@ function StatCard({ value, label, period, growth, positive }: Stat) {
     <FrostedGlassView
       style={statStyles.card}
       borderRadius={16}
-      frostLevel="regular"
+      frostLevel="dense"
+      variant="borderless"
       animatedEdges={false}
     >
       <Text style={statStyles.value}>{value}</Text>
@@ -146,7 +147,8 @@ export function HeroProfileCard() {
             <FrostedGlassView
               style={styles.locationBadge}
               borderRadius={12}
-              frostLevel="regular"
+              frostLevel="dense"
+              variant="borderless"
               animatedEdges={false}
             >
               <PulsingDot size={6} />
@@ -163,7 +165,8 @@ export function HeroProfileCard() {
               style={styles.settingsBtn}
               contentStyle={styles.settingsBtnContent}
               borderRadius={12}
-              frostLevel="regular"
+              frostLevel="dense"
+              variant="borderless"
               activeOpacity={0.7}
             >
               <AppIcon
@@ -179,7 +182,8 @@ export function HeroProfileCard() {
           <FrostedGlassView
             style={styles.infoBar}
             borderRadius={20}
-            frostLevel="regular"
+            frostLevel="dense"
+            variant="borderless"
             animatedEdges={false}
           >
             <View style={styles.avatarNameRow}>
@@ -203,7 +207,8 @@ export function HeroProfileCard() {
             <FrostedGlassView
               style={styles.followersChip}
               borderRadius={10}
-              frostLevel="regular"
+              frostLevel="dense"
+              variant="borderless"
               animatedEdges={false}
             >
               <View style={styles.followersBlock}>
@@ -227,6 +232,7 @@ export function HeroProfileCard() {
               contentStyle={styles.actionBtnContent}
               borderRadius={12}
               frostLevel="regular"
+              variant="borderBlur"
               activeOpacity={0.7}
             >
               <AppIcon
@@ -242,6 +248,7 @@ export function HeroProfileCard() {
               contentStyle={styles.actionBtnContent}
               borderRadius={12}
               frostLevel="regular"
+              variant="borderBlur"
               activeOpacity={0.7}
             >
               <AppIcon
@@ -257,6 +264,7 @@ export function HeroProfileCard() {
               contentStyle={styles.actionBtnContent}
               borderRadius={12}
               frostLevel="regular"
+              variant="borderBlur"
               activeOpacity={0.7}
             >
               <AppIcon
@@ -308,12 +316,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   statsClip: {
-    marginHorizontal: 2,
+    marginHorizontal: -12,
+    overflow: "hidden",
   },
   statsRow: {
     flexDirection: "row",
     gap: 4,
-    paddingRight: 24,
+    paddingLeft: 14,
+    paddingRight: 48,
   },
   bottomCluster: {
     gap: 6,

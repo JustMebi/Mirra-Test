@@ -68,6 +68,7 @@ export const ExploreProfileCard = React.memo(function ExploreProfileCard({ user,
           style={styles.statsBar}
           borderRadius={10}
           frostLevel="dense"
+          variant="borderless"
           animatedEdges={false}
         >
           <Image source={MediaAssets.images.mirraLogoBigger} style={styles.statsLogo} resizeMode="contain" />
@@ -99,6 +100,7 @@ export const ExploreProfileCard = React.memo(function ExploreProfileCard({ user,
             contentStyle={styles.actionBtnContent}
             borderRadius={10}
             frostLevel="dense"
+            variant="borderless"
             activeOpacity={0.7}
           >
             <AppIcon name="person-add" size={16} color={Colors.textPrimary} strokeWidth={1.5} />
@@ -109,6 +111,7 @@ export const ExploreProfileCard = React.memo(function ExploreProfileCard({ user,
             contentStyle={styles.actionBtnContent}
             borderRadius={10}
             frostLevel="dense"
+            variant="borderless"
             activeOpacity={0.7}
           >
             <AppIcon name="send" size={16} color={Colors.textPrimary} />
@@ -120,6 +123,7 @@ export const ExploreProfileCard = React.memo(function ExploreProfileCard({ user,
           style={styles.infoTray}
           borderRadius={16}
           frostLevel="dense"
+          variant="borderless"
           animatedEdges={false}
         >
           <ScrollView

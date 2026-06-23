@@ -48,6 +48,8 @@ export function AppTabBar({
         animatedEdges={false}
         style={styles.bar}
         frostLevel="subtle"
+        variant="border1"
+        blurVariant="blur60Rim"
       >
         <View style={styles.innerRail}>
           <TabItem

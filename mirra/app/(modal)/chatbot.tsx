@@ -14,11 +14,13 @@ import {
 import { Text } from '@/components/ui/Text';
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import Svg, { Circle, Path } from "react-native-svg";
+import Svg, { Circle, Defs, Ellipse, RadialGradient, Stop, Path } from "react-native-svg";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppIcon } from "@/components/ui/AppIcon";
+import { FrostedGlassPressable } from "@/components/ui/FrostedGlassPressable";
+import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
+import { SegmentedTabs, SegmentedTabItem } from "@/components/ui/SegmentedTabs";
 import { Colors } from "@/constants/colors";
-import { glass } from "@/styles/glass";
 import {
   mockUsers,
   mockCurrentUser,
@@ -111,10 +113,11 @@ function TypingGlyph() {
       >
         <Svg width={16} height={16} viewBox="0 0 16 16">
           <Path
-            d="M8 1.7C8.7 4.4 9.9 5.1 12.5 4.2C11.6 6.8 12.2 8 14.9 8.8C12.2 9.5 11.5 10.7 12.4 13.3C9.9 12.4 8.7 13.1 8 15.8C7.3 13.1 6.1 12.4 3.6 13.3C4.5 10.7 3.8 9.5 1.1 8.8C3.8 8 4.4 6.8 3.5 4.2C6.1 5.1 7.3 4.4 8 1.7Z"
+            d="M8 1.9C9 4.22 10.38 4.59 12.54 3.46C11.98 5.83 12.75 7 15 8C12.75 9 11.98 10.17 12.54 12.54C10.38 11.41 9 11.78 8 14.1C7 11.78 5.62 11.41 3.46 12.54C4.02 10.17 3.25 9 1 8C3.25 7 4.02 5.83 3.46 3.46C5.62 4.59 7 4.22 8 1.9Z"
             fill="none"
             stroke="rgba(255,255,255,0.62)"
             strokeWidth={1.1}
+            strokeLinecap="round"
             strokeLinejoin="round"
           />
         </Svg>
@@ -136,6 +139,78 @@ function TypingGlyph() {
         </Svg>
       </Animated.View>
     </View>
+  );
+}
+
+function HazeFlowBlob() {
+  const drift = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(drift, {
+          toValue: 1,
+          duration: 6200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(drift, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+
+    loop.start();
+    return () => loop.stop();
+  }, [drift]);
+
+  const translateX = drift.interpolate({
+    inputRange: [0, 1],
+    outputRange: [190, -220],
+  });
+  const translateY = drift.interpolate({
+    inputRange: [0, 0.28, 0.62, 1],
+    outputRange: [0, -18, -8, 2],
+  });
+  const scale = drift.interpolate({
+    inputRange: [0, 0.45, 1],
+    outputRange: [0.94, 1.08, 0.98],
+  });
+  const opacity = drift.interpolate({
+    inputRange: [0, 0.18, 0.72, 1],
+    outputRange: [0, 0.5, 0.44, 0],
+  });
+
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={[
+        styles.hazeBlob,
+        {
+          opacity,
+          transform: [{ translateX }, { translateY }, { scale }],
+        },
+      ]}
+    >
+      <Svg width="100%" height="100%" viewBox="0 0 240 96" fill="none">
+        <Defs>
+          <RadialGradient id="hazeBlobCore" cx="48%" cy="52%" r="70%">
+            <Stop offset="0" stopColor="#1E76D4" stopOpacity="0.3" />
+            <Stop offset="0.46" stopColor="#1A67C6" stopOpacity="0.2" />
+            <Stop offset="1" stopColor="#1A67C6" stopOpacity="0" />
+          </RadialGradient>
+          <RadialGradient id="hazeBlobWake" cx="55%" cy="50%" r="76%">
+            <Stop offset="0" stopColor="#144CD4" stopOpacity="0.22" />
+            <Stop offset="0.58" stopColor="#00B4D2" stopOpacity="0.12" />
+            <Stop offset="1" stopColor="#144CD4" stopOpacity="0" />
+          </RadialGradient>
+        </Defs>
+        <Ellipse cx="114" cy="50" rx="116" ry="34" fill="url(#hazeBlobWake)" />
+        <Ellipse cx="126" cy="48" rx="88" ry="28" fill="url(#hazeBlobCore)" />
+        <Ellipse cx="74" cy="54" rx="64" ry="24" fill="url(#hazeBlobCore)" opacity="0.42" />
+      </Svg>
+    </Animated.View>
   );
 }
 
@@ -223,7 +298,6 @@ export default function ChatbotModal() {
 
   const [activeTab, setActiveTab] = useState<"chat" | "dp">("dp");
   const [inputText, setInputText] = useState("");
-  const [isTyping, setIsTyping] = useState(true);
   const [messages, setMessages] = useState<ChatMessage[]>(() =>
     mockDPMessages.map((m) => ({
       ...m,
@@ -237,6 +311,17 @@ export default function ChatbotModal() {
   );
 
   const listRef = useRef<FlatList>(null);
+  const personaTabs: Array<SegmentedTabItem<"chat" | "dp">> = [
+    {
+      value: "chat",
+      label: `Chat with ${firstName}`,
+      image: dpUser.avatar,
+    },
+    {
+      value: "dp",
+      label: "Digital Persona",
+    },
+  ];
 
   const translateY = useRef(new Animated.Value(0)).current;
 
@@ -285,8 +370,6 @@ export default function ChatbotModal() {
     };
     setMessages((prev) => [...prev, msg]);
     setInputText("");
-    setIsTyping(true);
-    setTimeout(() => setIsTyping(false), 2200);
   };
 
   const renderItem = ({
@@ -303,10 +386,16 @@ export default function ChatbotModal() {
     if (item.isChoiceBubble) {
       return (
         <View style={msgStyles.choiceWrap}>
-          <View style={msgStyles.choicePill}>
+          <FrostedGlassView
+            style={msgStyles.choicePill}
+            borderRadius={16}
+            frostLevel="dense"
+            variant="borderless"
+            animatedEdges={false}
+          >
             <Text style={msgStyles.choiceText}>{item.text}</Text>
             {showTime && <Text style={msgStyles.choiceTime}>{item.time}</Text>}
-          </View>
+          </FrostedGlassView>
         </View>
       );
     }
@@ -314,29 +403,43 @@ export default function ChatbotModal() {
     if (item.isOwn) {
       return (
         <View style={msgStyles.ownWrap}>
-          <View style={msgStyles.ownBubble}>
+          <FrostedGlassView
+            style={msgStyles.ownBubble}
+            borderRadius={16}
+            frostLevel="dense"
+            variant="borderless"
+            animatedEdges={false}
+          >
             <Text style={msgStyles.ownText}>{item.text}</Text>
             {showTime && <Text style={msgStyles.ownTime}>{item.time}</Text>}
-          </View>
+          </FrostedGlassView>
         </View>
       );
     }
 
     return (
       <View style={msgStyles.dpWrap}>
-        <View style={msgStyles.dpBubble}>
+        <FrostedGlassView
+          style={msgStyles.dpBubble}
+          borderRadius={16}
+          frostLevel="subtle"
+          variant="border1"
+          animatedEdges={false}
+        >
           <Text style={msgStyles.dpText}>{item.text}</Text>
           {showTime && <Text style={msgStyles.dpTime}>{item.time}</Text>}
-        </View>
+        </FrostedGlassView>
       </View>
     );
   };
 
-  const TypingRow = () => (
-    <View style={msgStyles.typingWrap}>
-      <View style={msgStyles.typingPill}>
+  const showInputTyping = inputText.trim().length > 0;
+
+  const InputTypingRow = () => (
+    <View style={styles.inputTypingWrap}>
+      <View style={styles.inputTypingPill}>
         <TypingGlyph />
-        <Text style={msgStyles.typingLabel}>Typing...</Text>
+        <Text style={styles.inputTypingLabel}>Typing...</Text>
       </View>
     </View>
   );
@@ -357,14 +460,24 @@ export default function ChatbotModal() {
       <View style={styles.header}>
         <View style={styles.headerCenter}>
           <Image source={dpUser.avatar} style={styles.headerAvatar} />
-          <View style={styles.headerLabelPill}>
+          <FrostedGlassView
+            style={styles.headerLabelPill}
+            borderRadius={10}
+            frostLevel="regular"
+            variant="border"
+            animatedEdges={false}
+          >
             <Text style={styles.headerLabel}>
               {firstName}'s Digital Persona
             </Text>
-          </View>
+          </FrostedGlassView>
         </View>
-        <TouchableOpacity
+        <FrostedGlassPressable
           style={styles.closeBtn}
+          contentStyle={styles.closeBtnContent}
+          borderRadius={12}
+          frostLevel="regular"
+          variant="border"
           onPress={() => router.back()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           activeOpacity={0.7}
@@ -375,46 +488,31 @@ export default function ChatbotModal() {
             color={Colors.textSecondary}
             strokeWidth={1.7}
           />
-        </TouchableOpacity>
+        </FrostedGlassPressable>
       </View>
 
       <View style={styles.tabWrap}>
-        <View style={[glass.pill, styles.tabPill]}>
-          <TouchableOpacity
-            style={[styles.tabBtn, activeTab === "chat" && styles.tabBtnActive]}
-            onPress={() => router.back()}
-            activeOpacity={0.8}
-          >
-            <Image source={dpUser.avatar} style={styles.tabAvatar} />
-            <Text
-              style={[
-                styles.tabText,
-                activeTab === "chat" && styles.tabTextActive,
-              ]}
-            >
-              Chat with {firstName}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.tabBtn, activeTab === "dp" && styles.tabBtnActive]}
-            onPress={() => setActiveTab("dp")}
-            activeOpacity={0.8}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                activeTab === "dp" && styles.tabTextActive,
-              ]}
-            >
-              Digital Persona
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.tabInner}>
+          <SegmentedTabs
+            value={activeTab}
+            tabs={personaTabs}
+            onChange={(next) => {
+              if (next === "chat") {
+                router.back();
+                return;
+              }
+              setActiveTab(next);
+            }}
+            size="large"
+            style={styles.tabPill}
+            borderRadius={12}
+          />
         </View>
       </View>
 
       <KeyboardAvoidingView
         style={styles.flex}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
         keyboardVerticalOffset={0}
       >
         <FlatList
@@ -422,26 +520,41 @@ export default function ChatbotModal() {
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
+          style={styles.list}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
           onContentSizeChange={() =>
             listRef.current?.scrollToEnd({ animated: false })
           }
-          ListFooterComponent={isTyping ? <TypingRow /> : null}
         />
 
         <LinearGradient
           colors={[
-            "rgba(129, 157, 222, 0)",
-            "rgba(20,76,212,0.82)",
+            "rgba(20,76,212,0.34)",
+            "rgba(20,76,212,0.78)",
             "rgba(0,180,210,0.9)",
           ]}
-          locations={[0, 0.5, 1]}
+          locations={[0, 0.56, 1]}
           style={[
             styles.inputArea,
             { paddingBottom: insets.bottom > 0 ? 0 : 8 },
           ]}
         >
+          <LinearGradient
+            pointerEvents="none"
+            colors={[
+              "rgba(20,76,212,0)",
+              "rgba(20,76,212,0.18)",
+              "rgba(20,76,212,0.34)",
+            ]}
+            locations={[0, 0.5, 1]}
+            style={styles.inputTopFeather}
+          />
+          <HazeFlowBlob />
+
+          {showInputTyping && <InputTypingRow />}
+
           <View style={styles.inputRow}>
             <TextInput
               style={styles.input}
@@ -501,11 +614,12 @@ const msgStyles = StyleSheet.create({
     maxWidth: "80%",
   },
   dpBubble: {
-    backgroundColor: "rgba(255,255,255,0.07)",
     borderRadius: 16,
     borderBottomLeftRadius: 4,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderTopColor: "rgba(255,255,255,0.03)",
+    borderLeftColor: "rgba(255,255,255,0.03)",
+    borderRightColor: "rgba(255,255,255,0.03)",
+    borderBottomColor: "rgba(255,255,255,0.03)",
     padding: 12,
     gap: 6,
   },
@@ -526,11 +640,8 @@ const msgStyles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   ownBubble: {
-    backgroundColor: "rgba(255,255,255,0.12)",
     borderRadius: 16,
     borderBottomRightRadius: 4,
-    borderWidth: 1,
-    borderColor: Colors.glassBorderStrong,
     paddingHorizontal: 14,
     paddingVertical: 10,
     maxWidth: "78%",
@@ -555,9 +666,6 @@ const msgStyles = StyleSheet.create({
     gap: 7,
     borderRadius: 16,
     borderBottomRightRadius: 4,
-    backgroundColor: "rgba(255,255,255,0.12)",
-    borderWidth: 1,
-    borderColor: Colors.glassBorderStrong,
   },
   choiceText: {
     color: Colors.textPrimary,
@@ -581,24 +689,6 @@ const msgStyles = StyleSheet.create({
     marginTop: 2,
   },
 
-  typingWrap: {
-    paddingHorizontal: 16,
-    marginBottom: 10,
-    alignItems: "flex-start",
-  },
-  typingPill: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 7,
-    paddingLeft: 11,
-    paddingRight: 4,
-    paddingVertical: 0,
-    minHeight: 24,
-  },
-  typingLabel: {
-    color: "rgba(255,255,255,0.66)",
-    fontSize: 12,
-  },
 });
 
 const styles = StyleSheet.create({
@@ -670,9 +760,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: 8,
     borderRadius: 10,
-    backgroundColor: "rgba(255,255,255,0.08)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.10)",
   },
   headerLabel: {
     color: Colors.textSecondary,
@@ -686,10 +773,9 @@ const styles = StyleSheet.create({
     top: 0,
     width: 32,
     height: 32,
-    borderRadius: 16,
-    backgroundColor: Colors.glassFill,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderRadius: 12,
+  },
+  closeBtnContent: {
     alignItems: "center",
     justifyContent: "center",
   },
@@ -699,38 +785,15 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     zIndex: 1,
   },
-  tabPill: {
-    flexDirection: "row",
-    padding: 3,
-    gap: 2,
-    borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.12)",
-  },
-  tabBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 7,
+  tabInner: {
+    width: "100%",
     paddingHorizontal: 16,
-    paddingVertical: 7,
+    alignItems: "center",
+  },
+  tabPill: {
+    width: "100%",
+    maxWidth: 408,
     borderRadius: 12,
-  },
-  tabBtnActive: {
-    backgroundColor: "rgba(255,255,255,0.10)",
-    borderWidth: 1,
-    borderColor: Colors.glassBorderStrong,
-  },
-  tabText: {
-    color: Colors.textTertiary,
-    fontSize: 12,
-    fontWeight: "500",
-  },
-  tabTextActive: {
-    color: Colors.textPrimary,
-  },
-  tabAvatar: {
-    width: 20,
-    height: 20,
-    borderRadius: 6,
   },
 
   listContent: {
@@ -738,11 +801,46 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     zIndex: 1,
   },
+  list: {
+    marginHorizontal: 16,
+  },
 
   inputArea: {
+    position: "relative",
     paddingHorizontal: 16,
-    paddingTop: 18,
+    paddingTop: 22,
     gap: 4,
+  },
+  inputTopFeather: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: -42,
+    height: 62,
+  },
+  hazeBlob: {
+    position: "absolute",
+    right: -120,
+    top: -34,
+    width: 280,
+    height: 78,
+  },
+  inputTypingWrap: {
+    minHeight: 28,
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  inputTypingPill: {
+    minHeight: 24,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 7,
+    paddingLeft: 11,
+    paddingRight: 4,
+  },
+  inputTypingLabel: {
+    color: "rgba(255,255,255,0.66)",
+    fontSize: 12,
   },
   inputRow: {
     flexDirection: "row",
@@ -752,13 +850,13 @@ const styles = StyleSheet.create({
     paddingLeft: 18,
     paddingRight: 4,
     gap: 8,
-    backgroundColor: "rgba(0,0,0,0.33)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
-    shadowColor: "#FFFFFF",
-    shadowOpacity: 0.1,
-    shadowRadius: 0,
-    shadowOffset: { width: 0, height: 1 },
+    backgroundColor: "rgba(7,24,58,0.26)",
+    borderWidth: 0.5,
+    borderColor: "rgba(255,255,255,0.055)",
+    shadowColor: "#2E9EFF",
+    shadowOpacity: 0.18,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 0 },
   },
   input: {
     flex: 1,

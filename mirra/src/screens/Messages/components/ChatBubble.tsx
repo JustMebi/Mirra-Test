@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Text } from '@/components/ui/Text';
 import { AppIcon } from "@/components/ui/AppIcon";
+import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
 import { Colors } from "@/constants/colors";
 import type { ChatMessage } from "@/data/mock";
 
@@ -78,7 +79,17 @@ export function ChatBubble({
             {!message.isOwn && <View style={styles.tail} />}
             {message.isOwn && <View style={styles.tailOwn} />}
 
-            <View style={[styles.bubble, message.isOwn && styles.bubbleOwn]}>
+            <FrostedGlassView
+              style={[
+                styles.bubble,
+                message.isOwn && styles.bubbleOwn,
+                message.isOwn && styles.bubbleOwnBorderless,
+              ]}
+              borderRadius={16}
+              frostLevel={message.isOwn ? "dense" : "subtle"}
+              variant={message.isOwn ? "borderless" : "border1"}
+              animatedEdges={false}
+            >
               <ParsedText
                 text={message.text}
                 onMentionPress={(name) => onMentionPress(name, message.id)}
@@ -88,7 +99,7 @@ export function ChatBubble({
                 <Text style={styles.time}>{message.time}</Text>
                 {message.isOwn && <DeliveredTicks />}
               </View>
-            </View>
+            </FrostedGlassView>
           </View>
         </TouchableWithoutFeedback>
 
@@ -278,13 +289,21 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
     borderBottomRightRadius: 16,
     borderBottomLeftRadius: 20,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.03)",
-    backgroundColor: "rgba(255,255,255,0.03)",
+    borderTopColor: "rgba(255,255,255,0.03)",
+    borderLeftColor: "rgba(255,255,255,0.03)",
+    borderRightColor: "rgba(255,255,255,0.03)",
+    borderBottomColor: "rgba(255,255,255,0.03)",
   },
   bubbleOwn: {
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 20,
+  },
+  bubbleOwnBorderless: {
+    borderColor: "transparent",
+    borderTopColor: "transparent",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "transparent",
   },
   tail: {
     position: "absolute",
@@ -293,7 +312,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 16,
     borderBottomRightRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.03)",
+    backgroundColor: "rgba(250,248,248,0.035)",
   },
   tailOwn: {
     position: "absolute",
@@ -302,7 +321,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 16,
     borderBottomLeftRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.03)",
+    backgroundColor: "rgba(255,255,255,0.1)",
   },
   bubbleText: {
     color: Colors.textPrimary,

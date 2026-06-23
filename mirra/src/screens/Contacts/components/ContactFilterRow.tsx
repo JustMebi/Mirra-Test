@@ -2,10 +2,10 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '@/components/ui/Text';
 import { LinearGradient } from 'expo-linear-gradient';
-import { AppIcon, AppIconName } from '@/components/ui/AppIcon';
+import { AppIcon } from '@/components/ui/AppIcon';
 import { FrostedGlassPressable } from '@/components/ui/FrostedGlassPressable';
-import { FrostedGlassView } from '@/components/ui/FrostedGlassView';
-import { Colors, Gradients, GradientDir } from '@/constants/colors';
+import { SegmentedTabs, SegmentedTabItem } from '@/components/ui/SegmentedTabs';
+import { Gradients, GradientDir } from '@/constants/colors';
 
 export type ViewMode = 'grid' | 'list' | 'map';
 
@@ -15,10 +15,10 @@ interface ContactFilterRowProps {
   onViewModeChange: (mode: ViewMode) => void;
 }
 
-const VIEW_MODES: { key: ViewMode; icon: AppIconName; label: string }[] = [
-  { key: 'grid', icon: 'grid', label: 'Grid' },
-  { key: 'list', icon: 'list', label: 'List' },
-  { key: 'map', icon: 'crosshair', label: 'Map' },
+const VIEW_MODES: Array<SegmentedTabItem<ViewMode>> = [
+  { value: 'grid', icon: 'grid', label: 'Grid' },
+  { value: 'list', icon: 'list', label: 'List' },
+  { value: 'map', icon: 'crosshair', label: 'Map' },
 ];
 
 export function ContactFilterRow({
@@ -70,31 +70,15 @@ export function ContactFilterRow({
         />
       </View>
 
-      <FrostedGlassView
+      <SegmentedTabs
+        value={viewMode}
+        tabs={VIEW_MODES}
+        onChange={onViewModeChange}
+        size="small"
         style={styles.toggle}
         borderRadius={10}
-        animatedEdges={false}
-      >
-        {VIEW_MODES.map(({ key, icon, label }) => {
-          const isActive = viewMode === key;
-          return (
-            <TouchableOpacity
-              key={key}
-              style={[styles.toggleBtn, isActive && styles.toggleActive]}
-              onPress={() => onViewModeChange(key)}
-              activeOpacity={0.7}
-            >
-              <AppIcon
-                name={icon}
-                size={16}
-                color={isActive ? Colors.textPrimary : 'rgba(255,255,255,0.50)'}
-                strokeWidth={1.5}
-              />
-              <Text style={[styles.toggleText, isActive && styles.toggleTextActive]}>{label}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </FrostedGlassView>
+        iconSize={16}
+      />
     </View>
   );
 }
@@ -182,40 +166,6 @@ const styles = StyleSheet.create({
   toggle: {
     flex: 1,
     minWidth: 160,
-    height: 32,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
     borderRadius: 10,
-    padding: 2,
-  },
-  toggleBtn: {
-    flex: 1,
-    height: 28,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  toggleActive: {
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
-  },
-  toggleText: {
-    color: 'rgba(255,255,255,0.50)',
-    fontSize: 10,
-    fontWeight: '500',
-    lineHeight: 13.6,
-    textAlign: 'center',
-  },
-  toggleTextActive: {
-    color: Colors.textPrimary,
   },
 });
