@@ -22,70 +22,77 @@ export function ThreadRow({ thread, onPress, onDPPress }: ThreadRowProps) {
 
   return (
     <TouchableOpacity style={styles.row} onPress={onPress} activeOpacity={0.78}>
-      <View style={styles.avatarWrap}>
-        {thread.isGroup ? (
-          <GroupAvatar
-            sources={thread.groupAvatars ?? []}
-            fallback={thread.avatar}
-          />
-        ) : (
-          <Image
-            source={thread.avatar}
-            style={styles.avatar}
-            resizeMode="cover"
-          />
-        )}
+      <FrostedGlassView
+        style={styles.rowGlass}
+        borderRadius={0}
+        variant="borderless"
+        fillVariant="black5"
+        animatedEdges={false}
+      >
+        <View style={styles.avatarWrap}>
+          {thread.isGroup ? (
+            <GroupAvatar
+              sources={thread.groupAvatars ?? []}
+              fallback={thread.avatar}
+            />
+          ) : (
+            <Image
+              source={thread.avatar}
+              style={styles.avatar}
+              resizeMode="cover"
+            />
+          )}
 
-        {!thread.isGroup && (
-          thread.isOnline
-            ? <PulsingDot size={8} style={{ position: 'absolute', right: 4, bottom: 8 }} />
-            : <OfflineIndicator />
-        )}
-      </View>
-
-      <View style={styles.content}>
-        <View style={styles.nameRow}>
-          <View style={styles.nameIdentity}>
-            {thread.isGroup && (
-              <AppIcon name="users" size={14} color={Colors.textPrimary} />
-            )}
-            <Text style={styles.name} numberOfLines={1}>
-              {thread.name}
-            </Text>
-            {!thread.isGroup && thread.verified && (
-              <AppIcon name="verified" size={13} />
-            )}
-          </View>
-          <Text style={styles.time}>{thread.time}</Text>
+          {!thread.isGroup && (
+            thread.isOnline
+              ? <PulsingDot size={8} style={{ position: 'absolute', right: 4, bottom: 8 }} />
+              : <OfflineIndicator />
+          )}
         </View>
 
-        {thread.isGroup ? (
-          <View style={styles.groupPreviewRow}>
-            <Text
-              style={[styles.preview, styles.groupPreview]}
-              numberOfLines={1}
-            >
-              {previewPrefix}
+        <View style={styles.content}>
+          <View style={styles.nameRow}>
+            <View style={styles.nameIdentity}>
+              {thread.isGroup && (
+                <AppIcon name="users" size={14} color={Colors.textPrimary} />
+              )}
+              <Text style={styles.name} numberOfLines={1}>
+                {thread.name}
+              </Text>
+              {!thread.isGroup && thread.verified && (
+                <AppIcon name="verified" size={13} />
+              )}
+            </View>
+            <Text style={styles.time}>{thread.time}</Text>
+          </View>
+
+          {thread.isGroup ? (
+            <View style={styles.groupPreviewRow}>
+              <Text
+                style={[styles.preview, styles.groupPreview]}
+                numberOfLines={1}
+              >
+                {previewPrefix}
+                {thread.lastMessage}
+              </Text>
+              {thread.lastMessageIsOwn && <DeliveredTicks />}
+            </View>
+          ) : (
+            <Text style={styles.preview} numberOfLines={2}>
               {thread.lastMessage}
             </Text>
-            {thread.lastMessageIsOwn && <DeliveredTicks />}
-          </View>
-        ) : (
-          <Text style={styles.preview} numberOfLines={2}>
-            {thread.lastMessage}
-          </Text>
-        )}
+          )}
 
-        {!thread.isGroup && (
+          {!thread.isGroup && (
             <View style={styles.directGrid}>
               <View style={styles.topPillsRow}>
-              <FrostedGlassView
-                style={styles.chatPill}
-                borderRadius={10}
-                frostLevel="subtle"
-                variant="borderless"
-                animatedEdges={false}
-              >
+                <FrostedGlassView
+                  style={styles.chatPill}
+                  borderRadius={10}
+                  frostLevel="subtle"
+                  variant="borderless"
+                  animatedEdges={false}
+                >
                   <Text style={styles.chatText}>Chat</Text>
                   {thread.unread > 0 && (
                     <View style={styles.smallBadge}>
@@ -94,30 +101,30 @@ export function ThreadRow({ thread, onPress, onDPPress }: ThreadRowProps) {
                   )}
                 </FrostedGlassView>
 
-              <TouchableOpacity
-                style={styles.dpPill}
-                onPress={onDPPress}
-                activeOpacity={0.75}
-              >
-                <AppIcon
-                  name="sparkles"
-                  size={11}
-                  color={Colors.textSecondary}
-                />
-                <Text style={styles.dpText} numberOfLines={1}>
-                  {thread.dpLabel}
-                </Text>
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity
+                  style={styles.dpPill}
+                  onPress={onDPPress}
+                  activeOpacity={0.75}
+                >
+                  <AppIcon
+                    name="sparkles"
+                    size={11}
+                    color={Colors.textSecondary}
+                  />
+                  <Text style={styles.dpText} numberOfLines={1}>
+                    {thread.dpLabel}
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-            <View style={styles.locationRow}>
-              <FrostedGlassView
-                style={styles.locationPill}
-                borderRadius={10}
-                frostLevel="subtle"
-                variant="borderless"
-                animatedEdges={false}
-              >
+              <View style={styles.locationRow}>
+                <FrostedGlassView
+                  style={styles.locationPill}
+                  borderRadius={10}
+                  frostLevel="subtle"
+                  variant="borderless"
+                  animatedEdges={false}
+                >
                   <AppIcon
                     name="navigation"
                     size={10}
@@ -127,10 +134,11 @@ export function ThreadRow({ thread, onPress, onDPPress }: ThreadRowProps) {
                     {thread.city}
                   </Text>
                 </FrostedGlassView>
+              </View>
             </View>
-          </View>
-        )}
-      </View>
+          )}
+        </View>
+      </FrostedGlassView>
     </TouchableOpacity>
   );
 }
@@ -227,6 +235,9 @@ function GroupAvatar({ sources, fallback }: { sources: any[]; fallback: any }) {
 
 const styles = StyleSheet.create({
   row: {
+    width: "100%",
+  },
+  rowGlass: {
     minHeight: 136,
     flexDirection: "row",
     alignItems: "flex-start",

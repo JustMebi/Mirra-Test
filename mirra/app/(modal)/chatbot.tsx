@@ -391,6 +391,7 @@ export default function ChatbotModal() {
             borderRadius={16}
             frostLevel="dense"
             variant="borderless"
+            blurVariant="blur60"
             animatedEdges={false}
           >
             <Text style={msgStyles.choiceText}>{item.text}</Text>
@@ -408,6 +409,7 @@ export default function ChatbotModal() {
             borderRadius={16}
             frostLevel="dense"
             variant="borderless"
+            blurVariant="blur60"
             animatedEdges={false}
           >
             <Text style={msgStyles.ownText}>{item.text}</Text>
@@ -423,7 +425,8 @@ export default function ChatbotModal() {
           style={msgStyles.dpBubble}
           borderRadius={16}
           frostLevel="subtle"
-          variant="border1"
+          variant="borderWhite3"
+          blurVariant="blur60"
           animatedEdges={false}
         >
           <Text style={msgStyles.dpText}>{item.text}</Text>
@@ -463,8 +466,9 @@ export default function ChatbotModal() {
           <FrostedGlassView
             style={styles.headerLabelPill}
             borderRadius={10}
-            frostLevel="regular"
+            frostLevel="dense"
             variant="border"
+            blurVariant="blur10Rim"
             animatedEdges={false}
           >
             <Text style={styles.headerLabel}>
@@ -478,6 +482,7 @@ export default function ChatbotModal() {
           borderRadius={12}
           frostLevel="regular"
           variant="border"
+          blurVariant="rimOnly"
           onPress={() => router.back()}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           activeOpacity={0.7}
@@ -506,6 +511,9 @@ export default function ChatbotModal() {
             size="large"
             style={styles.tabPill}
             borderRadius={12}
+            frostLevel="regular"
+            variant="border"
+            blurVariant="blur20Rim"
           />
         </View>
       </View>
@@ -555,7 +563,14 @@ export default function ChatbotModal() {
 
           {showInputTyping && <InputTypingRow />}
 
-          <View style={styles.inputRow}>
+          <FrostedGlassView
+            style={styles.inputRow}
+            borderRadius={20}
+            fillVariant="inputBlack50"
+            variant="inputGradientBorder"
+            blurVariant="blur60"
+            animatedEdges={false}
+          >
             <TextInput
               style={styles.input}
               placeholder="Ask me anything"
@@ -576,10 +591,15 @@ export default function ChatbotModal() {
                 strokeWidth={1.6}
               />
             </TouchableOpacity>
-            <TouchableOpacity
+            <FrostedGlassPressable
               onPress={handleSend}
               activeOpacity={0.8}
               style={styles.sendBtn}
+              contentStyle={styles.sendBtnContent}
+              borderRadius={16}
+              frostLevel="regular"
+              variant="border"
+              blurVariant="rimOnly"
             >
               <AppIcon
                 name="arrow-up"
@@ -587,8 +607,8 @@ export default function ChatbotModal() {
                 color={Colors.textPrimary}
                 strokeWidth={1.6}
               />
-            </TouchableOpacity>
-          </View>
+            </FrostedGlassPressable>
+          </FrostedGlassView>
 
           <View style={styles.anonBar}>
             <AnonymousModeIcon />
@@ -850,9 +870,6 @@ const styles = StyleSheet.create({
     paddingLeft: 18,
     paddingRight: 4,
     gap: 8,
-    backgroundColor: "rgba(7,24,58,0.26)",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.055)",
     shadowColor: "#2E9EFF",
     shadowOpacity: 0.18,
     shadowRadius: 14,
@@ -878,9 +895,10 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 16,
+  },
+  sendBtnContent: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.08)",
   },
 
   anonBar: {

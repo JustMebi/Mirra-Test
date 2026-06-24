@@ -41,6 +41,7 @@ export function ContactTabBar({
       size="large"
       style={styles.segmented}
       borderRadius={14}
+      blurVariant="rimOnly"
     />
   );
 }

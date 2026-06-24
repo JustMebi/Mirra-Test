@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '@/components/ui/Text';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AppIcon } from '@/components/ui/AppIcon';
+import { FrostedGlassPressable } from '@/components/ui/FrostedGlassPressable';
 import { SegmentedTabs, SegmentedTabItem } from '@/components/ui/SegmentedTabs';
 import { Gradients, GradientDir } from '@/constants/colors';
 
@@ -27,10 +28,18 @@ export function LocationFilterBar({
   return (
     <View style={styles.outer}>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.locationInput} activeOpacity={0.7}>
+        <FrostedGlassPressable
+          style={styles.locationInput}
+          contentStyle={styles.locationInputContent}
+          borderRadius={10}
+          frostLevel="regular"
+          variant="border"
+          blurVariant="rimOnly"
+          activeOpacity={0.7}
+        >
           <AppIcon name="target" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.3} />
           <Text style={styles.locationText} numberOfLines={1}>{location}</Text>
-        </TouchableOpacity>
+        </FrostedGlassPressable>
 
         <View style={styles.actions}>
           <TouchableOpacity activeOpacity={0.8} style={styles.filterGlow}>
@@ -45,9 +54,17 @@ export function LocationFilterBar({
             </LinearGradient>
         </TouchableOpacity>
 
-        <TouchableOpacity activeOpacity={0.7} style={styles.sortBtn}>
+        <FrostedGlassPressable
+          activeOpacity={0.7}
+          style={styles.sortBtn}
+          contentStyle={styles.sortBtnContent}
+          borderRadius={10}
+          frostLevel="regular"
+          variant="border"
+          blurVariant="rimOnly"
+        >
             <AppIcon name="sort-lines" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.35} />
-        </TouchableOpacity>
+        </FrostedGlassPressable>
         </View>
 
         <View style={styles.dividerWrap}>
@@ -91,19 +108,14 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
     height: 32,
+    borderRadius: 10,
+  },
+  locationInputContent: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
     paddingLeft: 12,
     paddingRight: 2,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
   },
   locationText: {
     flex: 1,
@@ -123,9 +135,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#26B7FF',
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.72,
-    shadowRadius: 6,
-    elevation: 6,
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 8,
   },
   filterBorder: {
     width: 32,
@@ -144,15 +156,10 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  sortBtnContent: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
   },
   dividerWrap: {
     width: 1,

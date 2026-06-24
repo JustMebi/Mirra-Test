@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Text } from "@/components/ui/Text";
 import { AppIcon, AppIconName } from "@/components/ui/AppIcon";
 import {
+  FrostedGlassBlurVariant,
   FrostedGlassVariant,
   FrostLevel,
   FrostedGlassView,
@@ -40,6 +41,7 @@ interface SegmentedTabsProps<T extends string> {
   activeTabStyle?: StyleProp<ViewStyle>;
   frostLevel?: FrostLevel;
   variant?: FrostedGlassVariant;
+  blurVariant?: FrostedGlassBlurVariant;
   borderRadius?: number;
   iconSize?: number;
 }
@@ -54,6 +56,7 @@ export function SegmentedTabs<T extends string>({
   activeTabStyle,
   frostLevel = "regular",
   variant = "border",
+  blurVariant = "rimOnly",
   borderRadius = size === "large" ? 12 : 10,
   iconSize = size === "large" ? 16 : 12,
 }: SegmentedTabsProps<T>) {
@@ -70,6 +73,7 @@ export function SegmentedTabs<T extends string>({
       borderRadius={borderRadius}
       frostLevel={frostLevel}
       variant={variant}
+      blurVariant={blurVariant}
       animatedEdges={false}
     >
       {tabs.map((tab) => {

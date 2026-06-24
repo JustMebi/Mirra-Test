@@ -32,6 +32,9 @@ export function ContactFilterRow({
         style={styles.locationInput}
         contentStyle={styles.locationInputContent}
         borderRadius={10}
+        frostLevel="regular"
+        variant="border"
+        blurVariant="rimOnly"
       >
         <AppIcon name="target" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.3} />
         <Text style={styles.locationText} numberOfLines={1}>
@@ -56,6 +59,9 @@ export function ContactFilterRow({
           style={styles.sortBtn}
           contentStyle={styles.sortBtnContent}
           borderRadius={10}
+          frostLevel="regular"
+          variant="border"
+          blurVariant="rimOnly"
         >
           <AppIcon name="sort-lines" size={16} color="rgba(255,255,255,0.62)" strokeWidth={1.35} />
         </FrostedGlassPressable>
@@ -78,6 +84,7 @@ export function ContactFilterRow({
         style={styles.toggle}
         borderRadius={10}
         iconSize={16}
+        blurVariant="rimOnly"
       />
     </View>
   );
@@ -123,9 +130,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#26B7FF',
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.72,
-    shadowRadius: 6,
-    elevation: 6,
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 8,
   },
   filterBorder: {
     width: 32,

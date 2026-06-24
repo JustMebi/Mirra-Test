@@ -65,9 +65,9 @@ export function ContactInterestTags({
         style={styles.searchTag}
         contentStyle={styles.searchTagContent}
         borderRadius={10}
-        variant="borderBlur"
-        intensity={28}
-        tint="systemUltraThinMaterialDark"
+        frostLevel="regular"
+        variant="border"
+        blurVariant="blur20Rim"
       >
         <AppIcon
           name="search"

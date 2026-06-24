@@ -21,8 +21,9 @@ export function ContactsNavBar() {
           style={styles.iconBtn}
           contentStyle={styles.iconBtnContent}
           borderRadius={16}
-          intensity={28}
-          tint="systemUltraThinMaterialDark"
+          frostLevel="regular"
+          variant="border"
+          blurVariant="rimOnly"
         >
           <AppIcon
             name="plus"
@@ -59,7 +60,6 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.05)",
   },
   iconBtnContent: {
     alignItems: "center",

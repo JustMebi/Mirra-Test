@@ -3,6 +3,7 @@ import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '@/components/ui/Text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppIcon } from '@/components/ui/AppIcon';
+import { FrostedGlassView } from '@/components/ui/FrostedGlassView';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
 import type { Thread } from '@/data/mock';
@@ -29,7 +30,14 @@ export function ChatHeader({ thread, onBack }: ChatHeaderProps) {
             style={styles.heroImage}
             resizeMode="cover"
           />
-          <View style={styles.infoPill}>
+          <FrostedGlassView
+            style={styles.infoPill}
+            borderRadius={12}
+            frostLevel="dense"
+            variant="border"
+            blurVariant="blur10Rim"
+            animatedEdges={false}
+          >
             <View style={styles.titleRow}>
               {isGroup ? (
                 <AppIcon name="users" size={16} color={Colors.textPrimary} />
@@ -51,7 +59,7 @@ export function ChatHeader({ thread, onBack }: ChatHeaderProps) {
                 <Text style={styles.statMuted}>Online</Text>
               )}
             </View>
-          </View>
+          </FrostedGlassView>
         </View>
 
         <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
@@ -119,9 +127,6 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
     paddingLeft: 20,
     borderRadius: 12,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
-    backgroundColor: 'rgba(255,255,255,0.07)',
     shadowColor: '#FFFFFF',
     shadowOffset: { width: 0, height: 0.5 },
     shadowOpacity: 0.10,

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Text } from '@/components/ui/Text';
 import { AppIcon } from "@/components/ui/AppIcon";
+import { FrostedGlassPressable } from "@/components/ui/FrostedGlassPressable";
 import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
 import { Colors } from "@/constants/colors";
 import type { ChatMessage } from "@/data/mock";
@@ -87,7 +88,7 @@ export function ChatBubble({
               ]}
               borderRadius={16}
               frostLevel={message.isOwn ? "dense" : "subtle"}
-              variant={message.isOwn ? "borderless" : "border1"}
+              variant={message.isOwn ? "borderless" : "borderWhite3"}
               animatedEdges={false}
             >
               <ParsedText
@@ -111,22 +112,31 @@ export function ChatBubble({
             ]}
           >
             {reactions.map((reaction) => (
-              <TouchableOpacity
+              <FrostedGlassPressable
                 key={reaction.emoji}
                 style={styles.reactionChip}
+                contentStyle={styles.reactionChipContent}
+                borderRadius={16}
+                variant="borderless"
+                fillVariant="darkGray60"
                 onPress={() => onReaction(message.id, reaction.emoji)}
                 activeOpacity={0.7}
               >
                 <Text style={styles.reactionEmoji}>{reaction.emoji}</Text>
-                <View
+                <FrostedGlassView
                   style={[
                     styles.reactionCount,
                     reaction.mine && styles.reactionCountMine,
                   ]}
+                  borderRadius={16}
+                  frostLevel="subtleExtra"
+                  variant="border"
+                  blurVariant="blur10Rim"
+                  animatedEdges={false}
                 >
                   <Text style={styles.reactionCountText}>{reaction.count}</Text>
-                </View>
-              </TouchableOpacity>
+                </FrostedGlassView>
+              </FrostedGlassPressable>
             ))}
           </View>
         )}
@@ -367,6 +377,9 @@ const styles = StyleSheet.create({
   reactionChip: {
     minWidth: 52,
     height: 24,
+    borderRadius: 16,
+  },
+  reactionChipContent: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
@@ -374,8 +387,6 @@ const styles = StyleSheet.create({
     paddingRight: 4,
     paddingBottom: 4,
     paddingLeft: 8,
-    borderRadius: 16,
-    backgroundColor: "#292A2C",
   },
   reactionEmoji: {
     width: 16,
@@ -394,9 +405,6 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     paddingLeft: 4,
     borderRadius: 16,
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.05)",
-    backgroundColor: "rgba(255,255,255,0.05)",
   },
   reactionCountMine: {
     borderColor: "rgba(225,255,79,0.20)",

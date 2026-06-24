@@ -9,6 +9,7 @@ import {
 import { BlurTint } from "expo-blur";
 import {
   FrostedGlassBlurVariant,
+  FrostedGlassFillVariant,
   FrostedGlassView,
   FrostedGlassVariant,
   FrostLevel,
@@ -26,6 +27,7 @@ interface FrostedGlassPressableProps extends Omit<
   frostLevel?: FrostLevel;
   variant?: FrostedGlassVariant;
   blurVariant?: FrostedGlassBlurVariant;
+  fillVariant?: FrostedGlassFillVariant;
   animatedEdges?: boolean;
 }
 
@@ -39,6 +41,7 @@ export function FrostedGlassPressable({
   frostLevel,
   variant,
   blurVariant,
+  fillVariant,
   animatedEdges = false,
   activeOpacity = 0.72,
   ...touchableProps
@@ -52,6 +55,7 @@ export function FrostedGlassPressable({
       frostLevel={frostLevel}
       variant={variant}
       blurVariant={blurVariant}
+      fillVariant={fillVariant}
       animatedEdges={animatedEdges}
     >
       <TouchableOpacity

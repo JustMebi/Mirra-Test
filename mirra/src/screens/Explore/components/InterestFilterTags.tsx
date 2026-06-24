@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Text } from '@/components/ui/Text';
 import { AppIcon } from '@/components/ui/AppIcon';
+import { FrostedGlassPressable } from '@/components/ui/FrostedGlassPressable';
 import { Colors } from '@/constants/colors';
 import { MediaAssets } from '@/constants/assets';
 
@@ -44,9 +45,17 @@ export function InterestFilterTags({ active, onSelect }: InterestFilterTagsProps
           })}
         </ScrollView>
 
-        <TouchableOpacity style={styles.searchBtn} activeOpacity={0.7}>
+        <FrostedGlassPressable
+          style={styles.searchBtn}
+          contentStyle={styles.searchBtnContent}
+          borderRadius={10}
+          frostLevel="regular"
+          variant="border"
+          blurVariant="blur20Rim"
+          activeOpacity={0.7}
+        >
           <AppIcon name="search" size={15} color="rgba(255,255,255,0.80)" strokeWidth={1.4} />
-        </TouchableOpacity>
+        </FrostedGlassPressable>
       </View>
     </View>
   );
@@ -113,15 +122,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  searchBtnContent: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 12,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    shadowColor: '#FFFFFF',
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.10,
-    shadowRadius: 0,
   },
 });

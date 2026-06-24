@@ -21,6 +21,7 @@ export function ConnectionRequestBanner({
       style={styles.banner}
       contentStyle={styles.bannerContent}
       borderRadius={16}
+      frostLevel="regular"
       variant="borderless"
       onPress={onPress}
       activeOpacity={0.8}

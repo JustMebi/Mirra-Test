@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { LinearGradient } from "expo-linear-gradient";
 import { AppIcon } from "@/components/ui/AppIcon";
@@ -14,20 +14,21 @@ export function ElinkActions() {
         contentStyle={styles.buttonContent}
         borderRadius={10}
         frostLevel="regular"
-        variant="borderBlur"
+        variant="border"
+        blurVariant="blur20Rim"
         activeOpacity={0.7}
       >
         <AppIcon name="sparkles" size={15} color={Colors.textPrimary} />
         <Text style={styles.btnText} numberOfLines={1}>Train AI Chat</Text>
       </FrostedGlassPressable>
 
-      <TouchableOpacity
-        style={[
-          styles.labelBtn,
-          styles.buttonContent,
-          styles.standardButton,
-          styles.editBtn,
-        ]}
+      <FrostedGlassPressable
+        style={[styles.labelBtn, styles.editBtn]}
+        contentStyle={styles.buttonContent}
+        borderRadius={10}
+        frostLevel="regular"
+        variant="border"
+        blurVariant="blur20Rim"
         activeOpacity={0.7}
       >
         <AppIcon
@@ -37,26 +38,42 @@ export function ElinkActions() {
           strokeWidth={1.5}
         />
         <Text style={styles.btnText} numberOfLines={1}>Edit</Text>
-      </TouchableOpacity>
+      </FrostedGlassPressable>
 
-      <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
+      <FrostedGlassPressable
+        style={styles.iconBtn}
+        contentStyle={styles.iconBtnContent}
+        borderRadius={10}
+        frostLevel="regular"
+        variant="border"
+        blurVariant="blur20Rim"
+        activeOpacity={0.7}
+      >
         <AppIcon
           name="sliders"
           size={18}
           color={Colors.textPrimary}
           strokeWidth={1.5}
         />
-      </TouchableOpacity>
+      </FrostedGlassPressable>
 
       <View>
-        <TouchableOpacity style={styles.iconBtn} activeOpacity={0.7}>
+        <FrostedGlassPressable
+          style={styles.iconBtn}
+          contentStyle={styles.iconBtnContent}
+          borderRadius={10}
+          frostLevel="regular"
+          variant="border"
+          blurVariant="blur20Rim"
+          activeOpacity={0.7}
+        >
           <AppIcon
             name="bell"
             size={18}
             color="rgba(255,255,255,0.8)"
             strokeWidth={1.5}
           />
-        </TouchableOpacity>
+        </FrostedGlassPressable>
         <LinearGradient
           colors={Gradients.accent}
           style={styles.badge}
@@ -66,8 +83,13 @@ export function ElinkActions() {
         </LinearGradient>
       </View>
 
-      <TouchableOpacity
+      <FrostedGlassPressable
         style={[styles.iconBtn, styles.iconBtnRound]}
+        contentStyle={styles.iconBtnContent}
+        borderRadius={16}
+        frostLevel="regular"
+        variant="border"
+        blurVariant="blur20Rim"
         activeOpacity={0.7}
       >
         <AppIcon
@@ -76,7 +98,7 @@ export function ElinkActions() {
           color={Colors.textPrimary}
           strokeWidth={1.6}
         />
-      </TouchableOpacity>
+      </FrostedGlassPressable>
     </View>
   );
 }
@@ -103,18 +125,6 @@ const styles = StyleSheet.create({
   },
   editBtn: {
     flex: 0.75,
-    paddingHorizontal: 10,
-  },
-  standardButton: {
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderTopWidth: 0.5,
-    borderTopColor: "rgba(255,255,255,0.10)",
-    borderLeftWidth: 0.5,
-    borderLeftColor: "rgba(255,255,255,0.05)",
-    borderRightWidth: 0.5,
-    borderRightColor: "rgba(255,255,255,0.05)",
-    borderBottomWidth: 0.5,
-    borderBottomColor: "rgba(255,255,255,0.05)",
   },
   btnText: {
     color: "rgba(255,255,255,0.80)",
@@ -125,18 +135,11 @@ const styles = StyleSheet.create({
   iconBtn: {
     width: 44,
     height: 44,
+    borderRadius: 10,
+  },
+  iconBtnContent: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: 10,
-    borderTopWidth: 0.5,
-    borderTopColor: "rgba(255,255,255,0.10)",
-    borderLeftWidth: 0.5,
-    borderLeftColor: "rgba(255,255,255,0.05)",
-    borderRightWidth: 0.5,
-    borderRightColor: "rgba(255,255,255,0.05)",
-    borderBottomWidth: 0.5,
-    borderBottomColor: "rgba(255,255,255,0.05)",
   },
   iconBtnRound: {
     borderRadius: 16,

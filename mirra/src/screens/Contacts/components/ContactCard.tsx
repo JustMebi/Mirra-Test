@@ -8,7 +8,6 @@ import {
   ImageSourcePropType,
 } from "react-native";
 import { Text } from '@/components/ui/Text';
-import { LinearGradient } from "expo-linear-gradient";
 import { AppIcon } from "@/components/ui/AppIcon";
 import { FrostedGlassPressable } from "@/components/ui/FrostedGlassPressable";
 import { FrostedGlassView } from "@/components/ui/FrostedGlassView";
@@ -37,7 +36,14 @@ export function ContactCard({
     heroMedia?.type === "image" ? heroMedia.source : user.heroImage;
 
   return (
-    <View style={styles.card}>
+    <FrostedGlassView
+      style={styles.card}
+      borderRadius={20}
+      frostLevel="regular"
+      variant="borderless"
+      blurVariant="blur20"
+      animatedEdges={false}
+    >
       <View style={styles.contactArea}>
         <Image source={imageSource} style={styles.photo} resizeMode="cover" />
 
@@ -67,7 +73,9 @@ export function ContactCard({
               style={[styles.actionBtn, styles.dmBtn]}
               contentStyle={styles.actionBtnContent}
               borderRadius={10}
-              variant="borderBlur"
+              frostLevel="regular"
+              variant="border"
+              blurVariant="rimOnly"
               onPress={onDM}
               activeOpacity={0.72}
             >
@@ -81,6 +89,7 @@ export function ContactCard({
               style={[styles.actionBtn, styles.dpBtn]}
               contentStyle={[styles.actionBtnContent, styles.dpBtnContent]}
               borderRadius={10}
+              frostLevel="regular"
               variant="borderless"
               onPress={onChatDP}
               activeOpacity={0.72}
@@ -105,6 +114,9 @@ export function ContactCard({
             style={[styles.actionBtn, styles.visitBtn]}
             contentStyle={styles.actionBtnContent}
             borderRadius={10}
+            frostLevel="regular"
+            variant="border"
+            blurVariant="rimOnly"
             onPress={onVisitProfile}
             activeOpacity={0.72}
           >
@@ -120,9 +132,16 @@ export function ContactCard({
               <View style={styles.commonBadge}>
                 <View style={styles.commonDot} />
                 <Text style={styles.commonText}>Things in Common</Text>
-                <View style={styles.commonCountPill}>
+                <FrostedGlassView
+                  style={styles.commonCountPill}
+                  borderRadius={16}
+                  frostLevel="subtleExtra"
+                  variant="border"
+                  blurVariant="blur10Rim"
+                  animatedEdges={false}
+                >
                   <Text style={styles.commonCount}>{user.thingsInCommon}</Text>
-                </View>
+                </FrostedGlassView>
               </View>
             </View>
           )}
@@ -184,24 +203,7 @@ export function ContactCard({
           </ScrollView>
         </View>
       </View>
-    </View>
-  );
-}
-
-function MetaFrost() {
-  return (
-    <LinearGradient
-      pointerEvents="none"
-      colors={[
-        "rgba(255,255,255,0.075)",
-        "rgba(255,255,255,0.02)",
-        "rgba(255,255,255,0.045)",
-      ]}
-      locations={[0, 0.62, 1]}
-      start={{ x: 0.5, y: 0 }}
-      end={{ x: 0.5, y: 1 }}
-      style={StyleSheet.absoluteFill}
-    />
+    </FrostedGlassView>
   );
 }
 
@@ -235,7 +237,7 @@ function TiltedEmojiRow({
   return (
     <View style={styles.emojiRow}>
       {visible.map((item, index) => (
-        <View
+        <FrostedGlassView
           key={item.id}
           style={[
             styles.emojiChip,
@@ -246,27 +248,35 @@ function TiltedEmojiRow({
             },
             index > 0 && styles.overlapChip,
           ]}
+          borderRadius={10}
+          frostLevel="regular"
+          variant="borderless"
+          blurVariant={index > 0 ? "blur10" : undefined}
+          animatedEdges={false}
         >
-          <MetaFrost />
           <Image
             source={item.image as ImageSourcePropType}
             style={styles.emojiImg}
             resizeMode="contain"
           />
-        </View>
+        </FrostedGlassView>
       ))}
       {overflow > 0 && (
-        <View
+        <FrostedGlassView
           style={[
             styles.emojiChip,
             styles.overflowChip,
             visible.length > 0 && styles.overlapChip,
             { transform: [{ rotate: CHIP_ROTATIONS[3] }] },
           ]}
+          borderRadius={10}
+          frostLevel="regular"
+          variant="borderless"
+          blurVariant="blur10"
+          animatedEdges={false}
         >
-          <MetaFrost />
           <Text style={styles.overflowText}>+{overflow}</Text>
-        </View>
+        </FrostedGlassView>
       )}
     </View>
   );
@@ -278,9 +288,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: "hidden",
     marginHorizontal: 16,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.055)",
   },
   contactArea: {
     height: 152,
@@ -430,9 +437,6 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     borderRadius: 16,
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.05)",
-    backgroundColor: "rgba(255,255,255,0.10)",
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 1,
@@ -518,7 +522,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 5,
     paddingVertical: 2.5,
-    backgroundColor: "rgba(255,255,255,0.035)",
   },
   overlapChip: {
     marginLeft: -6,
@@ -527,9 +530,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-  overflowChip: {
-    backgroundColor: "rgba(255,255,255,0.045)",
-  },
+  overflowChip: {},
   overflowText: {
     color: Colors.textSecondary,
     fontSize: 11,

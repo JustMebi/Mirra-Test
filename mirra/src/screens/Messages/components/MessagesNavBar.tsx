@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppIcon, AppIconName } from "@/components/ui/AppIcon";
+import { FrostedGlassPressable } from "@/components/ui/FrostedGlassPressable";
 import { SegmentedTabs } from "@/components/ui/SegmentedTabs";
 import { Colors } from "@/constants/colors";
 
@@ -21,9 +22,10 @@ const FILTERS: Array<{
   label: string;
   icon?: AppIconName;
   badge?: number;
+  badgeTone?: "default" | "accent";
 }> = [
-  { value: "all", label: "All", badge: 2 },
-  { value: "direct", label: "Direct", icon: "send-outline", badge: 2 },
+  { value: "all", label: "All", badge: 2, badgeTone: "accent" },
+  { value: "direct", label: "Direct", icon: "send-outline", badge: 2, badgeTone: "accent" },
   { value: "dp", label: "Digital Persona", icon: "sparkles-outline" },
 ];
 
@@ -80,14 +82,22 @@ export function MessagesNavBar({
           size="small"
           style={styles.filterTabs}
         />
-        <TouchableOpacity style={styles.slidersBtn} activeOpacity={0.7}>
+        <FrostedGlassPressable
+          style={styles.slidersBtn}
+          contentStyle={styles.slidersBtnContent}
+          borderRadius={10}
+          frostLevel="regular"
+          variant="border"
+          blurVariant="rimOnly"
+          activeOpacity={0.7}
+        >
           <AppIcon
             name="sliders"
             size={16}
             color={Colors.textSecondary}
             strokeWidth={1.5}
           />
-        </TouchableOpacity>
+        </FrostedGlassPressable>
       </View>
     </View>
   );
@@ -143,10 +153,9 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 10,
+  },
+  slidersBtnContent: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.08)",
   },
 });

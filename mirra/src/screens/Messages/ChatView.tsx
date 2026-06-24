@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import {
   View,
   FlatList,
@@ -6,14 +6,14 @@ import {
   KeyboardAvoidingView,
   Platform,
   LayoutAnimation,
-} from 'react-native';
-import { Colors } from '@/constants/colors';
-import { mockCurrentUser, mockUsers } from '@/data/mock';
-import { ChatHeader } from './components/ChatHeader';
-import { ChatBubble } from './components/ChatBubble';
-import { ChatInput } from './components/ChatInput';
-import { MentionProfileCard } from './components/MentionProfileCard';
-import type { Thread, ChatMessage, User } from '@/data/mock';
+} from "react-native";
+import { Colors } from "@/constants/colors";
+import { mockCurrentUser, mockUsers } from "@/data/mock";
+import { ChatHeader } from "./components/ChatHeader";
+import { ChatBubble } from "./components/ChatBubble";
+import { ChatInput } from "./components/ChatInput";
+import { MentionProfileCard } from "./components/MentionProfileCard";
+import type { Thread, ChatMessage, User } from "@/data/mock";
 
 interface Reaction {
   emoji: string;
@@ -23,13 +23,21 @@ interface Reaction {
 
 type ReactionsMap = Record<string, Reaction[]>;
 
-type ListItem = ChatMessage | { type: 'mention_card'; id: string; user: User };
+type ListItem = ChatMessage | { type: "mention_card"; id: string; user: User };
 
 const MENTION_SPRING = {
   duration: 360,
-  create: { type: 'spring' as const, property: 'scaleY' as const, springDamping: 0.72 },
-  update: { type: 'spring' as const, springDamping: 0.72 },
-  delete: { type: 'spring' as const, property: 'scaleY' as const, springDamping: 0.72 },
+  create: {
+    type: "spring" as const,
+    property: "scaleY" as const,
+    springDamping: 0.72,
+  },
+  update: { type: "spring" as const, springDamping: 0.72 },
+  delete: {
+    type: "spring" as const,
+    property: "scaleY" as const,
+    springDamping: 0.72,
+  },
 };
 
 interface ChatViewProps {
@@ -39,17 +47,19 @@ interface ChatViewProps {
 
 export function ChatView({ thread, onBack }: ChatViewProps) {
   const [listItems, setListItems] = useState<ListItem[]>(thread.messages);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [reactions, setReactions] = useState<ReactionsMap>((): ReactionsMap => {
     if (!thread.isGroup) return {};
     return {
       g2: [
-        { emoji: '❤️', count: 34, mine: true },
-        { emoji: '⚡', count: 123, mine: false },
+        { emoji: "❤️", count: 34, mine: true },
+        { emoji: "⚡", count: 123, mine: false },
       ],
     };
   });
-  const [activeMentionMessageId, setActiveMentionMessageId] = useState<string | null>(null);
+  const [activeMentionMessageId, setActiveMentionMessageId] = useState<
+    string | null
+  >(null);
   const listRef = useRef<FlatList>(null);
 
   const isGroup = thread.isGroup;
@@ -60,28 +70,33 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
 
     const newMsg: ChatMessage = {
       id: `m-${Date.now()}`,
-      senderId: 'ariana',
-      senderName: 'Me',
+      senderId: "ariana",
+      senderName: "Me",
       senderAvatar: mockCurrentUser.avatar,
       text,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       isOwn: true,
     };
 
-    const baseMessages = listItems.filter((item): item is ChatMessage => !('type' in item));
+    const baseMessages = listItems.filter(
+      (item): item is ChatMessage => !("type" in item),
+    );
     const nextMessages = [...baseMessages, newMsg];
     thread.messages = nextMessages;
     thread.lastMessage = text;
-    thread.time = 'Now';
+    thread.time = "Now";
 
     if (thread.isGroup) {
-      thread.lastMessageSenderName = 'You';
+      thread.lastMessageSenderName = "You";
       thread.lastMessageIsOwn = true;
     }
 
     setListItems(nextMessages);
     setActiveMentionMessageId(null);
-    setInput('');
+    setInput("");
     setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 80);
   };
 
@@ -95,15 +110,25 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
         const reaction = updated[idx];
 
         if (reaction.mine) {
-          updated[idx] = { ...reaction, count: reaction.count - 1, mine: false };
-          return { ...prev, [messageId]: updated.filter((item) => item.count > 0) };
+          updated[idx] = {
+            ...reaction,
+            count: reaction.count - 1,
+            mine: false,
+          };
+          return {
+            ...prev,
+            [messageId]: updated.filter((item) => item.count > 0),
+          };
         }
 
         updated[idx] = { ...reaction, count: reaction.count + 1, mine: true };
         return { ...prev, [messageId]: updated };
       }
 
-      return { ...prev, [messageId]: [...existing, { emoji, count: 1, mine: true }] };
+      return {
+        ...prev,
+        [messageId]: [...existing, { emoji, count: 1, mine: true }],
+      };
     });
   };
 
@@ -119,17 +144,23 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
     LayoutAnimation.configureNext(MENTION_SPRING);
 
     if (activeMentionMessageId === messageId) {
-      setListItems((prev) => prev.filter((item) => !('type' in item)));
+      setListItems((prev) => prev.filter((item) => !("type" in item)));
       setActiveMentionMessageId(null);
       return;
     }
 
     setListItems((prev) => {
-      const base = prev.filter((item): item is ChatMessage => !('type' in item));
+      const base = prev.filter(
+        (item): item is ChatMessage => !("type" in item),
+      );
       const idx = base.findIndex((m) => m.id === messageId);
       if (idx < 0) return prev;
       const next = [...base] as ListItem[];
-      next.splice(idx, 0, { type: 'mention_card', id: `mc-${messageId}`, user: found });
+      next.splice(idx, 0, {
+        type: "mention_card",
+        id: `mc-${messageId}`,
+        user: found,
+      });
       return next;
     });
     setActiveMentionMessageId(messageId);
@@ -137,28 +168,29 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
 
   const dismissCard = () => {
     LayoutAnimation.configureNext(MENTION_SPRING);
-    setListItems((prev) => prev.filter((item) => !('type' in item)));
+    setListItems((prev) => prev.filter((item) => !("type" in item)));
     setActiveMentionMessageId(null);
   };
 
-  const msgItems = listItems.filter((item): item is ChatMessage => !('type' in item));
+  const msgItems = listItems.filter(
+    (item): item is ChatMessage => !("type" in item),
+  );
 
   const renderItem = ({ item }: { item: ListItem }) => {
-    if ('type' in item && item.type === 'mention_card') {
-      return (
-        <MentionProfileCard
-          user={item.user}
-          onClose={dismissCard}
-        />
-      );
+    if ("type" in item && item.type === "mention_card") {
+      return <MentionProfileCard user={item.user} onClose={dismissCard} />;
     }
 
     const message = item as ChatMessage;
     const msgIndex = msgItems.findIndex((m) => m.id === message.id);
     const prev = msgItems[msgIndex - 1];
     const next = msgItems[msgIndex + 1];
-    const showAvatar = !message.isOwn && (!next || next.senderId !== message.senderId);
-    const showSenderName = isGroup && !message.isOwn && (!prev || prev.senderId !== message.senderId);
+    const showAvatar =
+      !message.isOwn && (!next || next.senderId !== message.senderId);
+    const showSenderName =
+      isGroup &&
+      !message.isOwn &&
+      (!prev || prev.senderId !== message.senderId);
 
     return (
       <ChatBubble
@@ -175,7 +207,7 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
   return (
     <KeyboardAvoidingView
       style={styles.root}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={0}
     >
       <ChatHeader thread={thread} onBack={onBack} />
@@ -188,14 +220,16 @@ export function ChatView({ thread, onBack }: ChatViewProps) {
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: false })}
+        onContentSizeChange={() =>
+          listRef.current?.scrollToEnd({ animated: false })
+        }
       />
 
       <ChatInput
         value={input}
         onChange={setInput}
         onSend={handleSend}
-        placeholder={isGroup ? 'Message group...' : 'Message...'}
+        placeholder={isGroup ? "Message group..." : "Message..."}
       />
     </KeyboardAvoidingView>
   );

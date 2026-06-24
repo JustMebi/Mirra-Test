@@ -21,6 +21,7 @@ function StatCard({ value, label, period, growth, positive }: Stat) {
       borderRadius={16}
       frostLevel="dense"
       variant="borderless"
+      blurVariant="blur30"
       animatedEdges={false}
     >
       <Text style={statStyles.value}>{value}</Text>
@@ -147,8 +148,9 @@ export function HeroProfileCard() {
             <FrostedGlassView
               style={styles.locationBadge}
               borderRadius={12}
-              frostLevel="dense"
+              frostLevel="subtleExtra"
               variant="borderless"
+              blurVariant="blur20"
               animatedEdges={false}
             >
               <PulsingDot size={6} />
@@ -165,8 +167,9 @@ export function HeroProfileCard() {
               style={styles.settingsBtn}
               contentStyle={styles.settingsBtnContent}
               borderRadius={12}
-              frostLevel="dense"
+              frostLevel="subtleExtra"
               variant="borderless"
+              blurVariant="blur20"
               activeOpacity={0.7}
             >
               <AppIcon
@@ -184,6 +187,7 @@ export function HeroProfileCard() {
             borderRadius={20}
             frostLevel="dense"
             variant="borderless"
+            blurVariant="blur60"
             animatedEdges={false}
           >
             <View style={styles.avatarNameRow}>
@@ -207,7 +211,7 @@ export function HeroProfileCard() {
             <FrostedGlassView
               style={styles.followersChip}
               borderRadius={10}
-              frostLevel="dense"
+              frostLevel="regular"
               variant="borderless"
               animatedEdges={false}
             >
@@ -232,7 +236,8 @@ export function HeroProfileCard() {
               contentStyle={styles.actionBtnContent}
               borderRadius={12}
               frostLevel="regular"
-              variant="borderBlur"
+              variant="border"
+              blurVariant="blur20Rim"
               activeOpacity={0.7}
             >
               <AppIcon
@@ -248,7 +253,8 @@ export function HeroProfileCard() {
               contentStyle={styles.actionBtnContent}
               borderRadius={12}
               frostLevel="regular"
-              variant="borderBlur"
+              variant="border"
+              blurVariant="blur20Rim"
               activeOpacity={0.7}
             >
               <AppIcon
@@ -264,7 +270,8 @@ export function HeroProfileCard() {
               contentStyle={styles.actionBtnContent}
               borderRadius={12}
               frostLevel="regular"
-              variant="borderBlur"
+              variant="border"
+              blurVariant="blur20Rim"
               activeOpacity={0.7}
             >
               <AppIcon
